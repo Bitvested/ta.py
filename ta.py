@@ -75,7 +75,13 @@ def vwma(data, l=0):
             wm.append(sum/weight);
             pl = pl[1:];
     return wm;
-
-
-me = ema([1, 2, 3, 4, 5, 6, 10], 6);
-print(me)
+def hull(data, l=0):
+    l = (l) if l > 0 else len(data) - 1; pl = []; hma = []; ewma = wma(data.copy(), l); sqn = round(l**(1/2));
+    first = wma(data.copy(), round(l / 2));
+    first = first[-(len(ewma)-len(first)):];
+    for i in range(len(ewma)):
+        pl.append((first[i] * 2) - ewma[i]);
+        if (len(pl)) >= sqn:
+            h = wma(pl.copy(), sqn);
+            hma.append(h[len(h) - 1]);
+    return hma;
