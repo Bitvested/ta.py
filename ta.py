@@ -85,3 +85,13 @@ def hull(data, l=0):
             h = wma(pl.copy(), sqn);
             hma.append(h[len(h) - 1]);
     return hma;
+def kama(data, l1=0, l2=0, l3=0):
+    l1 = l1 if l1 > 0 else 10; l2 = l2 if l2 > 0 else 2; l3 = l3 if l3 > 0 else 30;
+    ka = sma(data.copy(), l1); ka = [ka[len(ka)-1]];
+    for i in range(l1 + 1, len(data)):
+        vola = 0; change = abs(data[i] - data[i - l1]);
+        for a in range(1, l1):
+            vola += abs(data[i-a] - data[(i-a)-1]);
+        sc = (change/vola * (2/(l2+1) - 2/(l3+1) + 2/(l3+1))) ** 2;
+        ka.append(ka[len(ka)-1] + sc * (data[i] - ka[len(ka)-1]));
+    return ka;
