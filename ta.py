@@ -103,3 +103,23 @@ def macd(data, l1=0, l2=0):
     for i in range(len(em1)):
         emf.append(em1[i] - em2[i]);
     return emf;
+def variance(data, l1=0):
+    mean = sma(data.copy(), l1);
+    return sum((x - mean[len(mean)-1]) ** 2 for x in data) / len(data);
+def std(data, l1=0):
+    l1 = (l1) if l1 > 0 else len(data);
+    std = variance(data.copy(), l1) ** (1/2)
+    return std;
+def bands(data, l1=0, l2=0):
+    l1 = l1 if l1 > 0 else 14; l2 = l2 if l2 > 0 else 1;
+    pl = []; deviation = []; boll = [];
+    sm = sma(data.copy(), l1);
+    for i in range(len(data)):
+        pl.append(data[i]);
+        if (len(pl)) >= l1:
+            devi = std(pl.copy(), l1);
+            deviation.append(devi);
+            pl = pl[1:];
+    for i in range(len(sm)):
+        boll.append([sm[i] + deviation[i] * l2, sm[i], sm[i] - deviation[i] * l2]);
+    return boll;
