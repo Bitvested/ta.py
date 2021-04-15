@@ -134,3 +134,11 @@ def atr(data, l1=0):
         t0 = max((data[i][0] - data[i - 1][1]), (data[i][2] - data[i - 1][1]), (data[i][0] - data[i][2]));
         atr.append((atr[len(atr)-1] * (l1 - 1) + t0) / l1)
     return atr;
+def keltner(data, l1=0, l2=0):
+    l1 = l1 if l1 > 0 else 14; l2 = l2 if l2 > 0 else 1;
+    closing = []; tr = atr(data.copy(), l1); kelt = [];
+    for i in range(len(data)): closing.append(sum(data[i]) / 3);
+    kma = sma(closing, l1);
+    tr = tr[(len(tr) - len(kma)):];
+    for i in range(len(kma)): kelt.append([kma[i] + tr[i] * l2, kma[i], kma[i] - tr[i] * l2]);
+    return kelt
