@@ -154,3 +154,26 @@ def cor(data1, data2):
     sx/=n; sy/=n; sx = sx ** (1/2); sy = sy ** (1/2);
     return (sumavg / (n*sx*sy));
 def dif(n, o): return (n-o)/o;
+def aroon_up(data, l1=0):
+    l1 = l1 if l1 > 0 else 10; pl = []; aroon = [];
+    for i in range(len(data)):
+        pl.append(data[i]);
+        if(len(pl) >= l1):
+            hl = pl.copy();
+            aroon.append((100 * (l1 - (hl.index(max(hl))+1)) / l1));
+            pl = pl[1:];
+    return aroon;
+def aroon_down(data, l1=0):
+    l1 = l1 if l1 > 0 else 10; pl = []; aroon = [];
+    for i in range(len(data)):
+        pl.append(data[i]);
+        if(len(pl) >= l1):
+            hl = pl.copy();
+            aroon.append((100 * (l1 - (hl.index(min(hl))+1)) / l1));
+            pl = pl[1:];
+    return aroon
+def aroon_osc(data, l1=0):
+    l1 = l1 if l1 > 0 else 10; pl = []; aroon = [];
+    u = aroon_up(data.copy(), l1); d = aroon_down(data.copy(), l1);
+    for i in range(len(u)): aroon.append(u[i] - d[i]);
+    return aroon;
