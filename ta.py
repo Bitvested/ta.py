@@ -128,3 +128,9 @@ def bandwidth(data, l1=0, l2=0):
     band = bands(data.copy(), l1, l2); boll = [];
     for i in range(len(band)): boll.append((band[i][0] - band[i][2]) / band[i][1]);
     return boll;
+def atr(data, l1=0):
+    l1 = l1 if l1 > 0 else 14; atr = [data[0][0] - data[0][2]];
+    for i in range(1, len(data)):
+        t0 = max((data[i][0] - data[i - 1][1]), (data[i][2] - data[i - 1][1]), (data[i][0] - data[i][2]));
+        atr.append((atr[len(atr)-1] * (l1 - 1) + t0) / l1)
+    return atr;
