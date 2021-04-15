@@ -177,3 +177,30 @@ def aroon_osc(data, l1=0):
     u = aroon_up(data.copy(), l1); d = aroon_down(data.copy(), l1);
     for i in range(len(u)): aroon.append(u[i] - d[i]);
     return aroon;
+def mfi(data, l1=0):
+    l1 = l1 if l1 > 0 else 14; mfi = []; n = []; p = [];
+    for i in range(len(data)):
+        p.append(data[i][0]); n.append(data[i][1]);
+        if(len(p) >= l1):
+            mfi.append((100 - 100 / (1 + sum(p) / sum(n))));
+            p = p[1:]; n = n[1:];
+    return mfi;
+def roc(data, l1=0):
+    l1 = l1 if l1 > 0 else 14; pl = []; roc = [];
+    for i in range(len(data)):
+        pl.append(data[i]);
+        if(len(pl) >= l1):
+            roc.append((pl[len(pl)-1] - pl[0]) / pl[0]);
+            pl = pl[1:];
+    return roc;
+def cop(data, l1=0, l2=0, l3=0):
+    l1 = l1 if l1 > 0 else 11; l2 = l2 if l2 > 0 else 14; l3 = l3 if l3 > 0 else 10; m = max(l1, l2); co = [];
+    if l1 > l2: [l1, l2] = [l2, l1];
+    for i in range(m + l3, len(data)):
+        r1 = roc(data[i-(m+l3):i], l1); r2 = roc(data[i-(m+l3):i], l2); tmp = [];
+        r1 = r1[(len(r1) - len(r2)):];
+        for a in range(len(r1)):
+            tmp.append(r1[a] + r2[a]);
+        tmp = wma(tmp.copy(), l3);
+        co.append(tmp[len(tmp)-1]);
+    return co;
