@@ -204,3 +204,13 @@ def cop(data, l1=0, l2=0, l3=0):
         tmp = wma(tmp.copy(), l3);
         co.append(tmp[len(tmp)-1]);
     return co;
+def kst(data, r1=10, s1=10, r2=15, s2=10, r3=20, s3=10, r4=30, s4=15, sig=9):
+    ks = []; fs = []; ms = (max(r1, r2, r3, r4) + max(s1, s2, s3, s4));
+    for i in range(ms, len(data)):
+        rcma1 = roc(data[i-ms:i], r1); rcma2 = roc(data[i-ms:i], r2); rcma3 = roc(data[i-ms:i], r3); rcma4 = roc(data[i-ms:i], r4);
+        rcma1 = sma(rcma1, s1); rcma2 = sma(rcma2, s2); rcma3 = sma(rcma3, s3); rcma4 = sma(rcma4, s4);
+        ks.append(rcma1[len(rcma1)-1] + rcma2[len(rcma2)-1] + rcma3[len(rcma3)-1] + rcma4[len(rcma4)-1]);
+    sl = sma(ks.copy(), sig);
+    ks = ks[(len(ks) - len(sl)):];
+    for i in range(len(ks)): fs.append([ks[i], sl[i]]);
+    return fs;
