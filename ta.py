@@ -291,3 +291,43 @@ def asi(data):
         if(h - l > h - cy & h - l > l - cy): r = h - l + (cy - oy) / 4;
         a.append(50 * ((cy - c + (cy - oy) / 2 + (c - o) / 2) / r) * k / t);
     return a;
+def ao(data, l1=5, l2=35):
+    pl = []; a = [];
+    for i in range(len(data)):
+        pl.append((data[i][0] + data[i][1]) / 2);
+        if(len(pl) >= l2):
+            f = sma(pl.copy(), l1);
+            s = sma(pl.copy(), l2);
+            a.append(f[len(f)-1] - s[len(s)-1]);
+            pl = pl[1:];
+    return a;
+def pr(data, l1=14):
+    n = []; pl = [];
+    for i in range(len(data)):
+        pl.append(data[i]);
+        if(len(pl) >= l1):
+            highd = max(pl.copy()); lowd = min(pl.copy());
+            n.append((highd - data[i]) / (highd - lowd) * -100);
+            pl = pl[1:];
+    return n;
+def lsma(data, l1=25):
+    pl = []; lr = [];
+    for i in range(len(data)):
+        pl.append(data[i]);
+        if(len(pl) >= l1):
+            sum_x = 0; sum_y = 0; sum_xy = 0; sum_xx = 0; sum_yy = 0;
+            for a in range(1, len(pl)+1):
+                sum_x += a;
+                sum_y += pl[a-1];
+                sum_xy += (pl[a-1] * a);
+                sum_xx += (a*a);
+                sum_yy += (pl[a-1] * pl[a-1]);
+            m = ((sum_xy - sum_x * sum_y / l1) / (sum_xx - sum_x * sum_x / l1));
+            b = sum_y / l1 - m * sum_x / l1;
+            lr.append(m * l1 + b);
+            pl = pl[1:];
+    return lr;
+
+
+a = lsma([5, 6, 6, 3, 4, 6, 7], 6)
+print(a);
