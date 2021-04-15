@@ -63,6 +63,20 @@ def ema(data, l=0):
             em.append(f);
             pl = pl[1:];
     return em;
+def tsi(data, long=25, short=13, sig=13):
+    mo = []; ab = []; ts = []; tsi = [];
+    for i in range(1, len(data)):
+        mo.append(data[i] - data[i - 1]);
+        ab.append(abs(data[i] - data[i - 1]));
+    sma1 = ema(mo, long); sma2 = ema(ab, long);
+    ema1 = ema(sma1, short); ema2 = ema(sma2, short);
+    for i in range(len(ema1)):
+        ts.append(ema1[i] / ema2[i]);
+    tma = ema(ts, sig);
+    ts = ts[(len(ts)-len(tma)):];
+    for i in range(len(tma)):
+        tsi.append([tma[i], ts[i]]);
+    return tsi;
 def vwma(data, l=0):
     l = (l) if l > 0 else len(data) - 1; pl = []; wm = [];
     for i in range(len(data)):
@@ -250,3 +264,30 @@ def mom_osc(data, l1=9):
             osc.append((sumh - suml) / (sumh + suml) * 100);
             pl = pl[1:];
     return osc;
+def bop(data, l1=14):
+    bo = [];
+    for i in range(len(data)):
+        bo.append((data[i][3] - data[i][0]) / (data[i][1] - data[i][2]));
+    bo = sma(bo, l1);
+    return bo;
+def fi(data, l1=13):
+    pl = []; ff = [];
+    for i in range(1, len(data)):
+        pl.append(data[i][0] - data[i-1][0]);
+        if(len(pl) >= l1):
+            vfi = ema(pl.copy(), l1);
+            ff.append((data[i][0] - data[i-1][0]) * vfi[len(vfi)-1]);
+            pl = pl[1:];
+    return ff;
+def asi(data):
+    pl = []; a = [];
+    for i in range(1, len(data)):
+        c = data[i][1]; y = data[i-1][1]; h = data[i][0]; hy = data[i-1][0]; cy = data[i-1][1]
+        l = data[i][2]; ly = data[i-1][2]; o = data[i][0]; oy = data[i-1][0]; t = max(data[i][0], data[i-1][0]) - min(data[i][2], data[i-1][2]);
+        if(hy-c > ly-c): k = hy-c;
+        else: k = ly-c;
+        if(h - cy > l - cy & h - cy > h - l): r = h - cy - (l - cy) / 2 + (cy - oy) / 4;
+        if(l - cy > h - cy & l - cy > h - l): r = l - cy - (h - cy) / 2 + (cy - oy) / 4;
+        if(h - l > h - cy & h - l > l - cy): r = h - l + (cy - oy) / 4;
+        a.append(50 * ((cy - c + (cy - oy) / 2 + (c - o) / 2) / r) * k / t);
+    return a;
