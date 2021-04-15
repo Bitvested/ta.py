@@ -214,3 +214,10 @@ def kst(data, r1=10, s1=10, r2=15, s2=10, r3=20, s3=10, r4=30, s4=15, sig=9):
     ks = ks[(len(ks) - len(sl)):];
     for i in range(len(ks)): fs.append([ks[i], sl[i]]);
     return fs;
+def obv(data):
+    obv = [0];
+    for i in range(1, len(data)):
+        if(data[i][1] > data[i-1][1]): obv.append(obv[len(obv)-1] + data[i][0]);
+        if(data[i][1] < data[i-1][1]): obv.append(obv[len(obv)-1] - data[i][0]);
+        if(data[i][1] == data[i-1][1]): obv.append(obv[len(obv)-1]);
+    return obv;
