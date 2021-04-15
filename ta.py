@@ -142,3 +142,14 @@ def keltner(data, l1=0, l2=0):
     tr = tr[(len(tr) - len(kma)):];
     for i in range(len(kma)): kelt.append([kma[i] + tr[i] * l2, kma[i], kma[i] - tr[i] * l2]);
     return kelt
+def cor(data1, data2):
+    d1avg = sma(data1.copy(), len(data1)); d1avg = d1avg[len(d1avg)-1];
+    d2avg = sma(data2.copy(), len(data2)); d2avg = d2avg[len(d2avg)-1]
+    sumavg = 0; sx = 0; sy = 0;
+    for i in range(len(data1)):
+        x = data1[i]-d1avg;
+        y = data2[i]-d2avg;
+        sumavg += (x * y); sx += x**2; sy += y**2;
+    n = len(data1)-1;
+    sx/=n; sy/=n; sx = sx ** (1/2); sy = sy ** (1/2);
+    return (sumavg / (n*sx*sy));
