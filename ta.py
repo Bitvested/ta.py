@@ -221,3 +221,32 @@ def obv(data):
         if(data[i][1] < data[i-1][1]): obv.append(obv[len(obv)-1] - data[i][0]);
         if(data[i][1] == data[i-1][1]): obv.append(obv[len(obv)-1]);
     return obv;
+def vwap(data, l1=0):
+    l1 = l1 if l1 > 0 else len(data); pl = []; vwap = [];
+    for i in range(len(data)):
+        pl.append([(data[i][0] * data[i][1]), data[i][1]]);
+        if(len(pl) >= l1):
+            totalv = 0; totalp = 0;
+            for a in range(len(pl)):
+                totalv += pl[a][1];
+                totalp += pl[a][0];
+            vwap.append(totalp/totalv);
+            pl = pl[1:];
+    return vwap;
+def mom(data, l1=10, p=False):
+    mom = [];
+    for i in range(l1-1, len(data)):
+        mom.append(data[i] / data[i - (l1-1)] * 100) if p == True else mom.append(data[i] - data[i - (l1 - 1)]);
+    return mom
+def mom_osc(data, l1=9):
+    pl = []; osc = [];
+    for i in range(len(data)):
+        pl.append(data[i]);
+        if(len(pl) > l1):
+            sumh = 0; suml = 0;
+            for a in range(1, l1):
+                if(pl[a-1] < pl[a]): sumh = sumh+pl[a];
+                else: suml = suml+pl[a];
+            osc.append((sumh - suml) / (sumh + suml) * 100);
+            pl = pl[1:];
+    return osc;
