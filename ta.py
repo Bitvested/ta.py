@@ -153,3 +153,4 @@ def cor(data1, data2):
     n = len(data1)-1;
     sx/=n; sy/=n; sx = sx ** (1/2); sy = sy ** (1/2);
     return (sumavg / (n*sx*sy));
+def dif(n, o): return (n-o)/o;
