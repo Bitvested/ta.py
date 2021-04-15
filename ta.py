@@ -95,3 +95,11 @@ def kama(data, l1=0, l2=0, l3=0):
         sc = (change/vola * (2/(l2+1) - 2/(l3+1) + 2/(l3+1))) ** 2;
         ka.append(ka[len(ka)-1] + sc * (data[i] - ka[len(ka)-1]));
     return ka;
+def macd(data, l1=0, l2=0):
+    l1 = l1 if l1 > 0 else 12; l2 = l2 if l2 > 0 else 26;
+    if l1 > l2: [l1, l2] = [l2, l1];
+    em1 = ema(data.copy(), l1); em2 = ema(data.copy(), l2);
+    em1 = em1[-(len(em2) - len(em1)):]; emf = [];
+    for i in range(len(em1)):
+        emf.append(em1[i] - em2[i]);
+    return emf;
