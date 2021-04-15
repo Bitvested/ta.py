@@ -378,3 +378,23 @@ def stoch(data, l1=14, sd=3, sk=3):
             low = low[1:];
             ka = ka[1:];
     return stoch;
+def ha(data):
+    h = [[(data[0][0] + data[0][3]) / 2, data[0][1], data[0][2], (data[0][0] + data[0][1] + data[0][2] + data[0][3]) / 4]];
+    for i in range(len(data)):
+        h.append([(h[len(h)-1][0] + h[len(h)-1][3]) / 2, max(h[len(h)-1][0], h[len(h)-1][3], data[i][1]), min(h[len(h)-1][0], h[len(h)-1][3], data[i][2]), (data[i][0] + data[i][1] + data[i][2] + data[i][3]) / 4]);
+    return h;
+def ren(data, bs=1):
+    re = []; decimals = len(str(bs-int(bs))[1:])-1;
+    bh = round(round(data[0][0] / bs * (10 ** decimals)) / (10 ** decimals) * bs); bl = bh - bs;
+    for i in range(1, len(data)):
+        if(data[i][0] > bh + bs):
+            while (data[i][0] > bh + bs):
+                re.append([bh,bh+bs,bh,bh+bs]);
+                bh+=bs;
+                bl+=bs;
+        if(data[i][1] < bl - bs):
+            while (data[i][1] < bl - bs):
+                re.append([bl,bl,bl-bs,bl-bs]);
+                bh-=bs;
+                bl-=bs;
+    return re;
