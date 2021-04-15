@@ -327,7 +327,54 @@ def lsma(data, l1=25):
             lr.append(m * l1 + b);
             pl = pl[1:];
     return lr;
-
-
-a = lsma([5, 6, 6, 3, 4, 6, 7], 6)
-print(a);
+def don(data, l1=20):
+    pl = []; channel = [];
+    for i in range(len(data)):
+        pl.append(data[i]);
+        if(len(pl) >= l1):
+            highs = []; lows = [];
+            for h in range(len(pl)):
+                highs.append(pl[h][0]);
+                lows.append(pl[h][1]);
+            m = max(highs); l = min(lows);
+            channel.append([m, (m+l) / 2, l]);
+            pl = pl[1:];
+    return channel;
+def ichimoku(data, l1=9, l2=26, l3=52, l4=26):
+    cloud = []; place = []; pl = [];
+    for i in range(len(data)):
+        pl.append(data[i]);
+        if(len(pl) > l3):
+            highs = []; lows = [];
+            for a in range(len(pl)):
+                highs.append(pl[a][0]);
+                lows.append(pl[a][2]);
+            tsen = (max(highs[len(highs)-1-l1:len(highs)-1]) + (min(lows[len(lows)-1-l1:len(lows)-1]))) / 2;
+            ksen = (max(highs[len(highs)-1-l2:len(highs)-1]) + (min(lows[len(lows)-1-l2:len(lows)-1]))) / 2;
+            senka = data[i][1] + ksen;
+            senkb = (max(highs[len(highs)-1-l3:len(highs)-1]) + (min(lows[len(lows)-1-l2:len(lows)-1]))) / 2;
+            chik = data[i][1];
+            place.append([tsen, ksen, senka, senkb, chik]);
+            pl = pl[1:];
+    for i in range(l4, len(place)-l4):
+        if(place[i+l4-1]): cloud.append([place[i][0], place[i][1], place[i+l4-1][2], place[i+l4-1][3], place[i+l4-1][4]]);
+    return cloud;
+def stoch(data, l1=14, sd=3, sk=3):
+    stoch = []; high = []; low = []; ka = [];
+    for i in range(len(data)):
+        high.append(data[i][0]);
+        low.append(data[i][2]);
+        if(len(high) >= l1):
+            highd = max(high); lowd = min(low);
+            k = 100 * (data[i][1] - lowd) / (highd - lowd);
+            ka.append(k);
+        if(sk > 0 & len(ka) > sk):
+            smoothedk = sma(ka.copy(), sk);
+            ka.push(smoothedk[len(smoothedk)-1]);
+        if(len(ka) - sk >= sd):
+            d = sma(ka.copy(), sd);
+            stoch.append([k, d[len(d)-1]]);
+            high = high[1:];
+            low = low[1:];
+            ka = ka[1:];
+    return stoch;
