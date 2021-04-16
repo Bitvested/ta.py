@@ -124,7 +124,7 @@ def std(data, l1=0):
     l1 = (l1) if l1 > 0 else len(data);
     std = variance(data.copy(), l1) ** (1/2)
     return std;
-def bands(data, l1=0, l2=0):
+def bands(data, l1=14, l2=1):
     l1 = l1 if l1 > 0 else 14; l2 = l2 if l2 > 0 else 1;
     pl = []; deviation = []; boll = [];
     sm = sma(data.copy(), l1);
