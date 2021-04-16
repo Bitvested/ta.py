@@ -8,8 +8,8 @@ def median(data, l=0):
             med.append(tmp[round((len(tmp)-1) / 2)]);
             pl = pl[1:];
     return med;
-def rsi(data, l=0):
-    l = (l) if l > 0 else len(data); pl = []; rs = [];
+def rsi(data, l=14):
+    pl = []; rs = [];
     for i in range(1, len(data)):
         pl.append(data[i] - data[i - 1]);
         if (len(pl)) >= l:
@@ -21,16 +21,16 @@ def rsi(data, l=0):
             rs.append(f);
             pl = pl[1:];
     return rs;
-def sma(data, l=0):
-    l = (l) if l > 0 else len(data) - 1; pl = []; sm = [];
+def sma(data, l=14):
+    pl = []; sm = [];
     for i in range(len(data)):
         pl.append(data[i]);
         if (len(pl)) >= l:
             sm.append(sum(pl) / l);
             pl = pl[1:];
     return sm;
-def smma(data, l=0):
-    l = (l) if l > 0 else len(data) - 1; pl = []; sm = [];
+def smma(data, l=14):
+    pl = []; sm = [];
     for i in range(len(data)):
         pl.append(data[i]);
         if (len(pl)) >= l:
@@ -41,8 +41,8 @@ def smma(data, l=0):
             pl = pl[1:];
     sm = sm[1:];
     return sm;
-def wma(data, l=0):
-    l = (l) if l > 0 else len(data) - 1; pl = []; wm = []; weight = [];
+def wma(data, l=14):
+    pl = []; wm = []; weight = [];
     for i in range(1, l+1):
         weight.append(i);
     for i in range(len(data)):
@@ -54,8 +54,8 @@ def wma(data, l=0):
             wm.append(average);
             pl = pl[1:];
     return wm;
-def ema(data, l=0):
-    l = (l) if l > 0 else len(data) - 1; pl = []; em = []; weight = 2 / (l + 1);
+def ema(data, l=12):
+    pl = []; em = []; weight = 2 / (l + 1);
     for i in range(len(data)):
         pl.append(data[i]);
         if (len(pl)) >= l:
@@ -77,8 +77,8 @@ def tsi(data, long=25, short=13, sig=13):
     for i in range(len(tma)):
         tsi.append([tma[i], ts[i]]);
     return tsi;
-def vwma(data, l=0):
-    l = (l) if l > 0 else len(data) - 1; pl = []; wm = [];
+def vwma(data, l=20):
+    pl = []; wm = [];
     for i in range(len(data)):
         pl.append(data[i]);
         if (len(pl)) >= l:
@@ -89,8 +89,8 @@ def vwma(data, l=0):
             wm.append(sum/weight);
             pl = pl[1:];
     return wm;
-def hull(data, l=0):
-    l = (l) if l > 0 else len(data) - 1; pl = []; hma = []; ewma = wma(data.copy(), l); sqn = round(l**(1/2));
+def hull(data, l=14):
+    pl = []; hma = []; ewma = wma(data.copy(), l); sqn = round(l**(1/2));
     first = wma(data.copy(), round(l / 2));
     first = first[-(len(ewma)-len(first)):];
     for i in range(len(ewma)):
@@ -99,8 +99,7 @@ def hull(data, l=0):
             h = wma(pl.copy(), sqn);
             hma.append(h[len(h) - 1]);
     return hma;
-def kama(data, l1=0, l2=0, l3=0):
-    l1 = l1 if l1 > 0 else 10; l2 = l2 if l2 > 0 else 2; l3 = l3 if l3 > 0 else 30;
+def kama(data, l1=10, l2=2, l3=30):
     ka = sma(data.copy(), l1); ka = [ka[len(ka)-1]];
     for i in range(l1 + 1, len(data)):
         vola = 0; change = abs(data[i] - data[i - l1]);
@@ -109,8 +108,7 @@ def kama(data, l1=0, l2=0, l3=0):
         sc = (change/vola * (2/(l2+1) - 2/(l3+1) + 2/(l3+1))) ** 2;
         ka.append(ka[len(ka)-1] + sc * (data[i] - ka[len(ka)-1]));
     return ka;
-def macd(data, l1=0, l2=0):
-    l1 = l1 if l1 > 0 else 12; l2 = l2 if l2 > 0 else 26;
+def macd(data, l1=12, l2=26):
     if l1 > l2: [l1, l2] = [l2, l1];
     em1 = ema(data.copy(), l1); em2 = ema(data.copy(), l2);
     em1 = em1[-(len(em2) - len(em1)):]; emf = [];
@@ -125,7 +123,6 @@ def std(data, l1=0):
     std = variance(data.copy(), l1) ** (1/2)
     return std;
 def bands(data, l1=14, l2=1):
-    l1 = l1 if l1 > 0 else 14; l2 = l2 if l2 > 0 else 1;
     pl = []; deviation = []; boll = [];
     sm = sma(data.copy(), l1);
     for i in range(len(data)):
@@ -137,19 +134,17 @@ def bands(data, l1=14, l2=1):
     for i in range(len(sm)):
         boll.append([sm[i] + deviation[i] * l2, sm[i], sm[i] - deviation[i] * l2]);
     return boll;
-def bandwidth(data, l1=0, l2=0):
-    l1 = l1 if l1 > 0 else 14; l2 = l2 if l2 > 0 else 1;
+def bandwidth(data, l1=14, l2=1):
     band = bands(data.copy(), l1, l2); boll = [];
     for i in range(len(band)): boll.append((band[i][0] - band[i][2]) / band[i][1]);
     return boll;
-def atr(data, l1=0):
-    l1 = l1 if l1 > 0 else 14; atr = [data[0][0] - data[0][2]];
+def atr(data, l1=14):
+    atr = [data[0][0] - data[0][2]];
     for i in range(1, len(data)):
         t0 = max((data[i][0] - data[i - 1][1]), (data[i][2] - data[i - 1][1]), (data[i][0] - data[i][2]));
         atr.append((atr[len(atr)-1] * (l1 - 1) + t0) / l1)
     return atr;
-def keltner(data, l1=0, l2=0):
-    l1 = l1 if l1 > 0 else 14; l2 = l2 if l2 > 0 else 1;
+def keltner(data, l1=14, l2=1):
     closing = []; tr = atr(data.copy(), l1); kelt = [];
     for i in range(len(data)): closing.append(sum(data[i]) / 3);
     kma = sma(closing, l1);
@@ -168,8 +163,8 @@ def cor(data1, data2):
     sx/=n; sy/=n; sx = sx ** (1/2); sy = sy ** (1/2);
     return (sumavg / (n*sx*sy));
 def dif(n, o): return (n-o)/o;
-def aroon_up(data, l1=0):
-    l1 = l1 if l1 > 0 else 10; pl = []; aroon = [];
+def aroon_up(data, l1=10):
+    pl = []; aroon = [];
     for i in range(len(data)):
         pl.append(data[i]);
         if(len(pl) >= l1):
@@ -177,8 +172,8 @@ def aroon_up(data, l1=0):
             aroon.append((100 * (l1 - (hl.index(max(hl))+1)) / l1));
             pl = pl[1:];
     return aroon;
-def aroon_down(data, l1=0):
-    l1 = l1 if l1 > 0 else 10; pl = []; aroon = [];
+def aroon_down(data, l1=10):
+    pl = []; aroon = [];
     for i in range(len(data)):
         pl.append(data[i]);
         if(len(pl) >= l1):
@@ -186,29 +181,29 @@ def aroon_down(data, l1=0):
             aroon.append((100 * (l1 - (hl.index(min(hl))+1)) / l1));
             pl = pl[1:];
     return aroon
-def aroon_osc(data, l1=0):
-    l1 = l1 if l1 > 0 else 10; pl = []; aroon = [];
+def aroon_osc(data, l1=10):
+    pl = []; aroon = [];
     u = aroon_up(data.copy(), l1); d = aroon_down(data.copy(), l1);
     for i in range(len(u)): aroon.append(u[i] - d[i]);
     return aroon;
-def mfi(data, l1=0):
-    l1 = l1 if l1 > 0 else 14; mfi = []; n = []; p = [];
+def mfi(data, l1=14):
+    mfi = []; n = []; p = [];
     for i in range(len(data)):
         p.append(data[i][0]); n.append(data[i][1]);
         if(len(p) >= l1):
             mfi.append((100 - 100 / (1 + sum(p) / sum(n))));
             p = p[1:]; n = n[1:];
     return mfi;
-def roc(data, l1=0):
-    l1 = l1 if l1 > 0 else 14; pl = []; roc = [];
+def roc(data, l1=14):
+    pl = []; roc = [];
     for i in range(len(data)):
         pl.append(data[i]);
         if(len(pl) >= l1):
             roc.append((pl[len(pl)-1] - pl[0]) / pl[0]);
             pl = pl[1:];
     return roc;
-def cop(data, l1=0, l2=0, l3=0):
-    l1 = l1 if l1 > 0 else 11; l2 = l2 if l2 > 0 else 14; l3 = l3 if l3 > 0 else 10; m = max(l1, l2); co = [];
+def cop(data, l1=11, l2=14, l3=10):
+    m = max(l1, l2); co = [];
     if l1 > l2: [l1, l2] = [l2, l1];
     for i in range(m + l3, len(data)):
         r1 = roc(data[i-(m+l3):i], l1); r2 = roc(data[i-(m+l3):i], l2); tmp = [];
