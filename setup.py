@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-     name='tapy',
+     name='ta_py',
      version='1.0.0',
      author="Nino Kroesen",
      author_email="ninokroesen@gmail.com",

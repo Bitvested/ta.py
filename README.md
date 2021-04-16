@@ -8,11 +8,11 @@ ta.py is a Python package for dealing with financial technical analysis.
 Use the package manager pip to install ta.py.
 
 ```bash
-pip install tapy
+pip install ta_py
 ```
 ## Usage
 ```python
-import tapy as ta;
+import ta_py as ta;
 ```
 
 ## Examples
