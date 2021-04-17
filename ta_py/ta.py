@@ -3,9 +3,9 @@ def median(data, l=0):
     for i in range(len(data)):
         pl.append(data[i]);
         if (len(pl)) >= l:
-            tmp = pl.copy();
-            tmp.sort(reverse=True);
-            med.append(tmp[round((len(tmp)-1) / 2)]);
+            tmp = pl[:];
+            tmp.sort();
+            med.append(tmp[int(round((len(tmp)-1) / 2))]);
             pl = pl[1:];
     return med;
 def rsi(data, l=14):
@@ -13,11 +13,15 @@ def rsi(data, l=14):
     for i in range(1, len(data)):
         pl.append(data[i] - data[i - 1]);
         if (len(pl)) >= l:
-            gain = 0; loss = 0;
+            gain = 0.0; loss = 0.0;
             for a in range(len(pl)):
-                if pl[a] > 0: gain += pl[a];
-                if pl[a] < 0: loss += abs(pl[a]);
-            gain /= l; loss /= l; f = 100 - 100 / (1 + (gain / loss)) if loss != 0 else 100;
+                if pl[a] > 0: gain += float(pl[a]);
+                if pl[a] < 0: loss += abs(float(pl[a]));
+            gain /= l; loss /= l;
+            try:
+                f = 100.0 - 100.0 / (1.0 + (gain/loss));
+            except:
+                f = 100.0
             rs.append(f);
             pl = pl[1:];
     return rs;
@@ -90,17 +94,17 @@ def vwma(data, l=20):
             pl = pl[1:];
     return wm;
 def hull(data, l=14):
-    pl = []; hma = []; ewma = wma(data.copy(), l); sqn = round(l**(1/2));
-    first = wma(data.copy(), round(l / 2));
+    pl = []; hma = []; ewma = wma(data[:], l); sqn = round(l**(1/2));
+    first = wma(data[:], round(l / 2));
     first = first[-(len(ewma)-len(first)):];
     for i in range(len(ewma)):
         pl.append((first[i] * 2) - ewma[i]);
         if (len(pl)) >= sqn:
-            h = wma(pl.copy(), sqn);
+            h = wma(pl[:], sqn);
             hma.append(h[len(h) - 1]);
     return hma;
 def kama(data, l1=10, l2=2, l3=30):
-    ka = sma(data.copy(), l1); ka = [ka[len(ka)-1]];
+    ka = sma(data[:], l1); ka = [ka[len(ka)-1]];
     for i in range(l1 + 1, len(data)):
         vola = 0; change = abs(data[i] - data[i - l1]);
         for a in range(1, l1):
@@ -110,32 +114,32 @@ def kama(data, l1=10, l2=2, l3=30):
     return ka;
 def macd(data, l1=12, l2=26):
     if l1 > l2: [l1, l2] = [l2, l1];
-    em1 = ema(data.copy(), l1); em2 = ema(data.copy(), l2);
+    em1 = ema(data[:], l1); em2 = ema(data[:], l2);
     em1 = em1[-(len(em2) - len(em1)):]; emf = [];
     for i in range(len(em1)):
         emf.append(em1[i] - em2[i]);
     return emf;
 def variance(data, l1=0):
-    mean = sma(data.copy(), l1);
-    return sum((x - mean[len(mean)-1]) ** 2 for x in data) / len(data);
+    mean = sma(data[:], l1);
+    return sum((float(x) - float(mean[len(mean)-1])) ** 2 for x in data) / len(data);
 def std(data, l1=0):
     l1 = (l1) if l1 > 0 else len(data);
-    std = variance(data.copy(), l1) ** (1/2)
+    std = variance(data[:], l1) ** (1.0/2.0)
     return std;
 def bands(data, l1=14, l2=1):
     pl = []; deviation = []; boll = [];
-    sm = sma(data.copy(), l1);
+    sm = sma(data[:], l1);
     for i in range(len(data)):
         pl.append(data[i]);
         if (len(pl)) >= l1:
-            devi = std(pl.copy(), l1);
+            devi = std(pl[:], l1);
             deviation.append(devi);
             pl = pl[1:];
     for i in range(len(sm)):
         boll.append([sm[i] + deviation[i] * l2, sm[i], sm[i] - deviation[i] * l2]);
     return boll;
 def bandwidth(data, l1=14, l2=1):
-    band = bands(data.copy(), l1, l2); boll = [];
+    band = bands(data[:], l1, l2); boll = [];
     for i in range(len(band)): boll.append((band[i][0] - band[i][2]) / band[i][1]);
     return boll;
 def atr(data, l1=14):
@@ -145,15 +149,15 @@ def atr(data, l1=14):
         atr.append((atr[len(atr)-1] * (l1 - 1) + t0) / l1)
     return atr;
 def keltner(data, l1=14, l2=1):
-    closing = []; tr = atr(data.copy(), l1); kelt = [];
+    closing = []; tr = atr(data[:], l1); kelt = [];
     for i in range(len(data)): closing.append(sum(data[i]) / 3);
     kma = sma(closing, l1);
     tr = tr[(len(tr) - len(kma)):];
     for i in range(len(kma)): kelt.append([kma[i] + tr[i] * l2, kma[i], kma[i] - tr[i] * l2]);
     return kelt
 def cor(data1, data2):
-    d1avg = sma(data1.copy(), len(data1)); d1avg = d1avg[len(d1avg)-1];
-    d2avg = sma(data2.copy(), len(data2)); d2avg = d2avg[len(d2avg)-1]
+    d1avg = sma(data1[:], len(data1)); d1avg = d1avg[len(d1avg)-1];
+    d2avg = sma(data2[:], len(data2)); d2avg = d2avg[len(d2avg)-1]
     sumavg = 0; sx = 0; sy = 0;
     for i in range(len(data1)):
         x = data1[i]-d1avg;
@@ -168,7 +172,7 @@ def aroon_up(data, l1=10):
     for i in range(len(data)):
         pl.append(data[i]);
         if(len(pl) >= l1):
-            hl = pl.copy();
+            hl = pl[:];
             aroon.append((100 * (l1 - (hl.index(max(hl))+1)) / l1));
             pl = pl[1:];
     return aroon;
@@ -177,13 +181,13 @@ def aroon_down(data, l1=10):
     for i in range(len(data)):
         pl.append(data[i]);
         if(len(pl) >= l1):
-            hl = pl.copy();
+            hl = pl[:];
             aroon.append((100 * (l1 - (hl.index(min(hl))+1)) / l1));
             pl = pl[1:];
     return aroon
 def aroon_osc(data, l1=10):
     pl = []; aroon = [];
-    u = aroon_up(data.copy(), l1); d = aroon_down(data.copy(), l1);
+    u = aroon_up(data[:], l1); d = aroon_down(data[:], l1);
     for i in range(len(u)): aroon.append(u[i] - d[i]);
     return aroon;
 def mfi(data, l1=14):
@@ -210,7 +214,7 @@ def cop(data, l1=11, l2=14, l3=10):
         r1 = r1[(len(r1) - len(r2)):];
         for a in range(len(r1)):
             tmp.append(r1[a] + r2[a]);
-        tmp = wma(tmp.copy(), l3);
+        tmp = wma(tmp[:], l3);
         co.append(tmp[len(tmp)-1]);
     return co;
 def kst(data, r1=10, s1=10, r2=15, s2=10, r3=20, s3=10, r4=30, s4=15, sig=9):
@@ -219,7 +223,7 @@ def kst(data, r1=10, s1=10, r2=15, s2=10, r3=20, s3=10, r4=30, s4=15, sig=9):
         rcma1 = roc(data[i-ms:i], r1); rcma2 = roc(data[i-ms:i], r2); rcma3 = roc(data[i-ms:i], r3); rcma4 = roc(data[i-ms:i], r4);
         rcma1 = sma(rcma1, s1); rcma2 = sma(rcma2, s2); rcma3 = sma(rcma3, s3); rcma4 = sma(rcma4, s4);
         ks.append(rcma1[len(rcma1)-1] + rcma2[len(rcma2)-1] + rcma3[len(rcma3)-1] + rcma4[len(rcma4)-1]);
-    sl = sma(ks.copy(), sig);
+    sl = sma(ks[:], sig);
     ks = ks[(len(ks) - len(sl)):];
     for i in range(len(ks)): fs.append([ks[i], sl[i]]);
     return fs;
@@ -270,7 +274,7 @@ def fi(data, l1=13):
     for i in range(1, len(data)):
         pl.append(data[i][0] - data[i-1][0]);
         if(len(pl) >= l1):
-            vfi = ema(pl.copy(), l1);
+            vfi = ema(pl[:], l1);
             ff.append((data[i][0] - data[i-1][0]) * vfi[len(vfi)-1]);
             pl = pl[1:];
     return ff;
@@ -291,8 +295,8 @@ def ao(data, l1=5, l2=35):
     for i in range(len(data)):
         pl.append((data[i][0] + data[i][1]) / 2);
         if(len(pl) >= l2):
-            f = sma(pl.copy(), l1);
-            s = sma(pl.copy(), l2);
+            f = sma(pl[:], l1);
+            s = sma(pl[:], l2);
             a.append(f[len(f)-1] - s[len(s)-1]);
             pl = pl[1:];
     return a;
@@ -301,7 +305,7 @@ def pr(data, l1=14):
     for i in range(len(data)):
         pl.append(data[i]);
         if(len(pl) >= l1):
-            highd = max(pl.copy()); lowd = min(pl.copy());
+            highd = max(pl[:]); lowd = min(pl[:]);
             n.append((highd - data[i]) / (highd - lowd) * -100);
             pl = pl[1:];
     return n;
@@ -364,10 +368,10 @@ def stoch(data, l1=14, sd=3, sk=3):
             k = 100 * (data[i][1] - lowd) / (highd - lowd);
             ka.append(k);
         if(sk > 0 & len(ka) > sk):
-            smoothedk = sma(ka.copy(), sk);
+            smoothedk = sma(ka[:], sk);
             ka.push(smoothedk[len(smoothedk)-1]);
         if(len(ka) - sk >= sd):
-            d = sma(ka.copy(), sd);
+            d = sma(ka[:], sd);
             stoch.append([k, d[len(d)-1]]);
             high = high[1:];
             low = low[1:];

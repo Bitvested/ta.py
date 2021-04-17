@@ -294,7 +294,7 @@ ta.atr(data, length);
 ```python
 data = [5, 4, 5, 2];
 length = 3; # default = 10
-ta.aroon.up(data, length);
+ta.aroon_up(data, length);
 # output (array)
 # [66.67, 33.36]
 ```
@@ -302,7 +302,7 @@ ta.aroon.up(data, length);
 ```python
 data = [2, 5, 4, 5];
 length = 3; # default = 10
-ta.aroon.down(data, length);
+ta.aroon_down(data, length);
 # output (array)
 # [66.67, 33.36]
 ```
@@ -310,7 +310,7 @@ ta.aroon.down(data, length);
 ```python
 data = [2, 5, 4, 5];
 length = 3; # default = 25
-ta.aroon.osc(data, length);
+ta.aroon_osc(data, length);
 # output (array)
 # [-33.36, 33.36]
 ```
@@ -357,7 +357,7 @@ r4 = 15; # default = 30
 s4 = 7; # default = 15
 # signal line
 sig = 4; # default = 9
-ta.kst(data, r1, r2, r3, r4, s1, s2, s3, s4, sig);
+ta.kst(data, r1, s1, r2, s2, r3, s3, r4, s4, sig);
 # output (array)
 # [[-0.68, -0.52], [-0.29, -0.58]]
 # [kst line, signal line]
