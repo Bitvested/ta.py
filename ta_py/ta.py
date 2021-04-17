@@ -28,7 +28,7 @@ def rsi(data, l=14):
 def sma(data, l=14):
     pl = []; sm = [];
     for i in range(len(data)):
-        pl.append(data[i]);
+        pl.append(float(data[i]));
         if (len(pl)) >= l:
             sm.append(sum(pl) / l);
             pl = pl[1:];
@@ -36,7 +36,7 @@ def sma(data, l=14):
 def smma(data, l=14):
     pl = []; sm = [];
     for i in range(len(data)):
-        pl.append(data[i]);
+        pl.append(float(data[i]));
         if (len(pl)) >= l:
             average = 0;
             for a in range(len(pl)): average += pl[a];
@@ -50,7 +50,7 @@ def wma(data, l=14):
     for i in range(1, l+1):
         weight.append(i);
     for i in range(len(data)):
-        pl.append(data[i]);
+        pl.append(float(data[i]));
         if (len(pl)) >= l:
             average = 0;
             for q in range(1, len(pl)+1):
@@ -59,9 +59,9 @@ def wma(data, l=14):
             pl = pl[1:];
     return wm;
 def ema(data, l=12):
-    pl = []; em = []; weight = 2 / (l + 1);
+    pl = []; em = []; weight = 2 / (float(l) + 1);
     for i in range(len(data)):
-        pl.append(data[i]);
+        pl.append(float(data[i]));
         if (len(pl)) >= l:
             f = sum(pl) / l if len(em) <= 0 else (data[i] - em[len(em) - 1]) * weight + em[len(em) - 1]
             em.append(f);
@@ -94,13 +94,13 @@ def vwma(data, l=20):
             pl = pl[1:];
     return wm;
 def hull(data, l=14):
-    pl = []; hma = []; ewma = wma(data[:], l); sqn = round(l**(1/2));
-    first = wma(data[:], round(l / 2));
+    pl = []; hma = []; ewma = ta.wma(data[:], l); sqn = round(l**(1.0/2.0));
+    first = ta.wma(data[:], int(round(l / 2)));
     first = first[-(len(ewma)-len(first)):];
     for i in range(len(ewma)):
         pl.append((first[i] * 2) - ewma[i]);
         if (len(pl)) >= sqn:
-            h = wma(pl[:], sqn);
+            h = ta.wma(pl[:], int(sqn));
             hma.append(h[len(h) - 1]);
     return hma;
 def kama(data, l1=10, l2=2, l3=30):
