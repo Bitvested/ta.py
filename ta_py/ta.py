@@ -4,7 +4,7 @@ def median(data, l=0):
         pl.append(data[i]);
         if (len(pl)) >= l:
             tmp = pl[:];
-            tmp.sort();
+            tmp.sort(reverse=True);
             med.append(tmp[int(round((len(tmp)-1) / 2))]);
             pl = pl[1:];
     return med;

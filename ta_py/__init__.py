@@ -1,1 +1,1 @@
-from ta import *
+from .ta import *

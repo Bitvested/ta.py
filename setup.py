@@ -14,7 +14,7 @@ setuptools.setup(
      url="https://github.com/Bitvested/ta.py",
      packages=setuptools.find_packages(),
      classifiers=[
-         "Programming Language :: Python :: 2.7",
+         "Programming Language :: Python :: 3",
          "License :: OSI Approved :: MIT License",
          "Operating System :: OS Independent",
      ],
