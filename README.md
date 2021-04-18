@@ -164,7 +164,7 @@ data = [[1.4, 200], [1.5, 240], [1.1, 300], [1.2, 240], [1.5, 400]]; # [close, v
 length = 4; # default = 13
 ta.fi(data, length);
 # output (array)
-# [0.0075, 0.0025]
+# [0.0075]
 ```
 #### <a name="asi"></a>Accumulative Swing Index
 ```python
@@ -188,7 +188,7 @@ data = [2, 1, 3, 1, 2];
 length = 3; # default = 14
 ta.pr(data, length);
 # output (array)
-# [-100, -50]
+# [-0, -100, -50]
 ```
 #### <a name="stoch"></a>Stochastics
 ```python
@@ -259,7 +259,7 @@ length = 5; # default = 14
 deviations = 1; # default = 1
 ta.keltner(data, length, deviations);
 # output (array)
-# [[3.79, 2, 0.2], [3.93, 2.08, 0.23]]
+# [[3.93, 2.06, 0.20]]
 # [upper band, middle band, lower band]
 ```
 #### <a name="don"></a>Donchian Channels
@@ -332,13 +332,13 @@ ta.roc(data, length);
 ```
 #### <a name="cop"></a>Coppock Curve
 ```python
-data = [3, 4, 5, 3, 4, 5, 6, 4];
+data = [3, 4, 5, 3, 4, 5, 6, 4, 7, 5, 4, 7, 5];
 length1 = 4; # (ROC period 1) default = 11
 length2 = 6; # (ROC period 2) default = 14
 length3 = 5; # (WMA smoothing period) default = 10
 ta.cop(data, length1, length2, length3);
 # output (array)
-# [0.377, 1.223]
+# [0.376, 0.237]
 ```
 #### <a name="kst"></a>Know Sure Thing
 ```python

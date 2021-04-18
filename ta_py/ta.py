@@ -94,13 +94,13 @@ def vwma(data, l=20):
             pl = pl[1:];
     return wm;
 def hull(data, l=14):
-    pl = []; hma = []; ewma = ta.wma(data[:], l); sqn = round(l**(1.0/2.0));
-    first = ta.wma(data[:], int(round(l / 2)));
+    pl = []; hma = []; ewma = wma(data[:], l); sqn = round(l**(1.0/2.0));
+    first = wma(data[:], int(round(l / 2)));
     first = first[-(len(ewma)-len(first)):];
     for i in range(len(ewma)):
         pl.append((first[i] * 2) - ewma[i]);
         if (len(pl)) >= sqn:
-            h = ta.wma(pl[:], int(sqn));
+            h = wma(pl[:], int(sqn));
             hma.append(h[len(h) - 1]);
     return hma;
 def kama(data, l1=10, l2=2, l3=30):
@@ -108,9 +108,9 @@ def kama(data, l1=10, l2=2, l3=30):
     for i in range(l1 + 1, len(data)):
         vola = 0; change = abs(data[i] - data[i - l1]);
         for a in range(1, l1):
-            vola += abs(data[i-a] - data[(i-a)-1]);
-        sc = (change/vola * (2/(l2+1) - 2/(l3+1) + 2/(l3+1))) ** 2;
-        ka.append(ka[len(ka)-1] + sc * (data[i] - ka[len(ka)-1]));
+            vola += abs(float(data[i-a]) - float(data[(i-a)-1]));
+        sc = (change/vola * (2.0/(l2+1.0) - 2.0/(l3+1.0) + 2.0/(l3+1.0))) ** 2.0;
+        ka.append(ka[len(ka)-1] + sc * (float(data[i]) - ka[len(ka)-1]));
     return ka;
 def macd(data, l1=12, l2=26):
     if l1 > l2: [l1, l2] = [l2, l1];
@@ -143,14 +143,14 @@ def bandwidth(data, l1=14, l2=1):
     for i in range(len(band)): boll.append((band[i][0] - band[i][2]) / band[i][1]);
     return boll;
 def atr(data, l1=14):
-    atr = [data[0][0] - data[0][2]];
+    atr = [float(data[0][0]) - float(data[0][2])];
     for i in range(1, len(data)):
-        t0 = max((data[i][0] - data[i - 1][1]), (data[i][2] - data[i - 1][1]), (data[i][0] - data[i][2]));
+        t0 = max((float(data[i][0]) - float(data[i - 1][1])), (float(data[i][2]) - float(data[i - 1][1])), (float(data[i][0]) - float(data[i][2])));
         atr.append((atr[len(atr)-1] * (l1 - 1) + t0) / l1)
     return atr;
 def keltner(data, l1=14, l2=1):
     closing = []; tr = atr(data[:], l1); kelt = [];
-    for i in range(len(data)): closing.append(sum(data[i]) / 3);
+    for i in range(len(data)): closing.append(sum(data[i]) / 3.0);
     kma = sma(closing, l1);
     tr = tr[(len(tr) - len(kma)):];
     for i in range(len(kma)): kelt.append([kma[i] + tr[i] * l2, kma[i], kma[i] - tr[i] * l2]);
@@ -170,19 +170,19 @@ def dif(n, o): return (n-o)/o;
 def aroon_up(data, l1=10):
     pl = []; aroon = [];
     for i in range(len(data)):
-        pl.append(data[i]);
+        pl.append(float(data[i]));
         if(len(pl) >= l1):
             hl = pl[:];
-            aroon.append((100 * (l1 - (hl.index(max(hl))+1)) / l1));
+            aroon.append((100.0 * (l1 - (hl.index(max(hl))+1)) / l1));
             pl = pl[1:];
     return aroon;
 def aroon_down(data, l1=10):
     pl = []; aroon = [];
     for i in range(len(data)):
-        pl.append(data[i]);
+        pl.append(float(data[i]));
         if(len(pl) >= l1):
             hl = pl[:];
-            aroon.append((100 * (l1 - (hl.index(min(hl))+1)) / l1));
+            aroon.append((100.0 * (l1 - (hl.index(min(hl))+1)) / l1));
             pl = pl[1:];
     return aroon
 def aroon_osc(data, l1=10):
@@ -193,15 +193,15 @@ def aroon_osc(data, l1=10):
 def mfi(data, l1=14):
     mfi = []; n = []; p = [];
     for i in range(len(data)):
-        p.append(data[i][0]); n.append(data[i][1]);
+        p.append(float(data[i][0])); n.append(float(data[i][1]));
         if(len(p) >= l1):
-            mfi.append((100 - 100 / (1 + sum(p) / sum(n))));
+            mfi.append((100.0 - 100.0 / (1 + sum(p) / sum(n))));
             p = p[1:]; n = n[1:];
     return mfi;
 def roc(data, l1=14):
     pl = []; roc = [];
     for i in range(len(data)):
-        pl.append(data[i]);
+        pl.append(float(data[i]));
         if(len(pl) >= l1):
             roc.append((pl[len(pl)-1] - pl[0]) / pl[0]);
             pl = pl[1:];
@@ -281,19 +281,19 @@ def fi(data, l1=13):
 def asi(data):
     pl = []; a = [];
     for i in range(1, len(data)):
-        c = data[i][1]; y = data[i-1][1]; h = data[i][0]; hy = data[i-1][0]; cy = data[i-1][1]
-        l = data[i][2]; ly = data[i-1][2]; o = data[i][0]; oy = data[i-1][0]; t = max(data[i][0], data[i-1][0]) - min(data[i][2], data[i-1][2]);
+        c = float(data[i][1]); y = float(data[i-1][1]); h = float(data[i][0]); hy = float(data[i-1][0]); cy = float(data[i-1][1]);
+        l = float(data[i][2]); ly = float(data[i-1][2]); o = float(data[i][0]); oy = float(data[i-1][0]); t = max(float(data[i][0]), float(data[i-1][0])) - min(float(data[i][2]), float(data[i-1][2]));
         if(hy-c > ly-c): k = hy-c;
         else: k = ly-c;
-        if(h - cy > l - cy & h - cy > h - l): r = h - cy - (l - cy) / 2 + (cy - oy) / 4;
-        if(l - cy > h - cy & l - cy > h - l): r = l - cy - (h - cy) / 2 + (cy - oy) / 4;
-        if(h - l > h - cy & h - l > l - cy): r = h - l + (cy - oy) / 4;
-        a.append(50 * ((cy - c + (cy - oy) / 2 + (c - o) / 2) / r) * k / t);
+        if((h - cy > l - cy) & (h - cy > h - l)): r = h - cy - (l - cy) / 2.0 + (cy - oy) / 4.0;
+        if((l - cy > h - cy) & (l - cy > h - l)): r = l - cy - (h - cy) / 2.0 + (cy - oy) / 4.0;
+        if((h - l > h - cy) & (h - l > l - cy)): r = h - l + (cy - oy) / 4.0;
+        a.append(50.0 * ((cy - c + (cy - oy) / 2.0 + (c - o) / 2.0) / r) * k / t);
     return a;
 def ao(data, l1=5, l2=35):
     pl = []; a = [];
     for i in range(len(data)):
-        pl.append((data[i][0] + data[i][1]) / 2);
+        pl.append((float(data[i][0]) + float(data[i][1])) / 2.0);
         if(len(pl) >= l2):
             f = sma(pl[:], l1);
             s = sma(pl[:], l2);
@@ -303,18 +303,18 @@ def ao(data, l1=5, l2=35):
 def pr(data, l1=14):
     n = []; pl = [];
     for i in range(len(data)):
-        pl.append(data[i]);
+        pl.append(float(data[i]));
         if(len(pl) >= l1):
             highd = max(pl[:]); lowd = min(pl[:]);
-            n.append((highd - data[i]) / (highd - lowd) * -100);
+            n.append((highd - data[i]) / (highd - lowd) * -100.0);
             pl = pl[1:];
     return n;
 def lsma(data, l1=25):
     pl = []; lr = [];
     for i in range(len(data)):
-        pl.append(data[i]);
+        pl.append(float(data[i]));
         if(len(pl) >= l1):
-            sum_x = 0; sum_y = 0; sum_xy = 0; sum_xx = 0; sum_yy = 0;
+            sum_x = 0.0; sum_y = 0.0; sum_xy = 0.0; sum_xx = 0.0; sum_yy = 0.0;
             for a in range(1, len(pl)+1):
                 sum_x += a;
                 sum_y += pl[a-1];
@@ -333,10 +333,10 @@ def don(data, l1=20):
         if(len(pl) >= l1):
             highs = []; lows = [];
             for h in range(len(pl)):
-                highs.append(pl[h][0]);
-                lows.append(pl[h][1]);
+                highs.append(float(pl[h][0]));
+                lows.append(float(pl[h][1]));
             m = max(highs); l = min(lows);
-            channel.append([m, (m+l) / 2, l]);
+            channel.append([m, (m+l) / 2.0, l]);
             pl = pl[1:];
     return channel;
 def ichimoku(data, l1=9, l2=26, l3=52, l4=26):
@@ -346,13 +346,13 @@ def ichimoku(data, l1=9, l2=26, l3=52, l4=26):
         if(len(pl) > l3):
             highs = []; lows = [];
             for a in range(len(pl)):
-                highs.append(pl[a][0]);
-                lows.append(pl[a][2]);
-            tsen = (max(highs[len(highs)-1-l1:len(highs)-1]) + (min(lows[len(lows)-1-l1:len(lows)-1]))) / 2;
-            ksen = (max(highs[len(highs)-1-l2:len(highs)-1]) + (min(lows[len(lows)-1-l2:len(lows)-1]))) / 2;
-            senka = data[i][1] + ksen;
-            senkb = (max(highs[len(highs)-1-l3:len(highs)-1]) + (min(lows[len(lows)-1-l2:len(lows)-1]))) / 2;
-            chik = data[i][1];
+                highs.append(float(pl[a][0]));
+                lows.append(float(pl[a][2]));
+            tsen = (max(highs[len(highs)-1-l1:len(highs)-1]) + (min(lows[len(lows)-1-l1:len(lows)-1]))) / 2.0;
+            ksen = (max(highs[len(highs)-1-l2:len(highs)-1]) + (min(lows[len(lows)-1-l2:len(lows)-1]))) / 2.0;
+            senka = float(data[i][1]) + ksen;
+            senkb = (max(highs[len(highs)-1-l3:len(highs)-1]) + (min(lows[len(lows)-1-l2:len(lows)-1]))) / 2.0;
+            chik = float(data[i][1]);
             place.append([tsen, ksen, senka, senkb, chik]);
             pl = pl[1:];
     for i in range(l4, len(place)-l4):
@@ -361,11 +361,11 @@ def ichimoku(data, l1=9, l2=26, l3=52, l4=26):
 def stoch(data, l1=14, sd=3, sk=3):
     stoch = []; high = []; low = []; ka = [];
     for i in range(len(data)):
-        high.append(data[i][0]);
-        low.append(data[i][2]);
+        high.append(float(data[i][0]));
+        low.append(float(data[i][2]));
         if(len(high) >= l1):
             highd = max(high); lowd = min(low);
-            k = 100 * (data[i][1] - lowd) / (highd - lowd);
+            k = 100.0 * (data[i][1] - lowd) / (highd - lowd);
             ka.append(k);
         if(sk > 0 & len(ka) > sk):
             smoothedk = sma(ka[:], sk);
@@ -378,20 +378,20 @@ def stoch(data, l1=14, sd=3, sk=3):
             ka = ka[1:];
     return stoch;
 def ha(data):
-    h = [[(data[0][0] + data[0][3]) / 2, data[0][1], data[0][2], (data[0][0] + data[0][1] + data[0][2] + data[0][3]) / 4]];
+    h = [[(float(data[0][0]) + float(data[0][3])) / 2, float(data[0][1]), float(data[0][2]), (float(data[0][0]) + float(data[0][1]) + float(data[0][2]) + float(data[0][3])) / 4.0]];
     for i in range(len(data)):
-        h.append([(h[len(h)-1][0] + h[len(h)-1][3]) / 2, max(h[len(h)-1][0], h[len(h)-1][3], data[i][1]), min(h[len(h)-1][0], h[len(h)-1][3], data[i][2]), (data[i][0] + data[i][1] + data[i][2] + data[i][3]) / 4]);
+        h.append([(h[len(h)-1][0] + h[len(h)-1][3]) / 2, max(h[len(h)-1][0], h[len(h)-1][3], float(data[i][1])), min(h[len(h)-1][0], h[len(h)-1][3], float(data[i][2])), (float(data[i][0]) + float(data[i][1]) + float(data[i][2]) + float(data[i][3])) / 4.0]);
     return h;
 def ren(data, bs=1):
-    re = []; decimals = len(str(bs-int(bs))[1:])-1;
-    bh = round(round(data[0][0] / bs * (10 ** decimals)) / (10 ** decimals) * bs); bl = bh - bs;
+    re = []; decimals = len(str(bs-int(bs))[1:]);
+    bh = round(round(float(data[0][0]) / float(bs) * (10.0 ** decimals)) / (10.0 ** decimals) * float(bs)); bl = bh - bs;
     for i in range(1, len(data)):
         if(data[i][0] > bh + bs):
             while (data[i][0] > bh + bs):
                 re.append([bh,bh+bs,bh,bh+bs]);
                 bh+=bs;
                 bl+=bs;
-        if(data[i][1] < bl - bs):
+        elif (data[i][1] < bl - bs):
             while (data[i][1] < bl - bs):
                 re.append([bl,bl,bl-bs,bl-bs]);
                 bh-=bs;
