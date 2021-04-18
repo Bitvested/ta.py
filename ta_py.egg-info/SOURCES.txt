@@ -1,0 +1,8 @@
+README.md
+setup.py
+ta_py/__init__.py
+ta_py/ta.py
+ta_py.egg-info/PKG-INFO
+ta_py.egg-info/SOURCES.txt
+ta_py.egg-info/dependency_links.txt
+ta_py.egg-info/top_level.txt
