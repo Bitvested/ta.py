@@ -5,8 +5,25 @@ def median(data, l=0):
         if (len(pl)) >= l:
             tmp = pl[:];
             tmp.sort(reverse=True);
-            med.append(tmp[int(round((len(tmp)-1) / 2))]);
+            med.append(tmp[int(round((len(tmp)) / 2))]);
             pl = pl[1:];
+    return med;
+def mad(data, l=0):
+    l = l if l > 0 else len(data); med = [];
+    for i in range(l, len(data)+1):
+        tmp = data[i-l:i];
+        m = median(data[i-l:i]); adev = [];
+        for q in range(len(tmp)): adev.append(abs(float(tmp[q]) - float(m[len(m)-1])));
+        ad = median(adev);
+        med.append(ad[len(ad)-1]);
+    return med;
+def aad(data, l=0):
+    l = l if l > 0 else len(data); med = [];
+    for i in range(l, len(data)+1):
+        tmp = data[i-l:i];
+        m = sma(tmp, l); sum = 0;
+        for q in range(len(tmp)): sum += abs(tmp[q] - m[len(m)-1]);
+        med.append(sum/l);
     return med;
 def rsi(data, l=14):
     pl = []; rs = [];
