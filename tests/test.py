@@ -1,6 +1,10 @@
 import ta_py as ta
 median = ta.median([4, 6, 3, 1, 2, 5], 4);
 assert median == [3, 2, 2];
+mad = ta.mad([3, 7, 5, 4, 3, 8, 9], 6);
+assert mad == [1.0, 2.0];
+aad = ta.aad([4, 6, 8, 6, 8, 9, 10, 11], 7);
+assert aad == [1.6734693877551021, 1.469387755102041];
 rsi = ta.rsi([1,2,3,4,5,6,7,5], 6);
 assert rsi == [100.0, 71.42857142857143];
 sma = ta.sma([1, 2, 3, 4, 5, 6, 10], 6);
@@ -21,6 +25,8 @@ kama = ta.kama([8, 7, 8, 9, 7, 9], 2, 4, 8);
 assert kama == [8, 8.64, 8.377600000000001, 8.377600000000001];
 macd = ta.macd([1, 2, 3, 4, 5, 6, 14], 3, 6);
 assert macd == [1.5, 3];
+variance = ta.variance([6, 7, 2, 3, 5, 8, 6, 2], 7);
+assert variance = [3.918367346938776, 5.061224489795919];
 std = ta.std([1, 2, 3], 3);
 assert std <= 0.816496580928;
 bands = ta.bands([1, 2, 3, 4, 5, 6], 5, 2);
