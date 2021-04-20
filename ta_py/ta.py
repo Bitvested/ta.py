@@ -137,11 +137,15 @@ def macd(data, l1=12, l2=26):
         emf.append(em1[i] - em2[i]);
     return emf;
 def variance(data, l1=0):
-    mean = sma(data[:], l1);
-    return sum((float(x) - float(mean[len(mean)-1])) ** 2 for x in data) / len(data);
+    l1 = l1 if l1 > 0 else len(data); va = [];
+    for i in range(l1, len(data)+1):
+        tmp = data[i-l1:i]; mean = sma(tmp, len(tmp)); sum = 0;
+        for x in range(len(tmp)): sum += ((tmp[x] - mean[len(mean)-1]) ** 2);
+        va.append(sum/l1);
+    return va;
 def std(data, l1=0):
-    l1 = (l1) if l1 > 0 else len(data);
-    std = variance(data[:], l1) ** (1.0/2.0)
+    l1 = (l1) if l1 > 0 else len(data); v = variance(data[:], l1);
+    std = v[len(v)-1] ** (1.0/2.0)
     return std;
 def bands(data, l1=14, l2=1):
     pl = []; deviation = []; boll = [];
