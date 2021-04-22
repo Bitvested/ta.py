@@ -86,17 +86,33 @@ def pwma(data, l=14):
     weight = 0; wmaa = []; weights = []; b = l;
     for i in range(-round(l/2), 0):
         if(abs(i) % 1 != 0):
-            i = Math.round(abs(i));
+            i = round(abs(i));
             weight += (i*b);
         else:
             weights.append(abs(i)*b);
             weight += (abs(i)*b*2);
         weights.insert(0,abs(i)*b);
         b -= 1;
-    print
     for i in range(l, len(data)+1):
         average = 0; pl = data[i-l:i];
         for x in range(0, len(weights)):
+            average += pl[x] * weights[x] / weight;
+        wmaa.append(average);
+    return wmaa;
+def hwma(data, l=14):
+    weight = 0; wmaa = []; weights = []; b = l;
+    for i in range(1, round(l/2+1)):
+        if(i%1 != 0):
+            i = round(i);
+            weight += (i*b);
+        else:
+            weights.append(i*b);
+            weight += (i*b*2)
+        weights.insert(0,i*b);
+        b -= 1;
+    for i in range(l, len(data)+1):
+        average = 0; pl = data[i-l:i];
+        for x in range(len(weights)):
             average += pl[x] * weights[x] / weight;
         wmaa.append(average);
     return wmaa;
