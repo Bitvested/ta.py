@@ -25,6 +25,13 @@ def aad(data, l=0):
         for q in range(len(tmp)): sum += abs(tmp[q] - m[len(m)-1]);
         med.append(sum/l);
     return med;
+def ssd(data, l=0):
+    l = l if l > 0 else len(data); sd = [];
+    for i in range(l, len(data)+1):
+        mean = sma(data[i-l,l], l); tmp = data[i-l,i]; sum = 0;
+        for x in range(len(tmp)): sum += (tmp[q] - mean[len(mean)-1])**2;
+        sd.append(sum**(1/2));
+    return sd;
 def rsi(data, l=14):
     pl = []; rs = [];
     for i in range(1, len(data)):
