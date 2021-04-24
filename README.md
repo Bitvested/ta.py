@@ -19,6 +19,8 @@ import ta_py as ta;
 - [Simple Moving Average](#sma)
 - [Smoothed Moving Average](#smma)
 - [Weighted Moving Average](#wma)
+- [Parabolic Weighted Moving Average](#pwma)
+- [Hyperbolic Weighted Moving Average](#hwma)
 - [Hull Moving Average](#hull)
 - [Kaufman Adaptive Moving Average](#kama)
 - [Volume Weighted Moving Average](#vwma)
@@ -33,10 +35,14 @@ import ta_py as ta;
 - [Awesome Oscillator](#ao)
 - [Williams %R](#pr)
 - [Stochastics](#stoch)
+- [Variance](#variance)
 - [Standard Deviation](#std)
 - [Correlation](#cor)
 - [Percentage Difference](#dif)
 - [Median](#median)
+- [K-means Clustering](#kmeans)
+- [Median Absolute Deviation](#mad)
+- [Average Absolute Deviation](#aad)
 - [Bollinger Bands](#bands)
 - [Bollinger Bandwidth](#bandwidth)
 - [Keltner Channels](#kelt)
@@ -79,6 +85,22 @@ length = 4; # default = 14
 ta.wma(data, length);
 # output (array)
 # [68.3, 68.2]
+```
+#### <a name="pwma"></a>Parabolic Weighted Moving Average
+```python
+ data = [17, 26, 23, 29, 20];
+ length = 4; # default = 14
+ta.pwma(data, length);
+# output (array)
+# [24.09, 25.18]
+```
+#### <a name="hwma"></a>Hyperbolic Weighted Moving Average
+```python
+data = [54, 51, 86, 42, 47];
+length = 4; # default = 14
+ta.hwma(data, length);
+# output (array)
+# [56.2, 55.0]
 ```
 #### <a name="hull"></a>Hull Moving Average
 ```python
@@ -201,6 +223,14 @@ ta.stoch(data, length, smoothd, smoothk);
 # [[66.667, 66.667], [33.336, 33.336]]
 # [kline, dline]
 ```
+#### <a name="variance"></a>Variance
+```python
+data = [6, 7, 2, 3, 5, 8, 6, 2];
+length = 7;
+ta.variance(data, length);
+# output (array)
+# [3.918, 5.061]
+```
 #### <a name="std"></a>Standard Deviation
 ```python
 data = [1, 2, 3];
@@ -232,6 +262,30 @@ length = 4; # default = data.length
 ta.median(data, length);
 # output (array)
 # [3, 2, 2]
+```
+#### <a name="kmeans"></a>K-means Clustering
+```python
+data = [2, 3, 4, 5, 3, 5, 7, 8, 6, 8, 6, 4, 2, 6];
+length = 4;
+ta.kmeans(data, length);
+# output (array)
+# [[ 4, 5, 5, 4 ], [ 7, 6, 6, 6 ], [ 8, 8 ], [ 2, 3, 3, 2 ]]
+```
+#### <a name="mad"></a>Median Absolute Deviation
+```python
+data = [3, 7, 5, 4, 3, 8, 9];
+length = 6;
+ta.mad(data, length);
+# output (array)
+# [1, 2]
+```
+#### <a name="aad"></a>Average Absolute Deviation
+```python
+data = [4, 6, 8, 6, 8, 9, 10, 11];
+length = 7;
+ta.aad(data, length);
+# output (array)
+# [1.673, 1.469]
 ```
 #### <a name="bands"></a>Bollinger Bands
 ```python

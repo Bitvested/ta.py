@@ -5,9 +5,60 @@ def median(data, l=0):
         if (len(pl)) >= l:
             tmp = pl[:];
             tmp.sort(reverse=True);
-            med.append(tmp[int(round((len(tmp)-1) / 2))]);
+            med.append(tmp[int(round((len(tmp)) / 2))]);
             pl = pl[1:];
     return med;
+def kmeans(data, clusters):
+    means = []; centers = []; old = []; changed = True; init = round(len(data)/(clusters+1));
+    for i in range(clusters): centers.append([]);
+    for i in range(clusters): centers[i] = data[init*(i+1)];
+    while(changed):
+        for i in range(clusters): means.append([]);
+        changed = False;
+        for x in range(len(data)):
+            rang = -1; oldrange = -1;
+            for y in range(clusters):
+                r = abs(centers[y]-data[x]);
+                if(oldrange == -1):
+                    oldrange = r;
+                    n = y;
+                elif(r <= oldrange):
+                    oldrange = r;
+                    n = y;
+            means[n].append(data[x]);
+        old = centers;
+        for x in range(clusters):
+            sum = 0;
+            for y in range(len(means[x])): sum += means[x][y];
+            m = sum / len(means);
+            centers[x] = m;
+        for x in range(clusters):
+            if centers[x] != old[x]: changed = True;
+    return means;
+def mad(data, l=0):
+    l = l if l > 0 else len(data); med = [];
+    for i in range(l, len(data)+1):
+        tmp = data[i-l:i];
+        m = median(data[i-l:i]); adev = [];
+        for q in range(len(tmp)): adev.append(abs(float(tmp[q]) - float(m[len(m)-1])));
+        ad = median(adev);
+        med.append(ad[len(ad)-1]);
+    return med;
+def aad(data, l=0):
+    l = l if l > 0 else len(data); med = [];
+    for i in range(l, len(data)+1):
+        tmp = data[i-l:i];
+        m = sma(tmp, l); sum = 0;
+        for q in range(len(tmp)): sum += abs(tmp[q] - m[len(m)-1]);
+        med.append(sum/l);
+    return med;
+def ssd(data, l=0):
+    l = l if l > 0 else len(data); sd = [];
+    for i in range(l, len(data)+1):
+        mean = sma(data[i-l,l], l); tmp = data[i-l,i]; sum = 0;
+        for x in range(len(tmp)): sum += (tmp[q] - mean[len(mean)-1])**2;
+        sd.append(sum**(1/2));
+    return sd;
 def rsi(data, l=14):
     pl = []; rs = [];
     for i in range(1, len(data)):
@@ -58,6 +109,40 @@ def wma(data, l=14):
             wm.append(average);
             pl = pl[1:];
     return wm;
+def pwma(data, l=14):
+    weight = 0; wmaa = []; weights = []; b = l;
+    for i in range(-round(l/2), 0):
+        if(abs(i) % 1 != 0):
+            i = round(abs(i));
+            weight += (i*b);
+        else:
+            weights.append(abs(i)*b);
+            weight += (abs(i)*b*2);
+        weights.insert(0,abs(i)*b);
+        b -= 1;
+    for i in range(l, len(data)+1):
+        average = 0; pl = data[i-l:i];
+        for x in range(0, len(weights)):
+            average += pl[x] * weights[x] / weight;
+        wmaa.append(average);
+    return wmaa;
+def hwma(data, l=14):
+    weight = 0; wmaa = []; weights = []; b = l;
+    for i in range(1, round(l/2+1)):
+        if(i%1 != 0):
+            i = round(i);
+            weight += (i*b);
+        else:
+            weights.append(i*b);
+            weight += (i*b*2)
+        weights.insert(0,i*b);
+        b -= 1;
+    for i in range(l, len(data)+1):
+        average = 0; pl = data[i-l:i];
+        for x in range(len(weights)):
+            average += pl[x] * weights[x] / weight;
+        wmaa.append(average);
+    return wmaa;
 def ema(data, l=12):
     pl = []; em = []; weight = 2 / (float(l) + 1);
     for i in range(len(data)):
@@ -120,11 +205,15 @@ def macd(data, l1=12, l2=26):
         emf.append(em1[i] - em2[i]);
     return emf;
 def variance(data, l1=0):
-    mean = sma(data[:], l1);
-    return sum((float(x) - float(mean[len(mean)-1])) ** 2 for x in data) / len(data);
+    l1 = l1 if l1 > 0 else len(data); va = [];
+    for i in range(l1, len(data)+1):
+        tmp = data[i-l1:i]; mean = sma(tmp, len(tmp)); sum = 0;
+        for x in range(len(tmp)): sum += ((tmp[x] - mean[len(mean)-1]) ** 2);
+        va.append(sum/l1);
+    return va;
 def std(data, l1=0):
-    l1 = (l1) if l1 > 0 else len(data);
-    std = variance(data[:], l1) ** (1.0/2.0)
+    l1 = (l1) if l1 > 0 else len(data); v = variance(data[:], l1);
+    std = v[len(v)-1] ** (1.0/2.0)
     return std;
 def bands(data, l1=14, l2=1):
     pl = []; deviation = []; boll = [];
