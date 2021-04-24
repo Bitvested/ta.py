@@ -1,6 +1,8 @@
 import ta_py as ta
 median = ta.median([4, 6, 3, 1, 2, 5], 4);
 assert median == [3, 2, 2];
+kmeans = ta.kmeans([2, 3, 4, 5, 3, 5, 7, 8, 6, 8, 6, 4, 2, 6], 4);
+assert kmeans == [[ 4, 5, 5, 4 ], [ 7, 6, 6, 6 ], [ 8, 8 ], [ 2, 3, 3, 2 ]];
 mad = ta.mad([3, 7, 5, 4, 3, 8, 9], 6);
 assert mad == [1.0, 2.0];
 aad = ta.aad([4, 6, 8, 6, 8, 9, 10, 11], 7);

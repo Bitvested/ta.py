@@ -8,6 +8,33 @@ def median(data, l=0):
             med.append(tmp[int(round((len(tmp)) / 2))]);
             pl = pl[1:];
     return med;
+def kmeans(data, clusters):
+    means = []; centers = []; old = []; changed = True; init = round(len(data)/(clusters+1));
+    for i in range(clusters): centers.append([]);
+    for i in range(clusters): centers[i] = data[init*(i+1)];
+    while(changed):
+        for i in range(clusters): means.append([]);
+        changed = False;
+        for x in range(len(data)):
+            rang = -1; oldrange = -1;
+            for y in range(clusters):
+                r = abs(centers[y]-data[x]);
+                if(oldrange == -1):
+                    oldrange = r;
+                    n = y;
+                elif(r <= oldrange):
+                    oldrange = r;
+                    n = y;
+            means[n].append(data[x]);
+        old = centers;
+        for x in range(clusters):
+            sum = 0;
+            for y in range(len(means[x])): sum += means[x][y];
+            m = sum / len(means);
+            centers[x] = m;
+        for x in range(clusters):
+            if centers[x] != old[x]: changed = True;
+    return means;
 def mad(data, l=0):
     l = l if l > 0 else len(data); med = [];
     for i in range(l, len(data)+1):
