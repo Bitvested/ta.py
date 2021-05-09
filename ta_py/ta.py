@@ -86,6 +86,23 @@ def rsi(data, l=14):
             rs.append(f);
             pl = pl[1:];
     return rs;
+def wrsi(data, l=14):
+    arrsi = []; u = []; d = [];
+    for i in range(1,len(data)):
+        if(data[i]-data[i-1]<0):
+            d.append(abs(data[i]-data[i-1]));
+            u.append(0.0);
+        else:
+            d.append(0.0);
+            u.append(data[i]-data[i-1]);
+    d = wsma(d, l); u = wsma(u, l);
+    for i in range(0, len(d)):
+        try:
+            f = 100.0-100.0/(1.0+(u[i]/d[i]));
+        except:
+            f = 100.0;
+        arrsi.append(f);
+    return arrsi;
 def sma(data, l=14):
     pl = []; sm = [];
     for i in range(len(data)):
