@@ -36,14 +36,14 @@ def kmeans(data, clusters):
             if centers[x] != old[x]: changed = True;
     return means;
 def normalize(data, marg=0):
-    max = max(data)*(1+marg); min = min(data)*(1-marg); norm = [];
+    ma = max(data)*(1+marg); mi = min(data)*(1-marg); norm = [];
     for i in range(0, len(data)):
-        norm.append(1-(max-data[i])/(max-min));
+        norm.append(1-(ma-data[i])/(ma-mi));
     return norm;
 def denormalize(data, norm, marg=0):
-    max = max(data)*(1+marg); min = min(data)*(1-marg); dnorm = [];
+    ma = max(data)*(1+marg); mi = min(data)*(1-marg); dnorm = [];
     for i in range(0, len(norm)):
-        dnorm.append(min+norm[i]*(max-min));
+        dnorm.append(mi+norm[i]*(ma-mi));
     return dnorm;
 def mad(data, l=0):
     l = l if l > 0 else len(data); med = [];
