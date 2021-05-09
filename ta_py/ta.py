@@ -119,6 +119,17 @@ def wma(data, l=14):
             wm.append(average);
             pl = pl[1:];
     return wm;
+def wsma(data, l=14):
+    em = []; weight = 1/l;
+    for i in range(l, len(data)+1):
+        if len(em) > 0:
+            em.append((data[i-1]-em[len(em)-1]) * weight + em[len(em)-1]);
+            continue;
+        pl = data[i-l:i]; average = 0;
+        for q in range(0, len(pl)):
+            average += pl[q];
+        em.append(average/len(pl));
+    return em;
 def pwma(data, l=14):
     weight = 0; wmaa = []; weights = []; b = l;
     for i in range(-round(l/2), 0):
