@@ -19,6 +19,7 @@ import ta_py as ta;
 - [Simple Moving Average](#sma)
 - [Smoothed Moving Average](#smma)
 - [Weighted Moving Average](#wma)
+- [Wilder's Smoothing Moving Average](#wsma)
 - [Parabolic Weighted Moving Average](#pwma)
 - [Hyperbolic Weighted Moving Average](#hwma)
 - [Hull Moving Average](#hull)
@@ -28,6 +29,7 @@ import ta_py as ta;
 - [Least Squares Moving Average](#lsma)
 - [Moving Average Convergence / Divergence](#macd)
 - [Relative Strength Index](#rsi)
+- [Wilder's Relative Strength Index](#wrsi)
 - [True Strength Index](#tsi)
 - [Balance Of Power](#bop)
 - [Force Index](#fi)
@@ -41,6 +43,8 @@ import ta_py as ta;
 - [Percentage Difference](#dif)
 - [Median](#median)
 - [K-means Clustering](#kmeans)
+- [Normalize](#norm)
+- [Denormalize](#dnorm)
 - [Median Absolute Deviation](#mad)
 - [Average Absolute Deviation](#aad)
 - [Bollinger Bands](#bands)
@@ -85,6 +89,14 @@ length = 4; # default = 14
 ta.wma(data, length);
 # output (array)
 # [68.3, 68.2]
+```
+#### <a name="wsma"></a>Wilder's Smoothing Moving Average
+```python
+data = [1, 2, 3, 4, 5, 6, 10];
+length = 6;
+ta.wsma(data, length);
+# output (array)
+# [3.5, 4.58]
 ```
 #### <a name="pwma"></a>Parabolic Weighted Moving Average
 ```python
@@ -270,6 +282,23 @@ length = 4;
 ta.kmeans(data, length);
 # output (array)
 # [[ 4, 5, 5, 4 ], [ 7, 6, 6, 6 ], [ 8, 8 ], [ 2, 3, 3, 2 ]]
+```
+#### <a name="norm"></a>Normalize
+```python
+data = [5,4,9,4];
+margin = 0.1; # margin % (default = 0)
+ta.normalize(data, margin);
+# output (array)
+# [0.22, 0.06, 0.86, 0.06]
+```
+#### <a name="norm"></a>Denormalize
+```python
+data = [5,4,9,4]; # original data || [highest, lowest]
+norm = [0.22, 0.06, 0.86, 0.06, 0.44]; # normalized data
+margin = 0.1; # margin % (default = 0)
+ta.denormalize(data, norm, margin);
+# output (array)
+# [5 ,4, 9, 4, 6.4]
 ```
 #### <a name="mad"></a>Median Absolute Deviation
 ```python
