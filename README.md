@@ -93,7 +93,7 @@ ta.wma(data, length);
 #### <a name="wsma"></a>Wilder's Smoothing Moving Average
 ```python
 data = [1, 2, 3, 4, 5, 6, 10];
-length = 6;
+length = 6; # default = 14
 ta.wsma(data, length);
 # output (array)
 # [3.5, 4.58]
@@ -210,8 +210,8 @@ ta.asi(data);
 #### <a name="ao"></a>Awesome Oscillator
 ```python
 data = [[6, 5], [8, 6], [7, 4], [6, 5], [7, 6], [9, 8]]; # [high, low]
-shortlength = 2;
-longlength = 5;
+shortlength = 2; # default = 5
+longlength = 5; # default = 35
 ta.ao(data, shortlength, longlength);
 # output (array)
 # [0, 0.9]
@@ -238,7 +238,7 @@ ta.stoch(data, length, smoothd, smoothk);
 #### <a name="variance"></a>Variance
 ```python
 data = [6, 7, 2, 3, 5, 8, 6, 2];
-length = 7;
+length = 7; # default = len(data)
 ta.variance(data, length);
 # output (array)
 # [3.918, 5.061]
@@ -303,7 +303,7 @@ ta.denormalize(data, norm, margin);
 #### <a name="mad"></a>Median Absolute Deviation
 ```python
 data = [3, 7, 5, 4, 3, 8, 9];
-length = 6;
+length = 6; # default = len(data)
 ta.mad(data, length);
 # output (array)
 # [1, 2]
@@ -311,7 +311,7 @@ ta.mad(data, length);
 #### <a name="aad"></a>Average Absolute Deviation
 ```python
 data = [4, 6, 8, 6, 8, 9, 10, 11];
-length = 7;
+length = 7; # default = len(data)
 ta.aad(data, length);
 # output (array)
 # [1.673, 1.469]
