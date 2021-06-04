@@ -171,7 +171,7 @@ data = [1, 2, 3, 4, 5, 6, 7, 5];
 length = 6; # default = 14
 ta.rsi(data, length);
 # output (array)
-# [100, 100, 72.77]
+# [100, 100, 66.667]
 ```
 #### <a name="tsi"></a>True Strength Index (TSI)
 ```python
