@@ -399,10 +399,10 @@ def bop(data, l1=14):
 def fi(data, l1=13):
     pl = []; ff = [];
     for i in range(1, len(data)):
-        pl.append(data[i][0] - data[i-1][0]);
+        pl.append((data[i][0] - data[i-1][0]) * data[i][1]);
         if(len(pl) >= l1):
             vfi = ema(pl[:], l1);
-            ff.append((data[i][0] - data[i-1][0]) * vfi[len(vfi)-1]);
+            ff.append(vfi[len(vfi)-1]);
             pl = pl[1:];
     return ff;
 def asi(data):
