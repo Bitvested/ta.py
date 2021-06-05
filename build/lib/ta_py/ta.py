@@ -1,3 +1,5 @@
+import math;
+import random;
 def median(data, l=0):
     l = (l) if l > 0 else len(data); pl = []; med = [];
     for i in range(len(data)):
@@ -35,6 +37,16 @@ def kmeans(data, clusters):
         for x in range(clusters):
             if centers[x] != old[x]: changed = True;
     return means;
+def normalize(data, marg=0):
+    ma = max(data)*(1+marg); mi = min(data)*(1-marg); norm = [];
+    for i in range(0, len(data)):
+        norm.append(1-(ma-data[i])/(ma-mi));
+    return norm;
+def denormalize(data, norm, marg=0):
+    ma = max(data)*(1+marg); mi = min(data)*(1-marg); dnorm = [];
+    for i in range(0, len(norm)):
+        dnorm.append(mi+norm[i]*(ma-mi));
+    return dnorm;
 def mad(data, l=0):
     l = l if l > 0 else len(data); med = [];
     for i in range(l, len(data)+1):
@@ -63,7 +75,7 @@ def rsi(data, l=14):
     pl = []; rs = [];
     for i in range(1, len(data)):
         pl.append(data[i] - data[i - 1]);
-        if (len(pl)) >= l:
+        if (len(pl)) >= l-1:
             gain = 0.0; loss = 0.0;
             for a in range(len(pl)):
                 if pl[a] > 0: gain += float(pl[a]);
@@ -76,6 +88,23 @@ def rsi(data, l=14):
             rs.append(f);
             pl = pl[1:];
     return rs;
+def wrsi(data, l=14):
+    arrsi = []; u = []; d = [];
+    for i in range(1,len(data)):
+        if(data[i]-data[i-1]<0):
+            d.append(abs(data[i]-data[i-1]));
+            u.append(0.0);
+        else:
+            d.append(0.0);
+            u.append(data[i]-data[i-1]);
+    d = wsma(d, l); u = wsma(u, l);
+    for i in range(0, len(d)):
+        try:
+            f = 100.0-100.0/(1.0+(u[i]/d[i]));
+        except:
+            f = 100.0;
+        arrsi.append(f);
+    return arrsi;
 def sma(data, l=14):
     pl = []; sm = [];
     for i in range(len(data)):
@@ -109,6 +138,17 @@ def wma(data, l=14):
             wm.append(average);
             pl = pl[1:];
     return wm;
+def wsma(data, l=14):
+    em = []; weight = 1/l;
+    for i in range(l, len(data)+1):
+        if len(em) > 0:
+            em.append((data[i-1]-em[len(em)-1]) * weight + em[len(em)-1]);
+            continue;
+        pl = data[i-l:i]; average = 0;
+        for q in range(0, len(pl)):
+            average += pl[q];
+        em.append(average/len(pl));
+    return em;
 def pwma(data, l=14):
     weight = 0; wmaa = []; weights = []; b = l;
     for i in range(-round(l/2), 0):
@@ -215,6 +255,43 @@ def std(data, l1=0):
     l1 = (l1) if l1 > 0 else len(data); v = variance(data[:], l1);
     std = v[len(v)-1] ** (1.0/2.0)
     return std;
+def normsinv(p):
+    a1 = -39.6968302866538; a2 = 220.946098424521; a3 = -275.928510446969; a4 = 138.357751867269; a5 = -30.6647980661472; a6 = 2.50662827745924;
+    b1 = -54.4760987982241; b2 = 161.585836858041; b3 = -155.698979859887; b4 = 66.8013118877197; b5 = -13.2806815528857; c1 = -7.78489400243029E-03;
+    c2 = -0.322396458041136; c3 = -2.40075827716184; c4 = -2.54973253934373; c5 = 4.37466414146497; c6 = 2.93816398269878; d1 = 7.78469570904146E-03;
+    d2 = 0.32246712907004; d3 = 2.445134137143; d4 = 3.75440866190742; p_low = 0.02425; p_high = 1 - p_low;
+    if p < 0 or p > 1:
+        return 0;
+    if p < p_low:
+        q = math.sqrt(-2*math.log(1-p));
+        return (((((c1 * q + c2) * q + c3) * q + c4) * q + c5) * q + c6) / ((((d1 * q + d2) * q + d3) * q + d4) * q + 1);
+    if p <= p_high:
+        q = p - 0.5;
+        r = q * q;
+        return (((((a1 * r + a2) * r + a3) * r + a4) * r + a5) * r + a6) * q / (((((b1 * r + b2) * r + b3) * r + b4) * r + b5) * r + 1);
+    q = math.sqrt(-2*math.log(1-p));
+    return -(((((c1 * q + c2) * q + c3) * q + c4) * q + c5) * q + c6) / ((((d1 * q + d2) * q + d3) * q + d4) * q + 1);
+def sim(data, l=50, sims=1000, perc=-1):
+    sd = [];
+    for i in range(sims):
+        projected = data[:];
+        for x in range(l):
+            change = [];
+            for y in range(1, len(projected)):
+                change.append((projected[y]-projected[y-1])/projected[y-1]);
+            mean = sma(change, len(change));
+            st = std(change); rando = normsinv(random.random());
+            projected.append(projected[len(projected)-1]*math.exp(mean[0]-(st*st)/2+st*rando));
+        sd.append(projected);
+    if perc <= -1: return sd;
+    finalprojection = data[:];
+    for i in range(len(sd[0])):
+        so = [];
+        for x in range(len(sd)):
+            so.append(sd[x][i])
+        so.sort();
+        finalprojection.append(so[round((len(so)-1)*perc)]);
+    return finalprojection;
 def bands(data, l1=14, l2=1):
     pl = []; deviation = []; boll = [];
     sm = sma(data[:], l1);
@@ -361,10 +438,10 @@ def bop(data, l1=14):
 def fi(data, l1=13):
     pl = []; ff = [];
     for i in range(1, len(data)):
-        pl.append(data[i][0] - data[i-1][0]);
+        pl.append((data[i][0] - data[i-1][0]) * data[i][1]);
         if(len(pl) >= l1):
             vfi = ema(pl[:], l1);
-            ff.append((data[i][0] - data[i-1][0]) * vfi[len(vfi)-1]);
+            ff.append(vfi[len(vfi)-1]);
             pl = pl[1:];
     return ff;
 def asi(data):

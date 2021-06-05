@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
      name='ta_py',
-     version='1.0.2',
+     version='1.0.3',
      author="Nino Kroesen",
      author_email="ninokroesen@gmail.com",
      description="ta.py is a Python package for dealing with financial technical analysis",
@@ -18,5 +18,5 @@ setuptools.setup(
          "License :: OSI Approved :: MIT License",
          "Operating System :: OS Independent",
      ],
-     keywords=["financial", "technical", "analysis", "ta", "simple", "weighted", "exponential", "sma", "wma", "ema", "aroon", "rsi", "stochastics", "macd", "atr", "vwap", "lsma", "least", "squares", "average", "kama", "variance", "correlation", "aad", "mad", "ssd", "kmeans"],
+     keywords=["financial", "technical", "analysis", "ta", "simple", "weighted", "exponential", "sma", "wma", "ema", "aroon", "rsi", "stochastics", "macd", "atr", "vwap", "lsma", "least", "squares", "average", "kama", "variance", "correlation", "aad", "mad", "ssd", "kmeans", "monte", "carlo"],
  )
