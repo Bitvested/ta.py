@@ -1,4 +1,5 @@
 import math;
+import random;
 def median(data, l=0):
     l = (l) if l > 0 else len(data); pl = []; med = [];
     for i in range(len(data)):
@@ -270,6 +271,27 @@ def normsinv(p):
         return (((((a1 * r + a2) * r + a3) * r + a4) * r + a5) * r + a6) * q / (((((b1 * r + b2) * r + b3) * r + b4) * r + b5) * r + 1);
     q = math.sqrt(-2*math.log(1-p));
     return -(((((c1 * q + c2) * q + c3) * q + c4) * q + c5) * q + c6) / ((((d1 * q + d2) * q + d3) * q + d4) * q + 1);
+def sim(data, l=50, sims=1000, perc=-1):
+    sd = [];
+    for i in range(sims):
+        projected = data[:];
+        for x in range(l):
+            change = [];
+            for y in range(1, len(projected)):
+                change.append((projected[y]-projected[y-1])/projected[y-1]);
+            mean = sma(change, len(change));
+            st = std(change); rando = normsinv(random.random());
+            projected.append(projected[len(projected)-1]*math.exp(mean[0]-(st*st)/2+st*rando));
+        sd.append(projected);
+    if perc <= -1: return sd;
+    finalprojection = data[:];
+    for i in range(len(sd[0])):
+        so = [];
+        for x in range(len(sd)):
+            so.append(sd[x][i])
+        so.sort();
+        finalprojection.append(so[round((len(so)-1)*perc)]);
+    return finalprojection;
 def bands(data, l1=14, l2=1):
     pl = []; deviation = []; boll = [];
     sm = sma(data[:], l1);
