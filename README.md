@@ -39,6 +39,8 @@ import ta_py as ta;
 - [Stochastics](#stoch)
 - [Variance](#variance)
 - [Standard Deviation](#std)
+- [Inverse Normal Distribution](#normsinv)
+- [Monte Carlo Simulation](#sim)
 - [Correlation](#cor)
 - [Percentage Difference](#dif)
 - [Median](#median)
@@ -250,6 +252,23 @@ length = 3; # default = data.length
 ta.std(data, length);
 # output (float)
 # 0.81649658092773
+```
+#### <a name="normsinv"></a>Inverse Normal Distribution
+```python
+data = 0.4732;
+ta.normsinv(data);
+# output (float)
+# -0.06722824471054376
+```
+#### <a name="sim"></a>Monte Carlo Simulation
+```python
+data = [6, 4, 7, 8, 5, 6];
+length = 2; # default = 50
+simulations = 100; # default = 1000
+percentile = 0.5; # default = -1 (returns all raw simulations)
+ta.sim(data, length, simulations, percentile)
+# output (array)
+# [6, 4, 7, 8, 5, 6, 5.96, 5.7]
 ```
 #### <a name="cor"></a>Correlation
 ```python
