@@ -43,6 +43,8 @@ variance = ta.variance([6, 7, 2, 3, 5, 8, 6, 2], 7);
 assert variance == [3.918367346938776, 5.061224489795919];
 std = ta.std([1, 2, 3], 3);
 assert std <= 0.816496580928;
+normsinv = ta.normsinv(0.4732);
+assert normsinv == -0.06722824471054376;
 bands = ta.bands([1, 2, 3, 4, 5, 6], 5, 2);
 assert bands == [[5.82842712474619, 3.0, 0.1715728752538097], [6.82842712474619, 4.0, 1.1715728752538097]];
 bandwidth = ta.bandwidth([1, 2, 3, 4, 5, 6], 5, 2);
