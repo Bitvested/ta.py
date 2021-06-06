@@ -75,7 +75,7 @@ def rsi(data, l=14):
     pl = []; rs = [];
     for i in range(1, len(data)):
         pl.append(data[i] - data[i - 1]);
-        if (len(pl)) >= l-1:
+        if (len(pl)) >= l:
             gain = 0.0; loss = 0.0;
             for a in range(len(pl)):
                 if pl[a] > 0: gain += float(pl[a]);
