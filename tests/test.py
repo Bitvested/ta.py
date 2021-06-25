@@ -57,6 +57,8 @@ cor = ta.cor([1, 2, 3, 4, 5, 2], [1, 3, 2, 4, 6, 3]);
 assert cor >= 0.8808929232684737
 dif = ta.dif(0.75, 0.5);
 assert dif == 0.5;
+draw = ta.drawdown([1,2,3,4,2,3]);
+assert draw == -0.5;
 aroon_up = ta.aroon_up([5, 4, 5, 2], 3);
 assert aroon_up == [66.66666666666667, 33.333333333333336];
 aroon_down = ta.aroon_down([2, 5, 4, 5], 3);
