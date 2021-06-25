@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: ta-py
-Version: 1.0.4
+Version: 1.0.5
 Summary: ta.py is a Python package for dealing with financial technical analysis
 Home-page: https://github.com/Bitvested/ta.py
 Author: Nino Kroesen
@@ -51,6 +51,7 @@ Description: # Technical Analysis (ta.py)
         - [Monte Carlo Simulation](#sim)
         - [Correlation](#cor)
         - [Percentage Difference](#dif)
+        - [Drawdown](#drawdown)
         - [Median](#median)
         - [K-means Clustering](#kmeans)
         - [Normalize](#norm)
@@ -293,6 +294,13 @@ Description: # Technical Analysis (ta.py)
         ta.dif(newval, oldval);
         # output (float)
         # 0.5
+        ```
+        #### <a name="drawdown"></a>Drawdown
+        ```python
+        data = [1, 2, 3, 4, 2, 3];
+        ta.drawdown([1,2,3,4,2,3]);
+        # output (float)
+        # -0.5
         ```
         #### <a name="median"></a>Median
         ```python
