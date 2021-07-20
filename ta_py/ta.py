@@ -333,6 +333,19 @@ def cor(data1, data2):
     sx/=n; sy/=n; sx = sx ** (1/2); sy = sy ** (1/2);
     return (sumavg / (n*sx*sy));
 def dif(n, o): return (n-o)/o;
+def drawdown(d):
+    max = d[0]; min = d[0]; big = 0;
+    for y in range(1,len(d)):
+        if(d[y] > max):
+            if(min != 0):
+                diff = dif(min, max);
+                if(diff < big): big = diff;
+                min = d[y];
+            max = d[y];
+        if(d[y] < min): min = d[y];
+    diff = dif(min, max);
+    if(diff < big): big = diff;
+    return big;
 def aroon_up(data, l1=10):
     pl = []; aroon = [];
     for i in range(len(data)):

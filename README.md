@@ -43,6 +43,7 @@ import ta_py as ta;
 - [Monte Carlo Simulation](#sim)
 - [Correlation](#cor)
 - [Percentage Difference](#dif)
+- [Drawdown](#drawdown)
 - [Median](#median)
 - [K-means Clustering](#kmeans)
 - [Normalize](#norm)
@@ -285,6 +286,13 @@ oldval = 0.5;
 ta.dif(newval, oldval);
 # output (float)
 # 0.5
+```
+#### <a name="drawdown"></a>Drawdown
+```python
+data = [1, 2, 3, 4, 2, 3];
+ta.drawdown([1,2,3,4,2,3]);
+# output (float)
+# -0.5
 ```
 #### <a name="median"></a>Median
 ```python
