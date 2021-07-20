@@ -14,7 +14,6 @@ pip install ta_py
 ```python
 import ta_py as ta;
 ```
-
 ## Examples
 - [Simple Moving Average](#sma)
 - [Smoothed Moving Average](#smma)
@@ -50,6 +49,7 @@ import ta_py as ta;
 - [Denormalize](#dnorm)
 - [Median Absolute Deviation](#mad)
 - [Average Absolute Deviation](#aad)
+- [Sum Squared Differences](#ssd)
 - [Bollinger Bands](#bands)
 - [Bollinger Bandwidth](#bandwidth)
 - [Keltner Channels](#kelt)
@@ -342,6 +342,14 @@ length = 7; # default = len(data)
 ta.aad(data, length);
 # output (array)
 # [1.673, 1.469]
+```
+#### <a name="ssd"></a>Sum Squared Differences
+```python
+data = [7, 6, 5, 7, 9, 8, 3, 5, 4];
+length = 7; # default = data.length
+ta.ssd(data, length);
+# output (array)
+# [4.87, 4.986, 5.372]
 ```
 #### <a name="bands"></a>Bollinger Bands
 ```python
