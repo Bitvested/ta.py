@@ -40,6 +40,7 @@ import ta_py as ta;
 - [Standard Deviation](#std)
 - [Inverse Normal Distribution](#normsinv)
 - [Monte Carlo Simulation](#sim)
+- [Percentile](#perc)
 - [Correlation](#cor)
 - [Percentage Difference](#dif)
 - [Drawdown](#drawdown)
@@ -270,6 +271,14 @@ percentile = 0.5; # default = -1 (returns all raw simulations)
 ta.sim(data, length, simulations, percentile)
 # output (array)
 # [6, 4, 7, 8, 5, 6, 5.96, 5.7]
+```
+#### <a name="perc"></a>Percentile
+```python
+data = [[6,4,7], [5,3,6], [7,5,8]];
+percentile = 0.5;
+ta.percentile(data, percentile);
+# output (array)
+# [6, 4, 7]
 ```
 #### <a name="cor"></a>Correlation
 ```python

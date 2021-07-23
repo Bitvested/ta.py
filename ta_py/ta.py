@@ -292,6 +292,15 @@ def sim(data, l=50, sims=1000, perc=-1):
         so.sort();
         finalprojection.append(so[round((len(so)-1)*perc)]);
     return finalprojection;
+def percentile(data, perc=0.5):
+    final = [];
+    for i in range(len(data[0])):
+        tmp = [];
+        for x in range(len(data)):
+            tmp.append(data[x][i]);
+        tmp.sort();
+        final.append(tmp[round((len(tmp)-1)*perc)])
+    return final;
 def bands(data, l1=14, l2=1):
     pl = []; deviation = []; boll = [];
     sm = sma(data[:], l1);
