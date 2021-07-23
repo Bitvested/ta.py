@@ -442,7 +442,6 @@ def mom_osc(data, l1=9):
                 else: suml = suml+pl[a];
             osc.append((sumh - suml) / (sumh + suml) * 100);
             pl = pl[1:];
-    print(osc);
     return osc;
 def bop(data, l1=14):
     bo = [];
@@ -524,20 +523,20 @@ def ichimoku(data, l1=9, l2=26, l3=52, l4=26):
     cloud = []; place = []; pl = [];
     for i in range(len(data)):
         pl.append(data[i]);
-        if(len(pl) > l3):
+        if(len(pl) >= l3):
             highs = []; lows = [];
             for a in range(len(pl)):
                 highs.append(float(pl[a][0]));
                 lows.append(float(pl[a][2]));
-            tsen = (max(highs[len(highs)-1-l1:len(highs)-1]) + (min(lows[len(lows)-1-l1:len(lows)-1]))) / 2.0;
-            ksen = (max(highs[len(highs)-1-l2:len(highs)-1]) + (min(lows[len(lows)-1-l2:len(lows)-1]))) / 2.0;
+            tsen = (max(highs[len(highs)-l1:len(highs)]) + (min(lows[len(lows)-l1:len(lows)]))) / 2.0;
+            ksen = (max(highs[len(highs)-l2:len(highs)]) + (min(lows[len(lows)-l2:len(lows)]))) / 2.0;
             senka = float(data[i][1]) + ksen;
-            senkb = (max(highs[len(highs)-1-l3:len(highs)-1]) + (min(lows[len(lows)-1-l2:len(lows)-1]))) / 2.0;
+            senkb = (max(highs[len(highs)-l3:len(highs)]) + (min(lows[len(lows)-l2:len(lows)]))) / 2.0;
             chik = float(data[i][1]);
             place.append([tsen, ksen, senka, senkb, chik]);
             pl = pl[1:];
     for i in range(l4, len(place)-l4):
-        if(place[i+l4-1]): cloud.append([place[i][0], place[i][1], place[i+l4-1][2], place[i+l4-1][3], place[i+l4-1][4]]);
+        cloud.append([place[i][0], place[i][1], place[i+l4][2], place[i+l4][3], place[i-l4][4]]);
     return cloud;
 def stoch(data, l1=14, sd=3, sk=3):
     stoch = []; high = []; low = []; ka = [];
