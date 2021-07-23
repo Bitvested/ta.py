@@ -352,7 +352,7 @@ def aroon_up(data, l1=10):
         pl.append(float(data[i]));
         if(len(pl) >= l1):
             hl = pl[:];
-            aroon.append((100.0 * (l1 - (hl.index(max(hl))+1)) / l1));
+            aroon.append((100.0 * (l1-1-pl.index(max(hl))) / (l1-1)));
             pl = pl[1:];
     return aroon;
 def aroon_down(data, l1=10):
@@ -361,9 +361,10 @@ def aroon_down(data, l1=10):
         pl.append(float(data[i]));
         if(len(pl) >= l1):
             hl = pl[:];
-            aroon.append((100.0 * (l1 - (hl.index(min(hl))+1)) / l1));
+            hl.reverse();
+            aroon.append(100.0 * (l1-1-hl.index(min(hl))) / (l1-1));
             pl = pl[1:];
-    return aroon
+    return aroon;
 def aroon_osc(data, l1=10):
     pl = []; aroon = [];
     u = aroon_up(data[:], l1); d = aroon_down(data[:], l1);

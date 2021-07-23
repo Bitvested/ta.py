@@ -414,7 +414,7 @@ data = [5, 4, 5, 2];
 length = 3; # default = 10
 ta.aroon_up(data, length);
 # output (array)
-# [66.67, 33.36]
+# [100.0, 50.0]
 ```
 #### <a name="aroon-down"></a>Aroon Down
 ```python
@@ -422,7 +422,7 @@ data = [2, 5, 4, 5];
 length = 3; # default = 10
 ta.aroon_down(data, length);
 # output (array)
-# [66.67, 33.36]
+# [0.0, 50.0]
 ```
 #### <a name="aroon-osc"></a>Aroon Oscillator
 ```python
@@ -430,7 +430,7 @@ data = [2, 5, 4, 5];
 length = 3; # default = 25
 ta.aroon_osc(data, length);
 # output (array)
-# [-33.36, 33.36]
+# [50.0, 50.0]
 ```
 #### <a name="mfi"></a>Money Flow Index
 ```python
