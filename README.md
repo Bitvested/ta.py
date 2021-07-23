@@ -271,6 +271,14 @@ ta.sim(data, length, simulations, percentile)
 # output (array)
 # [6, 4, 7, 8, 5, 6, 5.96, 5.7]
 ```
+#### <a name="perc"></a>Percentile
+```python
+data = [[6,4,7], [5,3,6], [7,5,8]];
+percentile = 0.5;
+ta.percentile(data, percentile);
+# output (array)
+# [6, 4, 7]
+```
 #### <a name="cor"></a>Correlation
 ```python
 data1 = [1, 2, 3, 4, 5, 2];
