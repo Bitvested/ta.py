@@ -501,7 +501,7 @@ data = [1, 1.2, 1.3, 1.3, 1.2, 1.4];
 length = 4; # default = 9
 ta.mom_osc(data, length);
 # output (array)
-# [31.6, -31.6]
+# [0.0, 3.85]
 ```
 #### <a name="mom"></a>Momentum
 ```python

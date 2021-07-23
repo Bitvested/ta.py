@@ -432,16 +432,17 @@ def mom(data, l1=10, p=False):
         mom.append(data[i] / data[i - (l1-1)] * 100) if p == True else mom.append(data[i] - data[i - (l1 - 1)]);
     return mom
 def mom_osc(data, l1=9):
-    pl = []; osc = [];
+    pl = []; osc = []; l1+=1;
     for i in range(len(data)):
         pl.append(data[i]);
-        if(len(pl) > l1):
+        if(len(pl) >= l1):
             sumh = 0; suml = 0;
             for a in range(1, l1):
                 if(pl[a-1] < pl[a]): sumh = sumh+pl[a];
                 else: suml = suml+pl[a];
             osc.append((sumh - suml) / (sumh + suml) * 100);
             pl = pl[1:];
+    print(osc);
     return osc;
 def bop(data, l1=14):
     bo = [];
