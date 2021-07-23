@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: ta-py
-Version: 1.0.5
+Version: 1.0.6
 Summary: ta.py is a Python package for dealing with financial technical analysis
 Home-page: https://github.com/Bitvested/ta.py
 Author: Nino Kroesen
@@ -22,7 +22,6 @@ Description: # Technical Analysis (ta.py)
         ```python
         import ta_py as ta;
         ```
-        
         ## Examples
         - [Simple Moving Average](#sma)
         - [Smoothed Moving Average](#smma)
@@ -49,6 +48,7 @@ Description: # Technical Analysis (ta.py)
         - [Standard Deviation](#std)
         - [Inverse Normal Distribution](#normsinv)
         - [Monte Carlo Simulation](#sim)
+        - [Percentile](#perc)
         - [Correlation](#cor)
         - [Percentage Difference](#dif)
         - [Drawdown](#drawdown)
@@ -58,6 +58,7 @@ Description: # Technical Analysis (ta.py)
         - [Denormalize](#dnorm)
         - [Median Absolute Deviation](#mad)
         - [Average Absolute Deviation](#aad)
+        - [Sum Squared Differences](#ssd)
         - [Bollinger Bands](#bands)
         - [Bollinger Bandwidth](#bandwidth)
         - [Keltner Channels](#kelt)
@@ -279,6 +280,14 @@ Description: # Technical Analysis (ta.py)
         # output (array)
         # [6, 4, 7, 8, 5, 6, 5.96, 5.7]
         ```
+        #### <a name="perc"></a>Percentile
+        ```python
+        data = [[6,4,7], [5,3,6], [7,5,8]];
+        percentile = 0.5;
+        ta.percentile(data, percentile);
+        # output (array)
+        # [6, 4, 7]
+        ```
         #### <a name="cor"></a>Correlation
         ```python
         data1 = [1, 2, 3, 4, 5, 2];
@@ -351,6 +360,14 @@ Description: # Technical Analysis (ta.py)
         # output (array)
         # [1.673, 1.469]
         ```
+        #### <a name="ssd"></a>Sum Squared Differences
+        ```python
+        data = [7, 6, 5, 7, 9, 8, 3, 5, 4];
+        length = 7; # default = data.length
+        ta.ssd(data, length);
+        # output (array)
+        # [4.87, 4.986, 5.372]
+        ```
         #### <a name="bands"></a>Bollinger Bands
         ```python
         data = [1, 2, 3, 4, 5, 6];
@@ -414,7 +431,7 @@ Description: # Technical Analysis (ta.py)
         length = 3; # default = 10
         ta.aroon_up(data, length);
         # output (array)
-        # [66.67, 33.36]
+        # [100.0, 50.0]
         ```
         #### <a name="aroon-down"></a>Aroon Down
         ```python
@@ -422,7 +439,7 @@ Description: # Technical Analysis (ta.py)
         length = 3; # default = 10
         ta.aroon_down(data, length);
         # output (array)
-        # [66.67, 33.36]
+        # [0.0, 50.0]
         ```
         #### <a name="aroon-osc"></a>Aroon Oscillator
         ```python
@@ -430,7 +447,7 @@ Description: # Technical Analysis (ta.py)
         length = 3; # default = 25
         ta.aroon_osc(data, length);
         # output (array)
-        # [-33.36, 33.36]
+        # [50.0, 50.0]
         ```
         #### <a name="mfi"></a>Money Flow Index
         ```python
@@ -477,7 +494,7 @@ Description: # Technical Analysis (ta.py)
         sig = 4; # default = 9
         ta.kst(data, r1, s1, r2, s2, r3, s3, r4, s4, sig);
         # output (array)
-        # [[-0.68, -0.52], [-0.29, -0.58]]
+        # [[-0.68, -0.52], [-0.29, -0.58], [0.35, -0.36]]
         # [kst line, signal line]
         ```
         #### <a name="obv"></a>On-Balance Volume
@@ -501,7 +518,7 @@ Description: # Technical Analysis (ta.py)
         length = 4; # default = 9
         ta.mom_osc(data, length);
         # output (array)
-        # [31.6, -31.6]
+        # [0.0, 3.85]
         ```
         #### <a name="mom"></a>Momentum
         ```python
