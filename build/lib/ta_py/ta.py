@@ -67,8 +67,8 @@ def aad(data, l=0):
 def ssd(data, l=0):
     l = l if l > 0 else len(data); sd = [];
     for i in range(l, len(data)+1):
-        mean = sma(data[i-l,l], l); tmp = data[i-l,i]; sum = 0;
-        for x in range(len(tmp)): sum += (tmp[q] - mean[len(mean)-1])**2;
+        tmp = data[i-l:i]; mean = sma(tmp, l); sum = 0;
+        for q in range(len(tmp)): sum += (tmp[q] - mean[0])**2;
         sd.append(sum**(1/2));
     return sd;
 def rsi(data, l=14):
@@ -292,6 +292,15 @@ def sim(data, l=50, sims=1000, perc=-1):
         so.sort();
         finalprojection.append(so[round((len(so)-1)*perc)]);
     return finalprojection;
+def percentile(data, perc=0.5):
+    final = [];
+    for i in range(len(data[0])):
+        tmp = [];
+        for x in range(len(data)):
+            tmp.append(data[x][i]);
+        tmp.sort();
+        final.append(tmp[round((len(tmp)-1)*perc)])
+    return final;
 def bands(data, l1=14, l2=1):
     pl = []; deviation = []; boll = [];
     sm = sma(data[:], l1);
@@ -352,7 +361,7 @@ def aroon_up(data, l1=10):
         pl.append(float(data[i]));
         if(len(pl) >= l1):
             hl = pl[:];
-            aroon.append((100.0 * (l1 - (hl.index(max(hl))+1)) / l1));
+            aroon.append((100.0 * (l1-1-pl.index(max(hl))) / (l1-1)));
             pl = pl[1:];
     return aroon;
 def aroon_down(data, l1=10):
@@ -361,9 +370,10 @@ def aroon_down(data, l1=10):
         pl.append(float(data[i]));
         if(len(pl) >= l1):
             hl = pl[:];
-            aroon.append((100.0 * (l1 - (hl.index(min(hl))+1)) / l1));
+            hl.reverse();
+            aroon.append(100.0 * (l1-1-hl.index(min(hl))) / (l1-1));
             pl = pl[1:];
-    return aroon
+    return aroon;
 def aroon_osc(data, l1=10):
     pl = []; aroon = [];
     u = aroon_up(data[:], l1); d = aroon_down(data[:], l1);
@@ -398,7 +408,7 @@ def cop(data, l1=11, l2=14, l3=10):
     return co;
 def kst(data, r1=10, s1=10, r2=15, s2=10, r3=20, s3=10, r4=30, s4=15, sig=9):
     ks = []; fs = []; ms = (max(r1, r2, r3, r4) + max(s1, s2, s3, s4));
-    for i in range(ms, len(data)):
+    for i in range(ms, len(data)+1):
         rcma1 = roc(data[i-ms:i], r1); rcma2 = roc(data[i-ms:i], r2); rcma3 = roc(data[i-ms:i], r3); rcma4 = roc(data[i-ms:i], r4);
         rcma1 = sma(rcma1, s1); rcma2 = sma(rcma2, s2); rcma3 = sma(rcma3, s3); rcma4 = sma(rcma4, s4);
         ks.append(rcma1[len(rcma1)-1] + rcma2[len(rcma2)-1] + rcma3[len(rcma3)-1] + rcma4[len(rcma4)-1]);
@@ -431,10 +441,10 @@ def mom(data, l1=10, p=False):
         mom.append(data[i] / data[i - (l1-1)] * 100) if p == True else mom.append(data[i] - data[i - (l1 - 1)]);
     return mom
 def mom_osc(data, l1=9):
-    pl = []; osc = [];
+    pl = []; osc = []; l1+=1;
     for i in range(len(data)):
         pl.append(data[i]);
-        if(len(pl) > l1):
+        if(len(pl) >= l1):
             sumh = 0; suml = 0;
             for a in range(1, l1):
                 if(pl[a-1] < pl[a]): sumh = sumh+pl[a];
@@ -445,7 +455,7 @@ def mom_osc(data, l1=9):
 def bop(data, l1=14):
     bo = [];
     for i in range(len(data)):
-        bo.append((data[i][3] - data[i][0]) / (data[i][1] - data[i][2]));
+        bo.append((data[i][3] - data[i][0]) / (data[i][1] - data[i][2]) if (data[i][1] - data[i][2]) != 0 else 0);
     bo = sma(bo, l1);
     return bo;
 def fi(data, l1=13):
@@ -522,20 +532,20 @@ def ichimoku(data, l1=9, l2=26, l3=52, l4=26):
     cloud = []; place = []; pl = [];
     for i in range(len(data)):
         pl.append(data[i]);
-        if(len(pl) > l3):
+        if(len(pl) >= l3):
             highs = []; lows = [];
             for a in range(len(pl)):
                 highs.append(float(pl[a][0]));
                 lows.append(float(pl[a][2]));
-            tsen = (max(highs[len(highs)-1-l1:len(highs)-1]) + (min(lows[len(lows)-1-l1:len(lows)-1]))) / 2.0;
-            ksen = (max(highs[len(highs)-1-l2:len(highs)-1]) + (min(lows[len(lows)-1-l2:len(lows)-1]))) / 2.0;
+            tsen = (max(highs[len(highs)-l1:len(highs)]) + (min(lows[len(lows)-l1:len(lows)]))) / 2.0;
+            ksen = (max(highs[len(highs)-l2:len(highs)]) + (min(lows[len(lows)-l2:len(lows)]))) / 2.0;
             senka = float(data[i][1]) + ksen;
-            senkb = (max(highs[len(highs)-1-l3:len(highs)-1]) + (min(lows[len(lows)-1-l2:len(lows)-1]))) / 2.0;
+            senkb = (max(highs[len(highs)-l3:len(highs)]) + (min(lows[len(lows)-l2:len(lows)]))) / 2.0;
             chik = float(data[i][1]);
             place.append([tsen, ksen, senka, senkb, chik]);
             pl = pl[1:];
     for i in range(l4, len(place)-l4):
-        if(place[i+l4-1]): cloud.append([place[i][0], place[i][1], place[i+l4-1][2], place[i+l4-1][3], place[i+l4-1][4]]);
+        cloud.append([place[i][0], place[i][1], place[i+l4][2], place[i+l4][3], place[i-l4][4]]);
     return cloud;
 def stoch(data, l1=14, sd=3, sk=3):
     stoch = []; high = []; low = []; ka = [];

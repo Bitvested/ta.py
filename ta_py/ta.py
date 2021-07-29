@@ -455,7 +455,7 @@ def mom_osc(data, l1=9):
 def bop(data, l1=14):
     bo = [];
     for i in range(len(data)):
-        bo.append((data[i][3] - data[i][0]) / (data[i][1] - data[i][2]));
+        bo.append((data[i][3] - data[i][0]) / (data[i][1] - data[i][2]) if (data[i][1] - data[i][2]) != 0 else 0);
     bo = sma(bo, l1);
     return bo;
 def fi(data, l1=13):
