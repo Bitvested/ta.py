@@ -35,6 +35,8 @@ import ta_py as ta;
 - [Accumulative Swing Index](#asi)
 - [Awesome Oscillator](#ao)
 - [Williams %R](#pr)
+- [Recent High](#rh)
+- [Recent Low](#rl)
 - [Stochastics](#stoch)
 - [Variance](#variance)
 - [Standard Deviation](#std)
@@ -238,7 +240,7 @@ ta.pr(data, length);
 ```python
 data = [4,5,6,7,8,9,8,7,8,9,10,3,2,1];
 lookback = 3; # No higher values after 3 periods? resets after each new high
-ta.recent_high(data, length);
+ta.recent_high(data, lookback);
 # output (dictionary)
 # {'index': 10, 'value': 10}
 ```
@@ -246,7 +248,7 @@ ta.recent_high(data, length);
 ```python
 data = [1,4,5,6,4,3,2,3,4,3,5,7,8,8,5];
 lookback = 4; # No lower values after 4 periods? resets after each new low
-ta.recent_low(data, length);
+ta.recent_low(data, lookback);
 # output (dictionary)
 # {'index': 6, 'value': 2}
 ```
