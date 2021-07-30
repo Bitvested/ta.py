@@ -586,3 +586,31 @@ def ren(data, bs=1):
                 bh-=bs;
                 bl-=bs;
     return re;
+def envelope(data, l1=10, p=0.005):
+    enve = [];
+    for i in range(l1, len(data)):
+        sm = sma(data[i-l1:i], l1);
+        enve.append([sm[0]*(1+p),sm[0],sm[0]*(1-p)]);
+    return enve;
+def chaikin_osc(data, ema1=3, ema2=10):
+    cha = []; adl = [];
+    for i in range(len(data)):
+        mfm = ((data[i][1]-data[i][2])-(data[i][0]-data[i][1]))/(data[i][0]-data[i][2]) if data[i][0]-data[i][2] != 0 else 0;
+        adl.append(mfm*data[i][3]);
+    ef = ema(adl, ema1); es = ema(adl, ema2);
+    if len(ef) > len(es):
+        ef = ef[len(ef)-len(es):];
+    else:
+        es = es[len(es)-len(ef):];
+    for i in range(len(ef)):
+        cha.append(ef[i]-es[i]);
+    return cha;
+def fractals(data):
+    fractals = [[False, False], [False, False]];
+    for i in range(2, len(data)-2):
+        up = True if (data[i-2][0] < data[i][0] and data[i-1][0] < data[i][0] and data[i][0] > data[i+1][0] and data[i][0] > data[i+2][0]) else False
+        down = True if (data[i-2][1] > data[i][1] and data[i-1][1] > data[i][1] and data[i][1] < data[i+1][1] and data[i][1] < data[i+2][1]) else False
+        fractals.append([up, down]);
+    fractals.append([False, False]);
+    fractals.append([False, False]);
+    return fractals;
