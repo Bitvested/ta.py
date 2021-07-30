@@ -122,5 +122,5 @@ sup = sup['calculate'](9);
 assert sup == 4.0;
 res = ta.resistance([5,7,5,5,4,6,5,4,6,5,4,3,2,4,3,2,1]);
 res = res['calculate'](4);
-assert res == 7.571428571428571;
+assert res == 6.428571428571429;
 print('Test Passed');
