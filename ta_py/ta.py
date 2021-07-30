@@ -361,7 +361,7 @@ def aroon_up(data, l1=10):
         pl.append(float(data[i]));
         if(len(pl) >= l1):
             hl = pl[:];
-            aroon.append((100.0 * (l1-1-pl.index(max(hl))) / (l1-1)));
+            aroon.append((100.0 * (l1-1-pl.index(max(hl))) / (l1-1)) if l1-1 != 0 else 0);
             pl = pl[1:];
     return aroon;
 def aroon_down(data, l1=10):
@@ -371,7 +371,7 @@ def aroon_down(data, l1=10):
         if(len(pl) >= l1):
             hl = pl[:];
             hl.reverse();
-            aroon.append(100.0 * (l1-1-hl.index(min(hl))) / (l1-1));
+            aroon.append(100.0 * (l1-1-hl.index(min(hl))) / (l1-1) if l1-1 != 0 else 0);
             pl = pl[1:];
     return aroon;
 def aroon_osc(data, l1=10):
@@ -477,7 +477,7 @@ def asi(data):
         if((h - cy > l - cy) & (h - cy > h - l)): r = h - cy - (l - cy) / 2.0 + (cy - oy) / 4.0;
         if((l - cy > h - cy) & (l - cy > h - l)): r = l - cy - (h - cy) / 2.0 + (cy - oy) / 4.0;
         if((h - l > h - cy) & (h - l > l - cy)): r = h - l + (cy - oy) / 4.0;
-        a.append(50.0 * ((cy - c + (cy - oy) / 2.0 + (c - o) / 2.0) / r) * k / t);
+        a.append(50.0 * ((cy - c + (cy - oy) / 2.0 + (c - o) / 2.0) / r) * k / t if r and t != 0 else 0);
     return a;
 def ao(data, l1=5, l2=35):
     pl = []; a = [];
@@ -495,7 +495,7 @@ def pr(data, l1=14):
         pl.append(float(data[i]));
         if(len(pl) >= l1):
             highd = max(pl[:]); lowd = min(pl[:]);
-            n.append((highd - data[i]) / (highd - lowd) * -100.0);
+            n.append((highd - data[i]) / (highd - lowd) * -100.0 if highd-lowd != 0 else 0);
             pl = pl[1:];
     return n;
 def lsma(data, l1=25):
@@ -554,7 +554,7 @@ def stoch(data, l1=14, sd=3, sk=3):
         low.append(float(data[i][2]));
         if(len(high) >= l1):
             highd = max(high); lowd = min(low);
-            k = 100.0 * (data[i][1] - lowd) / (highd - lowd);
+            k = 100.0 * (data[i][1] - lowd) / (highd - lowd) if highd - lowd != 0 else 0;
             ka.append(k);
         if(sk > 0 & len(ka) > sk):
             smoothedk = sma(ka[:], sk);
