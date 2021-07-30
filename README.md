@@ -78,7 +78,7 @@ import ta_py as ta;
 #### Experimental
 - [Support Line](#sup)
 - [Resistance Line](#res)
-#### <a name="sma"></a>Simple Moving Average (SMA)
+#### <a id="sma"></a>Simple Moving Average (SMA)
 ```python
 data = [1, 2, 3, 4, 5, 6, 10];
 length = 6; # default = 14
@@ -86,7 +86,7 @@ ta.sma(data, length);
 # output (array)
 # [3.5, 5]
 ```
-#### <a name="smma"></a>Smoothed Moving Average (SMMA)
+#### <a id="smma"></a>Smoothed Moving Average (SMMA)
 ```python
 data = [1, 2, 3, 4, 5, 6, 10];
 length = 5; # default = 14
@@ -94,7 +94,7 @@ ta.smma(data, length);
 # output (array)
 # [3.4, 4.92]
 ```
-#### <a name="wma"></a>Weighted Moving Average (WMA)
+#### <a id="wma"></a>Weighted Moving Average (WMA)
 ```python
 data = [69, 68, 66, 70, 68];
 length = 4; # default = 14
@@ -102,7 +102,7 @@ ta.wma(data, length);
 # output (array)
 # [68.3, 68.2]
 ```
-#### <a name="wsma"></a>Wilder's Smoothing Moving Average
+#### <a id="wsma"></a>Wilder's Smoothing Moving Average
 ```python
 data = [1, 2, 3, 4, 5, 6, 10];
 length = 6; # default = 14
@@ -110,7 +110,7 @@ ta.wsma(data, length);
 # output (array)
 # [3.5, 4.58]
 ```
-#### <a name="pwma"></a>Parabolic Weighted Moving Average
+#### <a id="pwma"></a>Parabolic Weighted Moving Average
 ```python
  data = [17, 26, 23, 29, 20];
  length = 4; # default = 14
@@ -118,7 +118,7 @@ ta.pwma(data, length);
 # output (array)
 # [24.09, 25.18]
 ```
-#### <a name="hwma"></a>Hyperbolic Weighted Moving Average
+#### <a id="hwma"></a>Hyperbolic Weighted Moving Average
 ```python
 data = [54, 51, 86, 42, 47];
 length = 4; # default = 14
@@ -126,7 +126,7 @@ ta.hwma(data, length);
 # output (array)
 # [56.2, 55.0]
 ```
-#### <a name="hull"></a>Hull Moving Average
+#### <a id="hull"></a>Hull Moving Average
 ```python
 data = [6, 7, 5, 6, 7, 4, 5, 7];
 length = 6; # default = 14
@@ -134,7 +134,7 @@ ta.hull(data, length);
 # output (array)
 # [4.76, 5.48]
 ```
-#### <a name="kama"></a>Kaufman Adaptive Moving Average (KAMA)
+#### <a id="kama"></a>Kaufman Adaptive Moving Average (KAMA)
 ```python
 data = [8, 7, 8, 9, 7, 9];
 length1 = 2; # default = 10
@@ -144,7 +144,7 @@ ta.kama(data, length1, length2, length3);
 # output (array)
 # [8, 8.64, 8.57, 8.57]
 ```
-#### <a name="vwma"></a>Volume Weighted Moving Average (VWMA)
+#### <a id="vwma"></a>Volume Weighted Moving Average (VWMA)
 ```python
 data = [[1, 59], [1.1, 82], [1.21, 27], [1.42, 73], [1.32, 42]]; # [price, volume (quantity)]
 length = 4; # default = 20
@@ -152,7 +152,7 @@ ta.vwma(data, length);
 # output (array)
 # [1.185, 1.259]
 ```
-#### <a name="ema"></a>Exponential Moving Average (EMA)
+#### <a id="ema"></a>Exponential Moving Average (EMA)
 ```python
 data = [1, 2, 3, 4, 5, 6, 10];
 length = 6; # default = 12
@@ -160,7 +160,7 @@ ta.ema(data, length);
 # output (array)
 # [3.5, 5.357]
 ```
-#### <a name="lsma"></a>Least Squares Moving Average (LSMA)
+#### <a id="lsma"></a>Least Squares Moving Average (LSMA)
 ```python
 data = [5, 6, 6, 3, 4, 6, 7];
 length = 6; # default = 25
@@ -168,7 +168,7 @@ ta.lsma(data, length);
 # output (array)
 # [4.714, 5.761]
 ```
-#### <a name="macd"></a>Moving Average Convergence / Divergence (MACD)
+#### <a id="macd"></a>Moving Average Convergence / Divergence (MACD)
 ```python
 data = [1, 2, 3, 4, 5, 6, 14];
 length1 = 3; # default = 12
@@ -177,7 +177,7 @@ ta.macd(data, length1, length2);
 # output (array)
 # [1.5, 3]
 ```
-#### <a name="rsi"></a>Relative Strength Index (RSI)
+#### <a id="rsi"></a>Relative Strength Index (RSI)
 ```python
 data = [1, 2, 3, 4, 5, 6, 7, 5];
 length = 6; # default = 14
@@ -185,7 +185,7 @@ ta.rsi(data, length);
 # output (array)
 # [100, 100, 66.667]
 ```
-#### <a name="tsi"></a>True Strength Index (TSI)
+#### <a id="tsi"></a>True Strength Index (TSI)
 ```python
 data = [1.32, 1.27, 1.42, 1.47, 1.42, 1.45, 1.59];
 longlength = 3; # default = 25
@@ -196,7 +196,7 @@ ta.tsi(data, longlength, shortlength, signallength);
 # [[0.327, 0.320], [0.579, 0.706]]
 # [strength line, signal line]
 ```
-#### <a name="bop"></a>Balance Of Power
+#### <a id="bop"></a>Balance Of Power
 ```python
 data = [[4, 5, 4, 5], [5, 6, 5, 6], [6, 8, 5, 6]]; # [open, high, low, close]
 length = 2; # default = 14
@@ -204,7 +204,7 @@ ta.bop(data, length);
 # output (array)
 # [1, 0.5]
 ```
-#### <a name="fi"></a>Force Index
+#### <a id="fi"></a>Force Index
 ```python
 data = [[1.4, 200], [1.5, 240], [1.1, 300], [1.2, 240], [1.5, 400]]; # [close, volume]
 length = 4; # default = 13
@@ -212,14 +212,14 @@ ta.fi(data, length);
 # output (array)
 # [0.0075]
 ```
-#### <a name="asi"></a>Accumulative Swing Index
+#### <a id="asi"></a>Accumulative Swing Index
 ```python
 data = [[7, 6, 4], [9, 7, 5], [9, 8, 6]]; # [high, close, low]
 ta.asi(data);
 # output (array)
 # [0, -12.5]
 ```
-#### <a name="ao"></a>Awesome Oscillator
+#### <a id="ao"></a>Awesome Oscillator
 ```python
 data = [[6, 5], [8, 6], [7, 4], [6, 5], [7, 6], [9, 8]]; # [high, low]
 shortlength = 2; # default = 5
@@ -228,7 +228,7 @@ ta.ao(data, shortlength, longlength);
 # output (array)
 # [0, 0.9]
 ```
-#### <a name="pr"></a>Williams %R
+#### <a id="pr"></a>Williams %R
 ```python
 data = [2, 1, 3, 1, 2];
 length = 3; # default = 14
@@ -236,7 +236,7 @@ ta.pr(data, length);
 # output (array)
 # [-0, -100, -50]
 ```
-#### <a name="rh"></a>Recent High
+#### <a id="rh"></a>Recent High
 ```python
 data = [4,5,6,7,8,9,8,7,8,9,10,3,2,1];
 lookback = 3; # No higher values after 3 periods? resets after each new high
@@ -244,7 +244,7 @@ ta.recent_high(data, lookback);
 # output (dictionary)
 # {'index': 10, 'value': 10}
 ```
-#### <a name="rl"></a>Recent Low
+#### <a id="rl"></a>Recent Low
 ```python
 data = [1,4,5,6,4,3,2,3,4,3,5,7,8,8,5];
 lookback = 4; # No lower values after 4 periods? resets after each new low
@@ -252,7 +252,7 @@ ta.recent_low(data, lookback);
 # output (dictionary)
 # {'index': 6, 'value': 2}
 ```
-#### <a name="stoch"></a>Stochastics
+#### <a id="stoch"></a>Stochastics
 ```python
 data = [[3,2,1], [2,2,1], [4,3,1], [2,2,1]]; # [high, close, low]
 length = 2; # default = 14
@@ -263,7 +263,7 @@ ta.stoch(data, length, smoothd, smoothk);
 # [[66.667, 66.667], [33.336, 33.336]]
 # [kline, dline]
 ```
-#### <a name="variance"></a>Variance
+#### <a id="variance"></a>Variance
 ```python
 data = [6, 7, 2, 3, 5, 8, 6, 2];
 length = 7; # default = len(data)
@@ -271,7 +271,7 @@ ta.variance(data, length);
 # output (array)
 # [3.918, 5.061]
 ```
-#### <a name="std"></a>Standard Deviation
+#### <a id="std"></a>Standard Deviation
 ```python
 data = [1, 2, 3];
 length = 3; # default = data.length
@@ -279,14 +279,14 @@ ta.std(data, length);
 # output (float)
 # 0.81649658092773
 ```
-#### <a name="normsinv"></a>Inverse Normal Distribution
+#### <a id="normsinv"></a>Inverse Normal Distribution
 ```python
 data = 0.4732;
 ta.normsinv(data);
 # output (float)
 # -0.06722824471054376
 ```
-#### <a name="sim"></a>Monte Carlo Simulation
+#### <a id="sim"></a>Monte Carlo Simulation
 ```python
 data = [6, 4, 7, 8, 5, 6];
 length = 2; # default = 50
@@ -296,7 +296,7 @@ ta.sim(data, length, simulations, percentile)
 # output (array)
 # [6, 4, 7, 8, 5, 6, 5.96, 5.7]
 ```
-#### <a name="perc"></a>Percentile
+#### <a id="perc"></a>Percentile
 ```python
 data = [[6,4,7], [5,3,6], [7,5,8]];
 percentile = 0.5;
@@ -304,7 +304,7 @@ ta.percentile(data, percentile);
 # output (array)
 # [6, 4, 7]
 ```
-#### <a name="cor"></a>Correlation
+#### <a id="cor"></a>Correlation
 ```python
 data1 = [1, 2, 3, 4, 5, 2];
 data2 = [1, 3, 2, 4, 6, 3];
@@ -312,7 +312,7 @@ ta.cor(data1, data2);
 # output (float)
 # 0.8808929232684737
 ```
-#### <a name="dif"></a>Percentage Difference
+#### <a id="dif"></a>Percentage Difference
 ```python
 newval = 0.75;
 oldval = 0.5;
@@ -320,14 +320,14 @@ ta.dif(newval, oldval);
 # output (float)
 # 0.5
 ```
-#### <a name="drawdown"></a>Drawdown
+#### <a id="drawdown"></a>Drawdown
 ```python
 data = [1, 2, 3, 4, 2, 3];
 ta.drawdown([1,2,3,4,2,3]);
 # output (float)
 # -0.5
 ```
-#### <a name="median"></a>Median
+#### <a id="median"></a>Median
 ```python
 data = [4, 6, 3, 1, 2, 5];
 length = 4; # default = data.length
@@ -335,7 +335,7 @@ ta.median(data, length);
 # output (array)
 # [3, 2, 2]
 ```
-#### <a name="kmeans"></a>K-means Clustering
+#### <a id="kmeans"></a>K-means Clustering
 ```python
 data = [2, 3, 4, 5, 3, 5, 7, 8, 6, 8, 6, 4, 2, 6];
 length = 4;
@@ -343,7 +343,7 @@ ta.kmeans(data, length);
 # output (array)
 # [[ 4, 5, 5, 4 ], [ 7, 6, 6, 6 ], [ 8, 8 ], [ 2, 3, 3, 2 ]]
 ```
-#### <a name="norm"></a>Normalize
+#### <a id="norm"></a>Normalize
 ```python
 data = [5,4,9,4];
 margin = 0.1; # margin % (default = 0)
@@ -351,7 +351,7 @@ ta.normalize(data, margin);
 # output (array)
 # [0.22, 0.06, 0.86, 0.06]
 ```
-#### <a name="norm"></a>Denormalize
+#### <a id="norm"></a>Denormalize
 ```python
 data = [5,4,9,4]; # original data || [highest, lowest]
 norm = [0.22, 0.06, 0.86, 0.06, 0.44]; # normalized data
@@ -360,7 +360,7 @@ ta.denormalize(data, norm, margin);
 # output (array)
 # [5 ,4, 9, 4, 6.4]
 ```
-#### <a name="mad"></a>Median Absolute Deviation
+#### <a id="mad"></a>Median Absolute Deviation
 ```python
 data = [3, 7, 5, 4, 3, 8, 9];
 length = 6; # default = len(data)
@@ -368,7 +368,7 @@ ta.mad(data, length);
 # output (array)
 # [1, 2]
 ```
-#### <a name="aad"></a>Average Absolute Deviation
+#### <a id="aad"></a>Average Absolute Deviation
 ```python
 data = [4, 6, 8, 6, 8, 9, 10, 11];
 length = 7; # default = len(data)
@@ -376,7 +376,7 @@ ta.aad(data, length);
 # output (array)
 # [1.673, 1.469]
 ```
-#### <a name="ssd"></a>Sum Squared Differences
+#### <a id="ssd"></a>Sum Squared Differences
 ```python
 data = [7, 6, 5, 7, 9, 8, 3, 5, 4];
 length = 7; # default = data.length
@@ -384,7 +384,7 @@ ta.ssd(data, length);
 # output (array)
 # [4.87, 4.986, 5.372]
 ```
-#### <a name="bands"></a>Bollinger Bands
+#### <a id="bands"></a>Bollinger Bands
 ```python
 data = [1, 2, 3, 4, 5, 6];
 length = 5; # default = 14
@@ -394,7 +394,7 @@ ta.bands(data, length, deviations);
 # [[5.828, 3, 0.172], [6.828, 4, 1.172]]
 # [upper band, middle band, lower band]
 ```
-#### <a name="bandwidth"></a>Bollinger Bandwidth
+#### <a id="bandwidth"></a>Bollinger Bandwidth
 ```python
 data = [1, 2, 3, 4, 5, 6];
 length = 5; # default = 14
@@ -403,7 +403,7 @@ ta.bandwidth(data, length, deviations);
 # output (array)
 # [1.886, 1.344]
 ```
-#### <a name="kelt"></a>Keltner Channels
+#### <a id="kelt"></a>Keltner Channels
 ```python
 data = [[3,2,1], [2,2,1], [4,3,1], [2,2,1], [3,3,1]]; # [high, close, low]
 length = 5; # default = 14
@@ -413,7 +413,7 @@ ta.keltner(data, length, deviations);
 # [[3.93, 2.06, 0.20]]
 # [upper band, middle band, lower band]
 ```
-#### <a name="don"></a>Donchian Channels
+#### <a id="don"></a>Donchian Channels
 ```python
 data = [[6, 2], [5, 2], [5, 3], [6, 3], [7, 4], [6, 3]]; # [high, low]
 length = 5; # default = 20
@@ -422,7 +422,7 @@ ta.don(data, length);
 # [[7, 4.5, 2], [7, 4.5, 2]]
 # [upper band, base line, lower band]
 ```
-#### <a name="enve"></a>Envelope
+#### <a id="env"></a>Envelope
 ```python
 data = [6,7,8,7,6,7,8,7,8,7,8,7,8];
 length = 11, # default = 10
@@ -432,7 +432,7 @@ ta.envelope(data, length, percentage);
 # [[7.541, 7.182, 6.823], [7.636, 7.273, 6.909]]
 # [upper band, base line, lower band]
 ```
-#### <a name="ichi"></a>Ichimoku Cloud
+#### <a id="ichi"></a>Ichimoku Cloud
 ```python
 data = [[6, 3, 2], [5, 4, 2], [5, 4, 3], [6, 4, 3], [7, 6, 4], [6, 5, 3]]; # [high, close, low]
 length1 = 9; # default = 9
@@ -443,7 +443,7 @@ ta.ichimoku(data, length1, length2, length3, displacement);
 # output (array)
 # [conversion line, base line, leading span A, leading span B, lagging span]
 ```
-#### <a name="atr"></a>Average True Range (ATR)
+#### <a id="atr"></a>Average True Range (ATR)
 ```python
 data = [[3,2,1], [2,2,1], [4,3,1], [2,2,1]]; # [high, close, low]
 length = 3; # default = 14
@@ -451,7 +451,7 @@ ta.atr(data, length);
 # output (array)
 # [2, 1.667, 2.111, 1.741]
 ```
-#### <a name="aroon-up"></a>Aroon Up
+#### <a id="aroon-up"></a>Aroon Up
 ```python
 data = [5, 4, 5, 2];
 length = 3; # default = 10
@@ -459,7 +459,7 @@ ta.aroon_up(data, length);
 # output (array)
 # [100.0, 50.0]
 ```
-#### <a name="aroon-down"></a>Aroon Down
+#### <a id="aroon-down"></a>Aroon Down
 ```python
 data = [2, 5, 4, 5];
 length = 3; # default = 10
@@ -467,7 +467,7 @@ ta.aroon_down(data, length);
 # output (array)
 # [0.0, 50.0]
 ```
-#### <a name="aroon-osc"></a>Aroon Oscillator
+#### <a id="aroon-osc"></a>Aroon Oscillator
 ```python
 data = [2, 5, 4, 5];
 length = 3; # default = 25
@@ -475,7 +475,7 @@ ta.aroon_osc(data, length);
 # output (array)
 # [50.0, 50.0]
 ```
-#### <a name="mfi"></a>Money Flow Index
+#### <a id="mfi"></a>Money Flow Index
 ```python
 data = [[19, 13], [14, 38], [21, 25], [32, 17]]; # [buy volume, sell volume]
 length = 3; # default = 14
@@ -483,7 +483,7 @@ ta.mfi(data, length);
 # output (array)
 # [41.54, 45.58]
 ```
-#### <a name="roc"></a>Rate Of Change
+#### <a id="roc"></a>Rate Of Change
 ```python
 data = [1, 2, 3, 4];
 length = 3; # default = 14
@@ -491,7 +491,7 @@ ta.roc(data, length);
 # output (array)
 # [2, 1]
 ```
-#### <a name="cop"></a>Coppock Curve
+#### <a id="cop"></a>Coppock Curve
 ```python
 data = [3, 4, 5, 3, 4, 5, 6, 4, 7, 5, 4, 7, 5];
 length1 = 4; # (ROC period 1) default = 11
@@ -501,7 +501,7 @@ ta.cop(data, length1, length2, length3);
 # output (array)
 # [0.376, 0.237]
 ```
-#### <a name="kst"></a>Know Sure Thing
+#### <a id="kst"></a>Know Sure Thing
 ```python
 data = [8, 6, 7, 6, 8, 9, 7, 5, 6, 7, 6, 8, 6, 7, 6, 8, 9, 9, 8, 6, 4, 6, 5, 6, 7, 8, 9];
 # roc sma #1
@@ -523,14 +523,14 @@ ta.kst(data, r1, s1, r2, s2, r3, s3, r4, s4, sig);
 # [[-0.68, -0.52], [-0.29, -0.58], [0.35, -0.36]]
 # [kst line, signal line]
 ```
-#### <a name="obv"></a>On-Balance Volume
+#### <a id="obv"></a>On-Balance Volume
 ```python
 data = [[25200, 10], [30000, 10.15], [25600, 10.17], [32000, 10.13]]; # [asset volume, close price]
 ta.obv(data);
 # output (array)
 # [0, 30000, 55600, 23600]
 ```
-#### <a name="vwap"></a>Volume-Weighted Average Price
+#### <a id="vwap"></a>Volume-Weighted Average Price
 ```python
 data = [[127.21, 89329], [127.17, 16137], [127.16, 23945]]; # [average price, volume (quantity)]
 length = 2; # default = data.length
@@ -538,7 +538,7 @@ ta.vwap(data, length);
 # output (array)
 # [127.204, 127.164]
 ```
-#### <a name="mom_osc"></a>Chande Momentum Oscillator
+#### <a id="mom_osc"></a>Chande Momentum Oscillator
 ```python
 data = [1, 1.2, 1.3, 1.3, 1.2, 1.4];
 length = 4; # default = 9
@@ -546,7 +546,7 @@ ta.mom_osc(data, length);
 # output (array)
 # [0.0, 3.85]
 ```
-#### <a name="chaikin_osc"></a>Chaikin Oscillator
+#### <a id="chaikin_osc"></a>Chaikin Oscillator
 ```python
 data = [[2,3,4,6],[5,5,5,4],[5,4,3,7],[4,3,3,4],[6,5,4,6],[7,4,3,6]]; # [high, close, low, volume]
 length1 = 2; # default = 3
@@ -555,7 +555,7 @@ ta.chaikin_osc(data, length1, length2);
 # output (array)
 # [-1.667, -0.289, -0.736]
 ```
-#### <a name="fractals"></a>Fractals
+#### <a id="fractals"></a>Fractals
 ```python
 data = [[7,6],[8,6],[9,6],[8,5],[7,4],[6,3],[7,4],[8,5]];
 ta.fractals(data);
@@ -563,7 +563,7 @@ ta.fractals(data);
 # [[false, false],[false,false],[true,false],[false,false],[false,false],[false,true],[false,false],[false,false]]
 # [upper fractal, lower fractal]
 ```
-#### <a name="mom"></a>Momentum
+#### <a id="mom"></a>Momentum
 ```python
 data = [1, 1.1, 1.2, 1.24, 1.34];
 length = 4; # default = 10
@@ -572,7 +572,7 @@ ta.mom(data, length, percentage);
 # output (array)
 # [0.24, 0.24]
 ```
-#### <a name="ha"></a>Heikin Ashi
+#### <a id="ha"></a>Heikin Ashi
 ```python
 data = [[3, 4, 2, 3], [3, 6, 3, 5], [5, 5, 2, 3]]; # [open, high, low, close]
 ta.ha(data);
@@ -580,7 +580,7 @@ ta.ha(data);
 # [open, high, low, close]
 # first 7-10 candles are unreliable
 ```
-#### <a name="ren"></a>Renko
+#### <a id="ren"></a>Renko
 ```python
 data = [[8, 6], [9, 7], [9, 8]]; # [high, low]
 bricksize = 3;
@@ -589,7 +589,7 @@ ta.ren(data, bricksize);
 # [open, high, low, close]
 ```
 ### Experimental Functions
-#### <a></a>Support Line
+#### <a id="sup"></a>Support Line
 ```python
 data = [4,3,2,5,7,6,5,4,7,8,5,4,6,7,5];
 start = {"index": 2, "value": 2}; # default = recent_low(data, 25)
@@ -602,7 +602,7 @@ support = ta.support(data, start);
 # to get the line at the current candle / chart period
 current = support['calculate'](len(data)-support['index']);
 ```
-#### <a></a>Resistance Line
+#### <a id="res"></a>Resistance Line
 ```python
 data = [5,7,5,5,4,6,5,4,6,5,4,3,2,4,3,2,1];
 start = {"index": 1, "value": 7}; # default = recent_high(data, 25)
