@@ -688,5 +688,5 @@ def resistance(d, hl=0):
         return {"calculate": calculate, "slope": 0, "highest": hl['value'], "index": hl['index']}
     else:
         def calculate(pos):
-            return pos*highform+hl['value'];
+            return pos*-highform+hl['value'];
         return {"calculate": calculate, "slope": highform, "highest": hl['value'], "index": hl['index']};
