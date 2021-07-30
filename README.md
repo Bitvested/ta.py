@@ -73,6 +73,9 @@ import ta_py as ta;
 - [Momentum](#mom)
 - [Heikin Ashi](#ha)
 - [Renko](#ren)
+#### Experimental
+- [Support Line](#sup)
+- [Resistance Line](#res)
 #### <a name="sma"></a>Simple Moving Average (SMA)
 ```python
 data = [1, 2, 3, 4, 5, 6, 10];
@@ -230,6 +233,22 @@ length = 3; # default = 14
 ta.pr(data, length);
 # output (array)
 # [-0, -100, -50]
+```
+#### <a name="rh"></a>Recent High
+```python
+data = [4,5,6,7,8,9,8,7,8,9,10,3,2,1];
+lookback = 3; # No higher values after 3 periods? resets after each new high
+ta.recent_high(data, length);
+# output (dictionary)
+# {'index': 10, 'value': 10}
+```
+#### <a name="rl"></a>Recent Low
+```python
+data = [1,4,5,6,4,3,2,3,4,3,5,7,8,8,5];
+lookback = 4; # No lower values after 4 periods? resets after each new low
+ta.recent_low(data, length);
+# output (dictionary)
+# {'index': 6, 'value': 2}
 ```
 #### <a name="stoch"></a>Stochastics
 ```python
@@ -566,6 +585,33 @@ bricksize = 3;
 ta.ren(data, bricksize);
 # output (array)
 # [open, high, low, close]
+```
+### Experimental Functions
+#### <a></a>Support Line
+```python
+data = [4,3,2,5,7,6,5,4,7,8,5,4,6,7,5];
+start = {"index": 2, "value": 2}; # default = recent_low(data)
+support = ta.support(data, start);
+# output (dictionary)
+# ['calculate'] = function(x) // calculates line at position x from start['index'] (= 0)
+# ['slope'] = delta y per x
+# ['lowest'] = lowest (start) value
+# ['index'] = (start) index of lowest value
+# to get the line at the current candle / chart position
+current = support['calculate'](len(data)-support['index']);
+```
+#### <a></a>Resistance Line
+```python
+data = [5,7,5,5,4,6,5,4,6,5,4,3,2,4,3,2,1];
+start = {"index": 1, "value": 7}; # default = recent_high(data)
+resistance = ta.resistance(data, start);
+# output (dictionary)
+# ['calculate'] = function(x) // calculates line at position x from start['index'] (= 0)
+# ['slope'] = delta y per x
+# ['highest'] = highest(start) value
+# ['index'] = (start) index of lowest value
+# to get the line at the current candle / chart position
+current = resistance['calculate'](len(data)-support['index']);
 ```
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

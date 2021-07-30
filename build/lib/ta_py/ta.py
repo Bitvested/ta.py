@@ -614,3 +614,79 @@ def fractals(data):
     fractals.append([False, False]);
     fractals.append([False, False]);
     return fractals;
+def recent_high(data, lb=25):
+    xback = lb; hindex = 0; highest = data[len(data)-1];
+    for i in range(len(data)-2, 0, -1):
+        if data[i] >= highest and xback > 0:
+            highest = data[i];
+            hindex = i;
+            xback = lb;
+        else:
+            xback -= 1;
+        if xback <= 0: break;
+    return {"index": hindex, "value": highest};
+def recent_low(data, lb=25):
+    xback = lb; lindex = 0; lowest = data[len(data)-1];
+    for i in range(len(data)-2, 0, -1):
+        if data[i] <= lowest and xback > 0:
+            lowest = data[i];
+            lindex = i;
+            xback = lb;
+        else:
+            xback -= 1;
+        if xback <= 0: break;
+    return {"index": lindex, "value": lowest};
+def support(d, hl=0):
+    hl = hl if hl else recent_low(d);
+    findex = False; lowform = hl['value'];
+    while findex == False:
+        for i in range(hl['index'], len(d)):
+            if hl['index']-i == 0: continue;
+            newlow = (hl['value']-d[i])/(hl['index']-i);
+            if newlow < lowform:
+                lowform = newlow;
+                index2 = i;
+        if hl['index'] + 1 == index2 and index2 != len(d):
+            hl['index'] = index2;
+            lowform = min(d[:]);
+            hl['value'] = d[hl['index']];
+            findex = False;
+        else:
+            findex = True;
+        if hl['index'] == len(d)-1: findex = True;
+    if index2 == len(d)-1 or hl['index'] == len(d)-1:
+        def calculate(pos):
+            return pos*0+hl['value'];
+        return {"calculate": calculate, "slope": 0, "lowest": hl['value'], "index": hl['index']};
+    else:
+        def calculate(pos):
+            return pos*lowform+hl['value']
+        return {"calculate": calculate, "slope": lowform, "lowest": hl['value'], "index": hl['index']};
+def resistance(d, hl=0):
+    hl = hl if hl else recent_high(d);
+    findex = False; highform = hl['value'];
+    while findex == False:
+        for i in range(hl['index'], len(d)):
+            if hl['index']-i == 0: continue;
+            newhigh = (d[i]-hl['value'])/(hl['index']-i);
+            if newhigh < highform:
+                highform = newhigh
+                index2 = i;
+        if hl['index']+1 == index2 and index2 != len(d)-1:
+            hl['index'] = index2;
+            highform = max(d[:]);
+            hl['value'] = d[hl['index']];
+            findex = False;
+        else:
+            findex = True;
+        if hl['index'] == len(d)-1: findex = True;
+    if index2 == len(d)-1 or hl['index'] == len(d)-1:
+        highform = 0;
+    if index2 == len(d)-1 or hl['index'] == len(d)-1:
+        def calculate(pos):
+            return pos*0+hl['value'];
+        return {"calculate": calculate, "slope": 0, "highest": hl['value'], "index": hl['index']}
+    else:
+        def calculate(pos):
+            return pos*highform+hl['value'];
+        return {"calculate": calculate, "slope": highform, "highest": hl['value'], "index": hl['index']};
