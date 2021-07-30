@@ -592,27 +592,27 @@ ta.ren(data, bricksize);
 #### <a></a>Support Line
 ```python
 data = [4,3,2,5,7,6,5,4,7,8,5,4,6,7,5];
-start = {"index": 2, "value": 2}; # default = recent_low(data)
+start = {"index": 2, "value": 2}; # default = recent_low(data, 25)
 support = ta.support(data, start);
 # output (dictionary)
 # ['calculate'] = function(x) // calculates line at position x from start['index'] (= 0)
 # ['slope'] = delta y per x
-# ['lowest'] = lowest (start) value
+# ['lowest'] = lowest (start) value at x = 0
 # ['index'] = (start) index of lowest value
-# to get the line at the current candle / chart position
+# to get the line at the current candle / chart period
 current = support['calculate'](len(data)-support['index']);
 ```
 #### <a></a>Resistance Line
 ```python
 data = [5,7,5,5,4,6,5,4,6,5,4,3,2,4,3,2,1];
-start = {"index": 1, "value": 7}; # default = recent_high(data)
+start = {"index": 1, "value": 7}; # default = recent_high(data, 25)
 resistance = ta.resistance(data, start);
 # output (dictionary)
 # ['calculate'] = function(x) // calculates line at position x from start['index'] (= 0)
 # ['slope'] = delta y per x
-# ['highest'] = highest(start) value
-# ['index'] = (start) index of lowest value
-# to get the line at the current candle / chart position
+# ['highest'] = highest (start) value
+# ['index'] = (start) index of highest value
+# to get the line at the current candle / chart period
 current = resistance['calculate'](len(data)-support['index']);
 ```
 ## Contributing
