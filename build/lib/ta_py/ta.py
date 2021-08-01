@@ -694,7 +694,7 @@ def ac(data, l1=5, l2=35):
     pl = [];
     for i in range(len(data)):
         pl.append((data[i][0]+data[i][1])/2);
-    a = ao(data, l1, l2); sm =sma(pl, l1); acr = [];
+    a = ao(data, l1, l2); sm =sma(a, l1); acr = [];
     if len(a) > len(sm):
         a = a[len(a)-len(sm):]
     else:
