@@ -690,3 +690,16 @@ def resistance(d, hl=0):
         def calculate(pos):
             return pos*-highform+hl['value'];
         return {"calculate": calculate, "slope": highform, "highest": hl['value'], "index": hl['index']};
+def ac(data, l1=5, l2=35):
+    pl = [];
+    for i in range(len(data)):
+        pl.append((data[i][0]+data[i][1])/2);
+    a = ao(data, l1, l2); sm =sma(pl, l1); acr = [];
+    if len(a) > len(sm):
+        a = a[len(a)-len(sm):]
+    else:
+        sm = sm[len(sm)-len(a):];
+    for i in range(len(a)): acr.append(a[i]-sm[i]);
+    return acr;
+def fib(start, end):
+    return [start, (end-start)*.236+start, (end-start)*.382+start, (end-start)*.5+start, (end-start)*.618+start, (end-start)*.786+start, end, (end-start)*1.618+start, (end-start)*2.618+start, (end-start)*3.618+start, (end-start)*4.236+start]

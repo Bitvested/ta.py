@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
      name='ta_py',
-     version='1.1.3',
+     version='1.1.4',
      author="Nino Kroesen",
      author_email="ninokroesen@gmail.com",
      description="ta.py is a Python package for dealing with financial technical analysis",
