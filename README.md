@@ -34,6 +34,8 @@ import ta_py as ta;
 - [Force Index](#fi)
 - [Accumulative Swing Index](#asi)
 - [Awesome Oscillator](#ao)
+- [Accelerator Oscillator](#ac)
+- [Fibonacci Retracement](#fib)
 - [Williams %R](#pr)
 - [Recent High](#rh)
 - [Recent Low](#rl)
@@ -227,6 +229,23 @@ longlength = 5; # default = 35
 ta.ao(data, shortlength, longlength);
 # output (array)
 # [0, 0.9]
+```
+#### <a id="ac"></a>Accelerator Oscillator
+```python
+data = [[6, 5], [8, 6], [7, 4], [6, 5], [7, 6], [9, 8]]; # [high, low]
+shortlength = 2; # default = 5
+longlength = 4; # default = 35
+ta.ac(data, shortlength, longlength);
+# output (array)
+# [-5.875, -6.125, -6.5]
+```
+#### <a id="fib"></a>Fibonacci Retracement
+```python
+start = 1;
+end = 2;
+ta.fib(start, end);
+# output (array)
+# [1, 1.236, 1.382, 1.5, 1.618, 1.786, 2, 2.618, 3.618, 4.618, 5.236]
 ```
 #### <a id="pr"></a>Williams %R
 ```python
