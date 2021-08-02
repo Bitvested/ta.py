@@ -35,6 +35,8 @@ import ta_py as ta;
 - [Accumulative Swing Index](#asi)
 - [Awesome Oscillator](#ao)
 - [Accelerator Oscillator](#ac)
+- [Alligator Indicator](#alli)
+- [Alligator Oscillator](#gator)
 - [Fibonacci Retracement](#fib)
 - [Williams %R](#pr)
 - [Recent High](#rh)
@@ -238,6 +240,34 @@ longlength = 4; # default = 35
 ta.ac(data, shortlength, longlength);
 # output (array)
 # [-5.875, -6.125, -6.5]
+```
+#### <id ="alli"></a>Alligator Indicator
+```python
+data = [8,7,8,9,7,8,9,6,7,8,6,8,10,8,7,9,8,7,9,6,7,9];
+# defaults shown
+jawlength = 13;
+teethlength = 8;
+liplength = 5;
+jawshift = 8;
+teethshift = 5;
+lipshift = 3;
+ta.alligator(data, jawlength, teethlength, liplength, jawshift, teethshift, lipshift);
+# output (array)
+# [jaw, teeth, lips]
+```
+#### <id ="gator"></a>Alligator Oscillator
+```python
+data = [8,7,8,9,7,8,9,6,7,8,6,8,10,8,7,9,8,7,9,6,7,9];
+# defaults shown
+jawlength = 13;
+teethlength = 8;
+liplength = 5;
+jawshift = 8;
+teethshift = 5;
+lipshift = 3;
+ta.gator(data, jawlength, teethlength, liplength, jawshift, teethshift, lipshift);
+# output (array)
+# [upper gator, lower gator]
 ```
 #### <a id="fib"></a>Fibonacci Retracement
 ```python

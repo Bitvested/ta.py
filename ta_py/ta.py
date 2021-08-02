@@ -614,6 +614,20 @@ def fractals(data):
     fractals.append([False, False]);
     fractals.append([False, False]);
     return fractals;
+def alligator(data, jl=13, tl=8, ll=5, js=8, ts=5, ls=3):
+    ret = []; jaw = smma(data, jl); teeth = smma(data, tl); lips = smma(data, ll);
+    teeth = teeth[len(teeth)-len(jaw):];
+    lips = lips[len(lips)-len(jaw):];
+    for i in range(len(jaw)-1, (js-2), -1):
+        ret.append([jaw[i-(js-1)], teeth[i-(ts-1)], lips[i-(ls-1)]]);
+    return ret;
+def gator(data, jl=13, tl=8, ll=5, js=8, ts=5, ls=3):
+    ret = []; jaw = smma(data, jl); teeth = smma(data, tl); lips = smma(data, ll);
+    teeth = teeth[len(teeth)-len(jaw):];
+    lips = lips[len(lips)-len(jaw):];
+    for i in range(len(jaw)-1, (js-2), -1):
+        ret.append([jaw[i-(js-1)]-teeth[i-(ts-1)], -(abs(teeth[i-(ts-1)]-lips[i-(ls-1)]))]);
+    return ret;
 def recent_high(data, lb=25):
     xback = lb; hindex = 0; highest = data[len(data)-1];
     for i in range(len(data)-2, 0, -1):
