@@ -81,6 +81,7 @@ import ta_py as ta;
 - [Sum Squared Differences](#ssd)
 - [Normalize](#norm)
 - [Denormalize](#dnorm)
+- [Standardize](#standard)
 - [K-means Clustering](#kmeans)
 #### Chart Types
 - [Heikin Ashi](#ha)
@@ -591,14 +592,6 @@ ta.recent_low(data, lookback);
 # output (dictionary)
 # {'index': 6, 'value': 2}
 ```
-#### <a id="kmeans"></a>K-means Clustering
-```python
-data = [2, 3, 4, 5, 3, 5, 7, 8, 6, 8, 6, 4, 2, 6];
-length = 4;
-ta.kmeans(data, length);
-# output (array)
-# [[ 4, 5, 5, 4 ], [ 7, 6, 6, 6 ], [ 8, 8 ], [ 2, 3, 3, 2 ]]
-```
 #### <a id="mad"></a>Median Absolute Deviation
 ```python
 data = [3, 7, 5, 4, 3, 8, 9];
@@ -631,7 +624,7 @@ ta.normalize(data, margin);
 # output (array)
 # [0.22, 0.06, 0.86, 0.06]
 ```
-#### <a id="norm"></a>Denormalize
+#### <a id="dnorm"></a>Denormalize
 ```python
 data = [5,4,9,4]; # original data || [highest, lowest]
 norm = [0.22, 0.06, 0.86, 0.06, 0.44]; # normalized data
@@ -639,6 +632,21 @@ margin = 0.1; # margin % (default = 0)
 ta.denormalize(data, norm, margin);
 # output (array)
 # [5 ,4, 9, 4, 6.4]
+```
+#### <a id="standard"></a>Standardize
+```python
+data = [6,4,6,8,6];
+ta.standardize(data);
+# output (array)
+# [0, -1.581, 0, 1.581, 0]
+```
+#### <a id="kmeans"></a>K-means Clustering
+```python
+data = [2, 3, 4, 5, 3, 5, 7, 8, 6, 8, 6, 4, 2, 6];
+length = 4;
+ta.kmeans(data, length);
+# output (array)
+# [[ 4, 5, 5, 4 ], [ 7, 6, 6, 6 ], [ 8, 8 ], [ 2, 3, 3, 2 ]]
 ```
 ### Chart types
 #### <a id="ha"></a>Heikin Ashi
