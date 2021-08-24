@@ -47,6 +47,12 @@ def denormalize(data, norm, marg=0):
     for i in range(0, len(norm)):
         dnorm.append(mi+norm[i]*(ma-mi));
     return dnorm;
+def standardize(data):
+    mean = sma(data, len(data));
+    st = std(data); res = [];
+    for i in range(len(data)):
+        res.append((data[i]-mean[0])/st);
+    return res;
 def mad(data, l=0):
     l = l if l > 0 else len(data); med = [];
     for i in range(l, len(data)+1):
