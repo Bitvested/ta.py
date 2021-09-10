@@ -77,6 +77,19 @@ def ssd(data, l=0):
         for q in range(len(tmp)): sum += (tmp[q] - mean[0])**2;
         sd.append(sum**(1/2));
     return sd;
+def er(data):
+    wins = []; losses = []; wp = 1; lp = 1;
+    for i in range(len(data)):
+        if data[i] >= 0:
+            wins.append(data[i]+1);
+        else:
+            losses.append(data[i]+1);
+    win = (len(wins) / len(data)); loss = (len(losses) / len(data));
+    for i in range(len(losses)):
+        lp *= losses[i];
+    for i in range(len(wins)):
+        wp *= wins[i];
+    return (((wp**(1/len(wins))-1)*100) * win + ((lp**(1/len(losses))-1)*100)*loss) / 100
 def rsi(data, l=14):
     pl = []; rs = [];
     for i in range(1, len(data)):
