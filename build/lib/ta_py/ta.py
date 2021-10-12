@@ -246,6 +246,7 @@ def hull(data, l=14):
         if (len(pl)) >= sqn:
             h = wma(pl[:], int(sqn));
             hma.append(h[len(h) - 1]);
+            pl = pl[1:];
     return hma;
 def kama(data, l1=10, l2=2, l3=30):
     ka = sma(data[:], l1); ka = [ka[len(ka)-1]];
