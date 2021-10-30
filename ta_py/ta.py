@@ -737,3 +737,34 @@ def ac(data, l1=5, l2=35):
     return acr;
 def fib(start, end):
     return [start, (end-start)*.236+start, (end-start)*.382+start, (end-start)*.5+start, (end-start)*.618+start, (end-start)*.786+start, end, (end-start)*1.618+start, (end-start)*2.618+start, (end-start)*3.618+start, (end-start)*4.236+start]
+def fisher(data, l=20):
+    out = []; fish = 0; v1 = 0;
+    for i in range(l, len(data)):
+        pl = data[i-l:i]; pf = fish;
+        mn = min(pl[:]);
+        v1 = .33*2*((data[i]-mn)/(max(pl[:])-mn)-.5)+.67*v1;
+        if v1 > 0.99: v1 = 0.999
+        if v1 < -0.99: v1 = -0.999
+        fish = 0.5 * math.log((1+v1)/(1-v1)) + 0.5 * pf;
+        out.append([fish,pf]);
+    return out[1:];
+def winratio(data):
+    wins = 0; losses = 0;
+    for i in range(len(data)):
+        if data[i] >= 0:
+            wins += 1;
+        else:
+            losses += 1;
+    return wins / (losses + wins)
+def avgwin(data):
+    wins = [];
+    for i in range(len(data)):
+        if data[i] >= 0: wins.append(data[i]);
+    avg = sma(wins, len(wins));
+    return avg[0];
+def avgloss(data):
+    loss = [];
+    for i in range(len(data)):
+        if data[i] < 0: loss.append(data[i]);
+    avg = sma(loss, len(loss));
+    return avg[0];
