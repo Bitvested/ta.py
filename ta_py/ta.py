@@ -769,3 +769,8 @@ def kelly(data):
     exp = er(data) + 1
     winr = winratio(data);
     return winr - (1-winr) / exp;
+def se(data, size=0):
+    if size == 0:
+        size = len(data);
+    stdv = std(data);
+    return stdv / (size ** 0.5)

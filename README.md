@@ -84,6 +84,7 @@ import ta_py as ta;
 - [Recent Low](#rl)
 - [Median Absolute Deviation](#mad)
 - [Average Absolute Deviation](#aad)
+- [Standard Error](#stderr)
 - [Sum Squared Differences](#ssd)
 - [Normalize](#norm)
 - [Denormalize](#dnorm)
@@ -656,6 +657,14 @@ length = 7; # default = len(data)
 ta.aad(data, length);
 # output (array)
 # [1.673, 1.469]
+```
+#### <a id="stderr"></a>Standard Error
+```python
+data = [34, 54, 45, 43, 57, 38, 49];
+size = 10; # default = len(data)
+ta.se(data, size);
+# output (float)
+# 2.424
 ```
 #### <a id="ssd"></a>Sum Squared Differences
 ```python
