@@ -73,6 +73,7 @@ import ta_py as ta;
 - [Correlation](#cor)
 - [Percentage Difference](#dif)
 - [Expected Return](#er)
+- [Abnormal Return](#ar)
 - [Drawdown](#drawdown)
 - [Median](#median)
 - [Recent High](#rh)
@@ -568,6 +569,14 @@ data = [0.02, -0.01, 0.03, 0.05, -0.03]; # historical return data
 ta.er(data);
 # output (float)
 # 0.0119
+```
+#### <a id="ar"></a>Abnormal Return
+```python
+data = [0.02, -0.01, 0.03, 0.05, -0.03]; # historical return data
+length = 3;
+ta.ar(data, length);
+# output (array)
+# [0.037, -0.053]
 ```
 #### <a id="drawdown"></a>Drawdown
 ```python
