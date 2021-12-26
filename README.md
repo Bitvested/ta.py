@@ -74,6 +74,7 @@ import ta_py as ta;
 - [Percentage Difference](#dif)
 - [Expected Return](#er)
 - [Abnormal Return](#ar)
+- [Winratio](#winratio)
 - [Drawdown](#drawdown)
 - [Median](#median)
 - [Recent High](#rh)
@@ -577,6 +578,13 @@ length = 3;
 ta.ar(data, length);
 # output (array)
 # [0.037, -0.053]
+```
+#### <a id="winratio"></a>Winratio
+```python
+var data = [0.01, 0.02, -0.01, -0.03, -0.015, 0.005];
+ta.winratio(data);
+# output (float)
+# 0.5
 ```
 #### <a id="drawdown"></a>Drawdown
 ```python

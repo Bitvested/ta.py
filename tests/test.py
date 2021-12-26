@@ -137,4 +137,6 @@ standard = ta.standardize([6,4,6,8,6]);
 assert standard == [0, -1.5811388300841895, 0, 1.5811388300841895, 0];
 ar = ta.ar([0.02, -0.01, 0.03, 0.05, -0.03], 3);
 assert ar == [0.03667479679633267, -0.053301281310417566];
+winratio = ta.winratio([0.01,0.02,-0.01,-0.03,-0.015,0.005]);
+assert winratio == 0.5;
 print('Test Passed');

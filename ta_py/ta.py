@@ -743,3 +743,11 @@ def ar(data, l):
         exp = er(data[i-l:i]);
         out.append(data[i]-exp);
     return out;
+def winratio(data):
+    wins = 0; losses = 0;
+    for i in range(len(data)):
+        if data[i] >= 0:
+            wins += 1;
+        else:
+            losses += 1;
+    return wins / (losses + wins);
