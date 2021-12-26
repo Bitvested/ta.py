@@ -389,7 +389,7 @@ ta.obv(data);
 #### <a id="vwap"></a>Volume-Weighted Average Price
 ```python
 data = [[127.21, 89329], [127.17, 16137], [127.16, 23945]]; # [average price, volume (quantity)]
-length = 2; # default = data.length
+length = 2; # default = len(length)
 ta.vwap(data, length);
 # output (array)
 # [127.204, 127.164]
@@ -513,7 +513,7 @@ ta.envelope(data, length, percentage);
 #### <a id="std"></a>Standard Deviation
 ```python
 data = [1, 2, 3];
-length = 3; # default = data.length
+length = 3; # default = len(length)
 ta.std(data, length);
 # output (float)
 # 0.81649658092773
@@ -620,7 +620,7 @@ ta.drawdown([1,2,3,4,2,3]);
 #### <a id="median"></a>Median
 ```python
 data = [4, 6, 3, 1, 2, 5];
-length = 4; # default = data.length
+length = 4; # default = len(data)
 ta.median(data, length);
 # output (array)
 # [3, 2, 2]
@@ -660,7 +660,7 @@ ta.aad(data, length);
 #### <a id="ssd"></a>Sum Squared Differences
 ```python
 data = [7, 6, 5, 7, 9, 8, 3, 5, 4];
-length = 7; # default = data.length
+length = 7; # default = len(length)
 ta.ssd(data, length);
 # output (array)
 # [4.87, 4.986, 5.372]
