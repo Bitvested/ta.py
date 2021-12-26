@@ -76,6 +76,8 @@ import ta_py as ta;
 - [Abnormal Return](#ar)
 - [Kelly Criterion](#kelly)
 - [Winratio](#winratio)
+- [Average Win](#avgwin)
+- [Average Loss](#avgloss)
 - [Drawdown](#drawdown)
 - [Median](#median)
 - [Recent High](#rh)
@@ -593,6 +595,20 @@ var data = [0.01, 0.02, -0.01, -0.03, -0.015, 0.005];
 ta.winratio(data);
 # output (float)
 # 0.5
+```
+#### <a id="avgwin"></a> Average Win
+```python
+data = [0.01, 0.02, -0.01, -0.03, -0.015, 0.005];
+ta.avgwin(data);
+# output (float)
+# 0.012
+```
+#### <a id="avgloss"></a> Average Loss
+```python
+data = [0.01, 0.02, -0.01, -0.03, -0.015, 0.005];
+ta.avgloss(data);
+# output (float)
+# -0.018
 ```
 #### <a id="drawdown"></a>Drawdown
 ```python

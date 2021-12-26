@@ -751,6 +751,20 @@ def winratio(data):
         else:
             losses += 1;
     return wins / (losses + wins);
+def avgwin(data):
+    wins = [];
+    for i in range(len(data)):
+        if data[i] >= 0:
+            wins.append(data[i]);
+    avg = sma(wins, len(wins));
+    return avg[0];
+def avgloss(data):
+    loss = [];
+    for i in range(len(data)):
+        if data[i] < 0:
+            loss.append(data[i]);
+    avg = sma(loss, len(loss));
+    return avg[0];
 def kelly(data):
     exp = er(data) + 1
     winr = winratio(data);
