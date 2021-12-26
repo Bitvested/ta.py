@@ -751,3 +751,7 @@ def winratio(data):
         else:
             losses += 1;
     return wins / (losses + wins);
+def kelly(data):
+    exp = er(data) + 1
+    winr = winratio(data);
+    return winr - (1-winr) / exp;
