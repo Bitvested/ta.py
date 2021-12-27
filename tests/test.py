@@ -153,6 +153,8 @@ normal_pair = ta.normalize_pair([10,12,11,13],[100,130,100,140]);
 assert normal_pair == [[55,55],[66,71.5],[60.5,54.99999999999999],[71.5,76.99999999999999]];
 normal_from = ta.normalize_from([8,12,10,11], 100);
 assert normal_from == [100,150,125,137.5];
+fisher = ta.fisher([8,6,8,9,7,8,9,8,7,8,6,7], 9);
+assert fisher == [[-0.20692076425551026, 0.11044691579009712], [-0.3930108381942109, -0.20692076425551026]];
 cross = ta.cross([3,4,5,4,3], [4,3,2,3,4]);
 assert cross == [{'index': 1, 'cross': True}, {'index': 4, 'cross': False}];
 print('Test Passed');

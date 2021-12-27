@@ -793,6 +793,19 @@ def normalize_from(data, value):
     for i in range(1, len(data)):
         ret.append(ret[len(ret)-1]*((data[i]-data[i-1])/data[i-1]+1));
     return ret;
+def fisher(data, l):
+    out = []; fish = 0; v1 = 0;
+    for i in range(l, len(data)):
+        pl = data[i-l:i]; pf = fish;
+        mn = min(pl);
+        v1 = .33*2*((data[i]-mn)/(max(pl)-mn)-.5)+.67*v1;
+        if v1 > .99:
+            v1 = .999;
+        if v1 < -.99:
+            v1 = -.999;
+        fish = 0.5 * math.log((1+v1)/(1-v1)) + 0.5 * pf;
+        out.append([fish, pf]);
+    return out[1:];
 def cross(d1, d2):
     d1 = d1[len(d1)-len(d2):];
     cross = (d1[0] > d2[0]);
