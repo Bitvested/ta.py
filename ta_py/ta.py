@@ -793,3 +793,15 @@ def normalize_from(data, value):
     for i in range(1, len(data)):
         ret.append(ret[len(ret)-1]*((data[i]-data[i-1])/data[i-1]+1));
     return ret;
+def cross(d1, d2):
+    d1 = d1[len(d1)-len(d2):];
+    cross = (d1[0] > d2[0]);
+    indexes = [];
+    for i in range(len(d1)):
+        if d1[i] < d2[i] and cross:
+            indexes.append({"index": i, "cross": False});
+            cross = False;
+        if d1[i] > d2[i] and cross == False:
+            indexes.append({"index": i, "cross": True});
+            cross = True;
+    return indexes;
