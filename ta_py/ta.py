@@ -774,3 +774,12 @@ def se(data, size=0):
         size = len(data);
     stdv = std(data);
     return stdv / (size ** 0.5)
+def zscore(data, l):
+    out = []; pl = data[0:l-1];
+    for i in range(l-1, len(data)):
+        pl.append(data[i]);
+        mean = sma(pl, l);
+        stdv = std(pl, l);
+        out.append((data[i]-mean[0])/stdv);
+        pl = pl[1:];
+    return out;
