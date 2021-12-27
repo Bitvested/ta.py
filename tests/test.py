@@ -149,4 +149,8 @@ avgwin = ta.avgwin([0.01,0.02,-0.01,-0.03,-0.015,0.005]);
 assert avgwin == 0.011666666666666665;
 avgloss = ta.avgloss([0.01,0.02,-0.01,-0.03,-0.015,0.005]);
 assert avgloss == -0.018333333333333333;
+normal_pair = ta.normalize_pair([10,12,11,13],[100,130,100,140]);
+assert normal_pair == [[55,55],[66,71.5],[60.5,54.99999999999999],[71.5,76.99999999999999]];
+normal_from = ta.normalize_from([8,12,10,11], 100);
+assert normal_from == [100,150,125,137.5];
 print('Test Passed');

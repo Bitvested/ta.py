@@ -88,6 +88,8 @@ import ta_py as ta;
 - [Sum Squared Differences](#ssd)
 - [Normalize](#norm)
 - [Denormalize](#dnorm)
+- [Normalize Pair](#normp)
+- [Normalize From](#normf)
 - [Standardize](#standard)
 - [Z-Score](#zscore)
 - [K-means Clustering](#kmeans)
@@ -691,6 +693,22 @@ margin = 0.1; # margin % (default = 0)
 ta.denormalize(data, norm, margin);
 # output (array)
 # [5 ,4, 9, 4, 6.4]
+```
+#### <a id="normp"></a>Normalize Pair
+```python
+pair1 = [10,12,11,13];
+pair2 = [100,130,100,140];
+ta.normalize_pair(pair1, pair2);
+# output (array)
+# [[55, 55], [66, 71.5], [60.5, 54.99], [71.5, 76.99]]
+```
+#### <a id="normf"></a>Normalize From
+```python
+data = [8, 12, 10, 11];
+baseline = 100;
+ta.normalize_from(data, baseline);
+# output (array)
+# [100, 150, 125, 137.5]
 ```
 #### <a id="standard"></a>Standardize
 ```python

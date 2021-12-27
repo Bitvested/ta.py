@@ -783,3 +783,13 @@ def zscore(data, l):
         out.append((data[i]-mean[0])/stdv);
         pl = pl[1:];
     return out;
+def normalize_pair(data1, data2):
+    f = (data1[0] + data2[0]) / 2; ret = [[f,f]];
+    for i in range(1, len(data1)):
+        ret.append([ret[len(ret)-1][0]*((data1[i]-data1[i-1])/data1[i-1]+1),ret[len(ret)-1][1]*((data2[i]-data2[i-1])/data2[i-1]+1)]);
+    return ret;
+def normalize_from(data, value):
+    ret = [value];
+    for i in range(1, len(data)):
+        ret.append(ret[len(ret)-1]*((data[i]-data[i-1])/data[i-1]+1));
+    return ret;
