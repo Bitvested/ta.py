@@ -88,6 +88,7 @@ import ta_py as ta;
 - [Average Absolute Deviation](#aad)
 - [Standard Error](#stderr)
 - [Sum Squared Differences](#ssd)
+- [Logarithm](#log)
 - [Normalize](#norm)
 - [Denormalize](#dnorm)
 - [Normalize Pair](#normp)
@@ -695,6 +696,13 @@ length = 7; # default = len(length)
 ta.ssd(data, length);
 # output (array)
 # [4.87, 4.986, 5.372]
+```
+#### <a id="log"></a>Logarithm
+```python
+data = [5, 14, 18, 28, 68, 103];
+ta.log(data);
+# output (array)
+# [1.61, 2.64, 2.89, 3.33, 4.22, 4.63]
 ```
 #### <a id="norm"></a>Normalize
 ```python

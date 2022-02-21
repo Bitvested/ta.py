@@ -818,3 +818,5 @@ def cross(d1, d2):
             indexes.append({"index": i, "cross": True});
             cross = True;
     return indexes;
+def log(d):
+    return list(map(lambda x: math.log(x),d));
