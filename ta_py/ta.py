@@ -818,6 +818,65 @@ def cross(d1, d2):
             indexes.append({"index": i, "cross": True});
             cross = True;
     return indexes;
+def halftrend(data, atrlen, amplitude, deviation):
+    out = []; nexttrend = [0]; trend = [0]; up = [0]; down = [0]; direction = None;
+    for i in range(atrlen, len(data)):
+        maxlow = data[i-1][2];
+        minhigh = data[i-1][0];
+        atr2 = atr(data[i-atrlen:i], atrlen);
+        atr2 = atr2[len(atr2)-1] / 2;
+        dev = deviation * atr2;
+        highprice = max(data[i-1][0], data[i][0]);
+        lowprice = min(data[i-1][2], data[i][2]);
+        highs = list(map(lambda x: x[0], data[i-amplitude:i]));
+        lows = list(map(lambda x: x[2], data[i-amplitude:i]));
+        highma = sma(highs, len(highs));
+        lowma = sma(lows, len(lows));
+        if nexttrend[len(nexttrend)-1] == 1:
+            maxlow = max(lowprice, maxlow);
+            if highma[0] < maxlow and data[i][1] < data[i-1][2]:
+                trend.append(1);
+                nexttrend.append(0);
+                minhigh = data[i-1][0]
+        else:
+            minhigh = min(highprice, minhigh);
+            if lowma[0] > minhigh and data[i][1] < data[i-1][0]:
+                trend.append(0);
+                nexttrend.append(1);
+                maxlow = lowprice
+        if trend[len(trend)-1] == 0:
+            if not math.isnan(trend[len(trend)-2]) and trend[len(trend)-2] != 0:
+                if math.isnan(down[len(down)-2]):
+                    up.append(down[len(down-1)]);
+                else:
+                    up.append(down[len(down)-2]);
+            else:
+                if math.isnan(up[len(up)-2]):
+                    up.append(maxlow);
+                else:
+                    up.append(max(up[len(up)-2], maxlow));
+            direction = 'long';
+            atrHigh = up[len(up)-1] + dev;
+            atrLow = up[len(up)-1] - dev;
+        else:
+            if not math.isnan(trend[len(trend)-2] and trend[len(trend)-2] != 1):
+                if math.isnan(up[len(up)-2]):
+                    down.append(up[len(up)-1]);
+                else:
+                    down.append(up[len(up)-2]);
+            else:
+                if math.isnan(down[len(down)-2]):
+                    down.append(minhigh);
+                else:
+                    down.append(min(minhigh, down[len(down)-2]));
+            direction = 'short';
+            atrHigh = down[len(down)-1] + dev;
+            atrLow = down[len(down)-1] - dev;
+        if trend[len(trend)-1] == 0:
+            out.append([atrHigh, up[len(up)-1], atrLow, direction]);
+        else:
+            out.append([atrHigh, down[len(down)-1], atrLow, direction]);
+    return out
 def log(d):
     return list(map(lambda x: math.log(x),d));
 def exp(d):
