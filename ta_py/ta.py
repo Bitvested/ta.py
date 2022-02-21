@@ -1,5 +1,4 @@
-import math;
-import random;
+import math, random;
 def median(data, l=0):
     l = (l) if l > 0 else len(data); pl = []; med = [];
     for i in range(len(data)):
@@ -820,27 +819,28 @@ def cross(d1, d2):
     return indexes;
 def halftrend(data, atrlen, amplitude, deviation):
     out = []; nexttrend = [0]; trend = [0]; up = [0]; down = [0]; direction = None;
-    for i in range(atrlen, len(data)):
-        maxlow = data[i-1][2];
-        minhigh = data[i-1][0];
-        atr2 = atr(data[i-atrlen:i], atrlen);
+    for i in range(atrlen, len(data)+1):
+        pl = data[i-atrlen:i];
+        maxlow = pl[len(pl)-2][2];
+        minhigh = pl[len(pl)-2][0];
+        atr2 = atr(pl, atrlen);
         atr2 = atr2[len(atr2)-1] / 2;
         dev = deviation * atr2;
-        highprice = max(data[i-1][0], data[i][0]);
-        lowprice = min(data[i-1][2], data[i][2]);
-        highs = list(map(lambda x: x[0], data[i-amplitude:i]));
-        lows = list(map(lambda x: x[2], data[i-amplitude:i]));
+        highprice = max(pl[len(pl)-2][0], pl[len(pl)-1][0]);
+        lowprice = min(pl[len(pl)-2][2], pl[len(pl)-1][2]);
+        highs = list(map(lambda x: x[0], pl));
+        lows = list(map(lambda x: x[2], pl));
         highma = sma(highs, len(highs));
         lowma = sma(lows, len(lows));
         if nexttrend[len(nexttrend)-1] == 1:
             maxlow = max(lowprice, maxlow);
-            if highma[0] < maxlow and data[i][1] < data[i-1][2]:
+            if highma[0] < maxlow and pl[len(pl)-1][1] < pl[len(pl)-2][2]:
                 trend.append(1);
                 nexttrend.append(0);
-                minhigh = data[i-1][0]
+                minhigh = pl[len(pl)-2][0]
         else:
             minhigh = min(highprice, minhigh);
-            if lowma[0] > minhigh and data[i][1] < data[i-1][0]:
+            if lowma[0] > minhigh and pl[len(pl)-1][1] < pl[len(pl)-2][0]:
                 trend.append(0);
                 nexttrend.append(1);
                 maxlow = lowprice
