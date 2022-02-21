@@ -89,6 +89,7 @@ import ta_py as ta;
 - [Standard Error](#stderr)
 - [Sum Squared Differences](#ssd)
 - [Logarithm](#log)
+- [Exponent](#exp)
 - [Normalize](#norm)
 - [Denormalize](#dnorm)
 - [Normalize Pair](#normp)
@@ -703,6 +704,13 @@ data = [5, 14, 18, 28, 68, 103];
 ta.log(data);
 # output (array)
 # [1.61, 2.64, 2.89, 3.33, 4.22, 4.63]
+```
+#### <a id="exp"></a>Exponent
+```python
+data = [1.6, 2.63, 2.89, 3.33, 4.22, 4.63];
+ta.exp(data);
+# output (array)
+# [4.95, 13.87, 17.99, 27.94, 68.03, 102.51]
 ```
 #### <a id="norm"></a>Normalize
 ```python
