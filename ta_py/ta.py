@@ -794,10 +794,10 @@ def normalize_from(data, value):
     return ret;
 def fisher(data, l):
     out = []; fish = 0; v1 = 0;
-    for i in range(l, len(data)):
+    for i in range(l, len(data)+1):
         pl = data[i-l:i]; pf = fish;
         mn = min(pl);
-        v1 = .33*2*((data[i]-mn)/(max(pl)-mn)-.5)+.67*v1;
+        v1 = .33*2*((data[i-1]-mn)/(max(pl)-mn)-.5)+.67*v1;
         if v1 > .99:
             v1 = .999;
         if v1 < -.99:
