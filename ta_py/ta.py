@@ -881,3 +881,13 @@ def log(d):
     return list(map(lambda x: math.log(x),d));
 def exp(d):
     return list(map(lambda x: math.exp(x),d));
+def covariance(data1, data2, length):
+    out = []; x_mean = sma(data1, len(data1));
+    y_mean = sma(data2, len(data2)); res = 0;
+    for z in range(length, len(data1)+1):
+        x = data1[z-length:z]; y = data2[z-length:z];
+        x_mean = sma(x, length); y_mean = sma(y, length);
+        for i in range(length):
+            res += (x[i]-x_mean[0])*(y[i]-y_mean[0]);
+        out.append(res/length);
+    return out;

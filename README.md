@@ -74,6 +74,7 @@ import ta_py as ta;
 - [Monte Carlo Simulation](#sim)
 - [Percentile](#perc)
 - [Correlation](#cor)
+- [Covariance](#cov)
 - [Percentage Difference](#dif)
 - [Expected Return](#er)
 - [Abnormal Return](#ar)
@@ -604,6 +605,15 @@ data2 = [1, 3, 2, 4, 6, 3];
 ta.cor(data1, data2);
 # output (float)
 # 0.8808929232684737
+```
+#### <a id="cov"></a>Covariance
+```python
+data1 = [12,13,25,39];
+data2 = [67,45,32,21];
+length = 4;
+ta.covariance(data1, data2, 4);
+# output (array)
+# [-165.8125]
 ```
 #### <a id="dif"></a>Percentage Difference
 ```python
