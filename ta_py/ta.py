@@ -906,10 +906,11 @@ def zigzag(data, perc=0.05):
     lmin = False; lmax = False;
     for i in range(len(data)):
         if lmin:
+            if min >= data[i][1]: min = data[i][1];
             if indexes[len(indexes)-1]['value'] >= data[i][1]:
                 indexes[len(indexes)-1]['value'] = data[i][1];
                 indexes[len(indexes)-1]['index'] = i;
-            if min >= data[i][1]: min = data[i][1];
+                continue
             hdif = (data[i][0]-min)/min;
             if hdif > perc:
                 indexes.append({'index': i, 'value': data[i][0]});
@@ -917,10 +918,11 @@ def zigzag(data, perc=0.05):
                 lmin = False;
                 min = float('inf');
         elif lmax:
+            if max <= data[i][1]: max = data[i][1];
             if indexes[len(indexes)-1]['value'] <= data[i][0]:
                 indexes[len(indexes)-1]['value'] = data[i][0];
                 indexes[len(indexes)-1]['index'] = i;
-            if max <= data[i][1]: max = data[i][1];
+                continue
             ldif = (max-data[i][1])/data[i][1];
             if ldif > perc:
                 indexes.append({'index': i, 'value': data[i][1]});
@@ -930,6 +932,7 @@ def zigzag(data, perc=0.05):
         else:
             if min >= data[i][0]: min = data[i][1];
             if max <= data[i][0]: max = data[i][0];
+            if i == 0: continue
             hdif = (data[i][0]-min)/min;
             ldif = (max-data[i][1])/max;
             if ldif > perc and hdif < perc:
@@ -951,8 +954,12 @@ def zigzag(data, perc=0.05):
                     indexes.append({'index': i, 'value': data[i][0]});
     final = [indexes[0]['value']];
     for i in range(1,len(indexes)):
-        length = indexes[i]['index'] - indexes[i-1]['index'];
-        delta = (indexes[i]['value'] - indexes[i-1]['value']) / length;
-        for x in range(1, length+1):
-            final.append(x*delta+indexes[i-1]['value']);
+        try:
+            length = indexes[i]['index'] - indexes[i-1]['index'];
+            delta = (indexes[i]['value'] - indexes[i-1]['value']) / length;
+            for x in range(1, length+1):
+                final.append(x*delta+indexes[i-1]['value']);
+        except:
+            print(indexes[i])
+            print(indexes[i-1])
     return final;
