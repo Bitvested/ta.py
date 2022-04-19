@@ -167,4 +167,6 @@ covariance = ta.covariance([12,13,25,39],[67,45,32,21],4);
 assert covariance == [-165.8125];
 ncdf = ta.ncdf(13,10,2);
 assert ncdf == 0.9331737996110652;
+zig = ta.zigzag([[10,9], [12,10], [14,12], [15,13], [16,15], [11,10], [18,15]], 0.25);
+assert zig == [9, 10.75, 12.5, 14.25, 16, 10, 18];
 print('Test Passed');

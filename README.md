@@ -54,6 +54,7 @@ import ta_py as ta;
 - [Crossover](#cross)
 - [Momentum](#mom)
 - [HalfTrend](#half)
+- [ZigZag](#zigzag)
 #### Oscillators
 - [Alligator Oscillator](#gator)
 - [Chande Momentum Oscillator](#mom_osc)
@@ -450,6 +451,14 @@ ta.halftrend(data, atrlen, amplitude, deviation);
 #   [ 116.25, 105, 93.75, 'long' ],
 #   [ 99.77, 90, 80.23, 'long' ]
 # ]
+```
+#### <a id="zigzag"></a>ZigZag
+```python
+data = [[10,9], [12,10], [14,12], [15,13], [16,15], [11,10], [18,15]]; # [high, low]
+percentage = 0.25; # default = 0.05
+ta.zigzag(data, percentage);
+# output (array)
+# [9, 10.75, 12.5, 14.25, 16, 10, 18]
 ```
 ### Oscillators
 #### <a id="gator"></a>Alligator Oscillator
