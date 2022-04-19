@@ -70,6 +70,7 @@ import ta_py as ta;
 #### Statistics
 - [Standard Deviation](#std)
 - [Variance](#variance)
+- [Normal CDF](#ncdf)
 - [Inverse Normal Distribution](#normsinv)
 - [Monte Carlo Simulation](#sim)
 - [Percentile](#perc)
@@ -572,6 +573,20 @@ length = 7; # default = len(data)
 ta.variance(data, length);
 # output (array)
 # [3.918, 5.061]
+```
+#### <a id="ncdf"></a>Normal CDF
+```python
+sample = 13;
+mean = 10;
+stdv = 2;
+ta.ncdf(sample, mean, stdv);
+# output (float)
+# 0.9331737996110652
+
+zscore = 1.5;
+ta.ncdf(zscore);
+# output (float)
+# 0.9331737996110652
 ```
 #### <a id="normsinv"></a>Inverse Normal Distribution
 ```python

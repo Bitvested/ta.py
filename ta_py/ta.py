@@ -891,3 +891,13 @@ def covariance(data1, data2, length):
             res += (x[i]-x_mean[0])*(y[i]-y_mean[0]);
         out.append(res/length);
     return out;
+def ncdf(x, mean=0, std=0):
+    if mean != 0 and std != 0:
+        x = (x - mean) / std;
+    t = 1 / ( 1+ .2315419 * abs(x));
+    d = .3989423*math.exp(-x*x/2);
+    p = d*t*(.3193815+t*(-.3565638+t*(1.781478+t*(-1.821256+t*1.330274))));
+    if x > 0:
+        return 1 - p;
+    else:
+        return p;
