@@ -963,3 +963,30 @@ def zigzag(data, perc=0.05):
             print(indexes[i])
             print(indexes[i-1])
     return final;
+def psar(data, step=0.02, maxi=0.2):
+    furthest = data[0]; up = True; accel = step; prev = data[0];
+    sar = data[0][1]; extreme = data[0][0]; final = [sar];
+    for i in range(1, len(data)):
+        sar = sar + accel * (extreme - sar);
+        if up:
+            sar = min(sar, furthest[1], prev[1]);
+            if data[i][0] > extreme:
+                extreme = data[i][0];
+                accel = min(accel+step, maxi);
+        else:
+            sar = max(sar, furthest[0], prev[0]);
+            if data[i][1] < extreme:
+                extreme = data[i][0];
+                accel = min(accel + step, maxi);
+        if (up and data[i][1] < sar) or (not up and data[i][0] > sar):
+            accel = step;
+            sar = extreme;
+            up = not up;
+            if not up:
+                extreme = data[i][1];
+            else:
+                extreme = data[i][0];
+        furthest = prev;
+        prev = data[i];
+        final.append(sar);
+    return final;

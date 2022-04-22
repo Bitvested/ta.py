@@ -55,6 +55,7 @@ import ta_py as ta;
 - [Momentum](#mom)
 - [HalfTrend](#half)
 - [ZigZag](#zigzag)
+- [Parabolic SAR](#psar)
 #### Oscillators
 - [Alligator Oscillator](#gator)
 - [Chande Momentum Oscillator](#mom_osc)
@@ -459,6 +460,15 @@ percentage = 0.25; # default = 0.05
 ta.zigzag(data, percentage);
 # output (array)
 # [9, 10.75, 12.5, 14.25, 16, 10, 18]
+```
+#### <a id="psar"></a>Parabolic SAR
+```python
+data = [[82.15,81.29],[81.89,80.64],[83.03,81.31],[83.30,82.65],[83.85,83.07],[83.90,83.11],[83.33,82.49],[84.30,82.3],[84.84,84.15],[85,84.11],[75.9,74.03],[76.58,75.39],[76.98,75.76],[78,77.17],[70.87,70.01]];
+step = 0.02;
+max = 0.2;
+ta.psar(data, step, max);
+# output (array)
+# [81.29,82.15,80.64,80.64,80.7464,80.932616,81.17000672,81.3884061824,81.67956556416,82.0588176964608,85,85,84.7806,84.565588,84.35487624000001]
 ```
 ### Oscillators
 #### <a id="gator"></a>Alligator Oscillator
