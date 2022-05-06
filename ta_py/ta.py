@@ -904,61 +904,104 @@ def ncdf(x, mean=0, std=0):
 def zigzag(data, perc=0.05):
     indexes = []; min = float('inf'); max = float('-inf');
     lmin = False; lmax = False;
-    for i in range(len(data)):
-        if lmin:
-            if min >= data[i][1]: min = data[i][1];
-            if indexes[len(indexes)-1]['value'] >= data[i][1]:
-                indexes[len(indexes)-1]['value'] = data[i][1];
-                indexes[len(indexes)-1]['index'] = i;
-                continue
-            hdif = (data[i][0]-min)/min;
-            if hdif > perc:
-                indexes.append({'index': i, 'value': data[i][0]});
-                lmax = True;
-                lmin = False;
-                min = float('inf');
-        elif lmax:
-            if max <= data[i][1]: max = data[i][1];
-            if indexes[len(indexes)-1]['value'] <= data[i][0]:
-                indexes[len(indexes)-1]['value'] = data[i][0];
-                indexes[len(indexes)-1]['index'] = i;
-                continue
-            ldif = (max-data[i][1])/data[i][1];
-            if ldif > perc:
-                indexes.append({'index': i, 'value': data[i][1]});
-                lmin = True;
-                lmax = False;
-                max = float('-inf');
-        else:
-            if min >= data[i][0]: min = data[i][1];
-            if max <= data[i][0]: max = data[i][0];
-            if i == 0: continue
-            hdif = (data[i][0]-min)/min;
-            ldif = (max-data[i][1])/max;
-            if ldif > perc and hdif < perc:
-                lmin = True;
-                indexes.append({'index': 0, 'value': data[0][0]});
-                indexes.append({'index': i, 'value': data[i][1]});
-            elif hdif > perc and ldif < perc:
-                lmax = True;
-                indexes.append({'index': 0, 'value': data[0][1]});
-                indexes.append({'index': i, 'value': data[i][0]});
+    if isinstance(data[0], list):
+        for i in range(len(data)):
+            if lmin:
+                if min >= data[i][1]: min = data[i][1];
+                if indexes[len(indexes)-1]['value'] >= data[i][1]:
+                    indexes[len(indexes)-1]['value'] = data[i][1];
+                    indexes[len(indexes)-1]['index'] = i;
+                    continue
+                hdif = (data[i][0]-min)/min;
+                if hdif > perc:
+                    indexes.append({'index': i, 'value': data[i][0]});
+                    lmax = True;
+                    lmin = False;
+                    min = float('inf');
+            elif lmax:
+                if max <= data[i][1]: max = data[i][1];
+                if indexes[len(indexes)-1]['value'] <= data[i][0]:
+                    indexes[len(indexes)-1]['value'] = data[i][0];
+                    indexes[len(indexes)-1]['index'] = i;
+                    continue
+                ldif = (max-data[i][1])/data[i][1];
+                if ldif > perc:
+                    indexes.append({'index': i, 'value': data[i][1]});
+                    lmin = True;
+                    lmax = False;
+                    max = float('-inf');
             else:
-                if ldif > hdif:
+                if min >= data[i][0]: min = data[i][1];
+                if max <= data[i][0]: max = data[i][0];
+                if i == 0: continue
+                hdif = (data[i][0]-min)/min;
+                ldif = (max-data[i][1])/max;
+                if ldif > perc and hdif < perc:
                     lmin = True;
                     indexes.append({'index': 0, 'value': data[0][0]});
                     indexes.append({'index': i, 'value': data[i][1]});
-                else:
+                elif hdif > perc and ldif < perc:
                     lmax = True;
                     indexes.append({'index': 0, 'value': data[0][1]});
                     indexes.append({'index': i, 'value': data[i][0]});
+                else:
+                    if ldif > hdif:
+                        lmin = True;
+                        indexes.append({'index': 0, 'value': data[0][0]});
+                        indexes.append({'index': i, 'value': data[i][1]});
+                    else:
+                        lmax = True;
+                        indexes.append({'index': 0, 'value': data[0][1]});
+                        indexes.append({'index': i, 'value': data[i][0]});
+    else:
+        for i in range(len(data)):
+            if lmin:
+                if min >= data[i]: min = data[i];
+                if indexes[len(indexes)-1]['value'] >= data[i]:
+                    indexes[len(indexes)-1]['value'] = data[i];
+                    indexes[len(indexes)-1]['index'] = i;
+                    continue
+                hdif = (data[i]-min)/min;
+                if hdif > perc:
+                    indexes.append({'index': i, 'value': data[i]});
+                    lmax = True;
+                    lmin = False;
+                    min = float('inf');
+            elif lmax:
+                if max <= data[i]: max = data[i];
+                if indexes[len(indexes)-1]['value'] <= data[i]:
+                    indexes[len(indexes)-1]['value'] = data[i];
+                    indexes[len(indexes)-1]['index'] = i;
+                    continue
+                ldif = (max-data[i])/data[i];
+                if ldif > perc:
+                    indexes.append({'index': i, 'value': data[i]});
+                    lmin = True;
+                    lmax = False;
+                    max = float('-inf');
+            else:
+                if min >= data[i]: min = data[i];
+                if max <= data[i]: max = data[i];
+                if i == 0: continue
+                hdif = (data[i]-min)/min;
+                ldif = (max-data[i])/max;
+                indexes.append({'index': 0, 'value': data[0]});
+                indexes.append({'index': i, 'value': data[i]});
+                if ldif > perc and hdif < perc:
+                    lmin = True;
+                elif hdif > perc and ldif < perc:
+                    lmax = True;
+                else:
+                    if ldif > hdif:
+                        lmin = True;
+                    else:
+                        lmax = True;
     final = [indexes[0]['value']];
     for i in range(1,len(indexes)):
         length = indexes[i]['index'] - indexes[i-1]['index'];
         delta = (indexes[i]['value'] - indexes[i-1]['value']) / length;
         for x in range(1, length+1):
             final.append(x*delta+indexes[i-1]['value']);
-    return final;
     return final;
 def psar(data, step=0.02, maxi=0.2):
     furthest = data[0]; up = True; accel = step; prev = data[0];
