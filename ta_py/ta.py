@@ -954,14 +954,11 @@ def zigzag(data, perc=0.05):
                     indexes.append({'index': i, 'value': data[i][0]});
     final = [indexes[0]['value']];
     for i in range(1,len(indexes)):
-        try:
-            length = indexes[i]['index'] - indexes[i-1]['index'];
-            delta = (indexes[i]['value'] - indexes[i-1]['value']) / length;
-            for x in range(1, length+1):
-                final.append(x*delta+indexes[i-1]['value']);
-        except:
-            print(indexes[i])
-            print(indexes[i-1])
+        length = indexes[i]['index'] - indexes[i-1]['index'];
+        delta = (indexes[i]['value'] - indexes[i-1]['value']) / length;
+        for x in range(1, length+1):
+            final.append(x*delta+indexes[i-1]['value']);
+    return final;
     return final;
 def psar(data, step=0.02, maxi=0.2):
     furthest = data[0]; up = True; accel = step; prev = data[0];
