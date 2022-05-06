@@ -455,11 +455,20 @@ ta.halftrend(data, atrlen, amplitude, deviation);
 ```
 #### <a id="zigzag"></a>ZigZag
 ```python
+# Based on high / low
 data = [[10,9], [12,10], [14,12], [15,13], [16,15], [11,10], [18,15]]; # [high, low]
 percentage = 0.25; # default = 0.05
 ta.zigzag(data, percentage);
 # output (array)
 # [9, 10.75, 12.5, 14.25, 16, 10, 18]
+```
+```python
+# Based on close
+data = [6,7,8,9,10,12,9,8,5,3,3,3,5,7,8,9,11];
+percentage = 0.05;
+ta.zigzag(data, percentage);
+# output (array)
+# 6, 7.2, 8.4, 9.6, 10.8, 12.0, 10.5, 9.0, 7.5, 6.0, 4.5, 3.0, 4.6, 6.2, 7.8, 9.4, 11.0
 ```
 #### <a id="psar"></a>Parabolic SAR
 ```python
@@ -601,7 +610,8 @@ stdv = 2;
 ta.ncdf(sample, mean, stdv);
 # output (float)
 # 0.9331737996110652
-
+```
+```python
 zscore = 1.5;
 ta.ncdf(zscore);
 # output (float)
