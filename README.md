@@ -68,6 +68,7 @@ import ta_py as ta;
 - [Bollinger Bands](#bands)
 - [Keltner Channels](#kelt)
 - [Donchian Channels](#don)
+- [Fibonacci Bollinger Bands](#fibbands)
 - [Envelope](#env)
 #### Statistics
 - [Standard Deviation](#std)
@@ -468,7 +469,7 @@ data = [6,7,8,9,10,12,9,8,5,3,3,3,5,7,8,9,11];
 percentage = 0.05;
 ta.zigzag(data, percentage);
 # output (array)
-# 6, 7.2, 8.4, 9.6, 10.8, 12.0, 10.5, 9.0, 7.5, 6.0, 4.5, 3.0, 4.6, 6.2, 7.8, 9.4, 11.0
+# [6, 7.2, 8.4, 9.6, 10.8, 12.0, 10.5, 9.0, 7.5, 6.0, 4.5, 3.0, 4.6, 6.2, 7.8, 9.4, 11.0]
 ```
 #### <a id="psar"></a>Parabolic SAR
 ```python
@@ -574,6 +575,15 @@ ta.don(data, length);
 # output (array)
 # [[7, 4.5, 2], [7, 4.5, 2]]
 # [upper band, base line, lower band]
+```
+#### <a id="fibbands"></a>Fibonacci Bollinger Bands
+```python
+data = [[1,59],[1.1,82],[1.21,27],[1.42,73],[1.32,42]];
+length = 4;
+deviations = 3;
+ta.fibbands(data, length, deviations);
+# output (array)
+# [[highest band -> fibonacci levels -> lowest band]]
 ```
 #### <a id="env"></a>Envelope
 ```python
