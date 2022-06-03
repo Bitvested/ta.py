@@ -1030,3 +1030,28 @@ def psar(data, step=0.02, maxi=0.2):
         prev = data[i];
         final.append(sar);
     return final;
+def fibbands(data, length=20, deviations=3):
+    pl = []; deviation = []; ma = vwma(data, length); closes = []; boll = [];
+    for i in range(0, len(data)):
+        closes.append(data[i][0]);
+    for i in range(0, len(closes)):
+        pl.append(closes[i]);
+        if len(pl) >= length:
+            devi = std(pl, length);
+            deviation.append(devi*3);
+            pl = pl[1:];
+    for i in range(0, len(ma)):
+        upper1 = ma[i] + (0.236 * deviation[i]);
+        upper2 = ma[i] + (0.382 * deviation[i]);
+        upper3 = ma[i] + (0.5 * deviation[i]);
+        upper4 = ma[i] + (0.618 * deviation[i]);
+        upper5 = ma[i] + (0.764 * deviation[i]);
+        upper6 = ma[i] + deviation[i];
+        lower1 = ma[i] - 0.236 * deviation[i];
+        lower2 = ma[i] - 0.382 * deviation[i];
+        lower3 = ma[i] - 0.5 * deviation[i];
+        lower4 = ma[i] - 0.618 * deviation[i];
+        lower5 = ma[i] - 0.764 * deviation[i];
+        lower6 = ma[i] - deviation[i];
+        boll.append([upper6, upper5, upper4, upper3, upper2, upper1, ma[i], lower1, lower2, lower3, lower4, lower5, lower6])
+    return boll;
