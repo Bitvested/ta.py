@@ -1031,11 +1031,9 @@ def psar(data, step=0.02, maxi=0.2):
         final.append(sar);
     return final;
 def fibbands(data, length=20, deviations=3):
-    pl = []; deviation = []; ma = vwma(data, length); closes = []; boll = [];
+    pl = []; deviation = []; ma = vwma(data, length); boll = [];
     for i in range(0, len(data)):
-        closes.append(data[i][0]);
-    for i in range(0, len(closes)):
-        pl.append(closes[i]);
+        pl.append(data[i][0]);
         if len(pl) >= length:
             devi = std(pl, length);
             deviation.append(devi*3);
