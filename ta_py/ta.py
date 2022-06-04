@@ -1036,7 +1036,7 @@ def fibbands(data, length=20, deviations=3):
         pl.append(data[i][0]);
         if len(pl) >= length:
             devi = std(pl, length);
-            deviation.append(devi*3);
+            deviation.append(devi*deviations);
             pl = pl[1:];
     for i in range(0, len(ma)):
         upper1 = ma[i] + (0.236 * deviation[i]);
