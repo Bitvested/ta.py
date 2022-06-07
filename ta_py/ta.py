@@ -912,7 +912,10 @@ def zigzag(data, perc=0.05):
                     indexes[len(indexes)-1]['value'] = data[i][1];
                     indexes[len(indexes)-1]['index'] = i;
                     continue
-                hdif = (data[i][0]-min)/min;
+                try:
+                    hdif = (data[i][0]-min)/min;
+                except:
+                    hdif = 100
                 if hdif > perc:
                     indexes.append({'index': i, 'value': data[i][0]});
                     lmax = True;
@@ -924,7 +927,10 @@ def zigzag(data, perc=0.05):
                     indexes[len(indexes)-1]['value'] = data[i][0];
                     indexes[len(indexes)-1]['index'] = i;
                     continue
-                ldif = (max-data[i][1])/data[i][1];
+                try:
+                    ldif = (max-data[i][1])/data[i][1];
+                except:
+                    ldif = 100
                 if ldif > perc:
                     indexes.append({'index': i, 'value': data[i][1]});
                     lmin = True;
@@ -934,8 +940,14 @@ def zigzag(data, perc=0.05):
                 if min >= data[i][0]: min = data[i][1];
                 if max <= data[i][0]: max = data[i][0];
                 if i == 0: continue
-                hdif = (data[i][0]-min)/min;
-                ldif = (max-data[i][1])/max;
+                try:
+                    hdif = (data[i][0]-min)/min;
+                except:
+                    hdif = 100
+                try:
+                    ldif = (max-data[i][1])/max;
+                except:
+                    ldif = 100
                 if ldif > perc and hdif < perc:
                     lmin = True;
                     indexes.append({'index': 0, 'value': data[0][0]});
@@ -961,7 +973,10 @@ def zigzag(data, perc=0.05):
                     indexes[len(indexes)-1]['value'] = data[i];
                     indexes[len(indexes)-1]['index'] = i;
                     continue
-                hdif = (data[i]-min)/min;
+                try:
+                    hdif = (data[i]-min)/min;
+                except:
+                    hdif = 100
                 if hdif > perc:
                     indexes.append({'index': i, 'value': data[i]});
                     lmax = True;
@@ -983,8 +998,14 @@ def zigzag(data, perc=0.05):
                 if min >= data[i]: min = data[i];
                 if max <= data[i]: max = data[i];
                 if i == 0: continue
-                hdif = (data[i]-min)/min;
-                ldif = (max-data[i])/max;
+                try:
+                    hdif = (data[i]-min)/min;
+                except:
+                    hdif = 100
+                try:
+                    ldif = (max-data[i])/max;
+                except:
+                    ldif = 100
                 indexes.append({'index': 0, 'value': data[0]});
                 indexes.append({'index': i, 'value': data[i]});
                 if ldif > perc and hdif < perc:
