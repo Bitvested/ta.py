@@ -828,10 +828,10 @@ def halftrend(data, atrlen, amplitude, deviation):
         dev = deviation * atr2;
         highprice = max(pl[len(pl)-2][0], pl[len(pl)-1][0]);
         lowprice = min(pl[len(pl)-2][2], pl[len(pl)-1][2]);
-        highs = list(map(lambda x: x[0], pl));
-        lows = list(map(lambda x: x[2], pl));
-        highma = sma(highs, len(highs));
-        lowma = sma(lows, len(lows));
+        highs = list(map(lambda x: x[0], pl[len(pl)-amplitude:len(pl)]));
+        lows = list(map(lambda x: x[2], pl[len(pl)-amplitude:len(pl)]));
+        highma = sma(highs, amplitude);
+        lowma = sma(lows, amplitude);
         if nexttrend[len(nexttrend)-1] == 1:
             maxlow = max(lowprice, maxlow);
             if highma[0] < maxlow and pl[len(pl)-1][1] < pl[len(pl)-2][2]:
