@@ -51,7 +51,11 @@ import ta_py as ta;
 - [On-Balance Volume](#obv)
 - [Volume-Weighted Average Price](#vwap)
 - [Fractals](#fractals)
+- [Crossover](#cross)
 - [Momentum](#mom)
+- [HalfTrend](#half)
+- [ZigZag](#zigzag)
+- [Parabolic SAR](#psar)
 #### Oscillators
 - [Alligator Oscillator](#gator)
 - [Chande Momentum Oscillator](#mom_osc)
@@ -59,30 +63,45 @@ import ta_py as ta;
 - [Aroon Oscillator](#aroon-osc)
 - [Awesome Oscillator](#ao)
 - [Accelerator Oscillator](#ac)
+- [Fisher Transform](#fish)
 #### Bands
 - [Bollinger Bands](#bands)
 - [Keltner Channels](#kelt)
 - [Donchian Channels](#don)
+- [Fibonacci Bollinger Bands](#fibbands)
 - [Envelope](#env)
 #### Statistics
 - [Standard Deviation](#std)
 - [Variance](#variance)
+- [Normal CDF](#ncdf)
 - [Inverse Normal Distribution](#normsinv)
 - [Monte Carlo Simulation](#sim)
 - [Percentile](#perc)
 - [Correlation](#cor)
+- [Covariance](#cov)
 - [Percentage Difference](#dif)
 - [Expected Return](#er)
+- [Abnormal Return](#ar)
+- [Kelly Criterion](#kelly)
+- [Winratio](#winratio)
+- [Average Win](#avgwin)
+- [Average Loss](#avgloss)
 - [Drawdown](#drawdown)
 - [Median](#median)
 - [Recent High](#rh)
 - [Recent Low](#rl)
 - [Median Absolute Deviation](#mad)
 - [Average Absolute Deviation](#aad)
+- [Standard Error](#stderr)
 - [Sum Squared Differences](#ssd)
+- [Logarithm](#log)
+- [Exponent](#exp)
 - [Normalize](#norm)
 - [Denormalize](#dnorm)
+- [Normalize Pair](#normp)
+- [Normalize From](#normf)
 - [Standardize](#standard)
+- [Z-Score](#zscore)
 - [K-means Clustering](#kmeans)
 #### Chart Types
 - [Heikin Ashi](#ha)
@@ -384,7 +403,7 @@ ta.obv(data);
 #### <a id="vwap"></a>Volume-Weighted Average Price
 ```python
 data = [[127.21, 89329], [127.17, 16137], [127.16, 23945]]; # [average price, volume (quantity)]
-length = 2; # default = data.length
+length = 2; # default = len(length)
 ta.vwap(data, length);
 # output (array)
 # [127.204, 127.164]
@@ -397,6 +416,15 @@ ta.fractals(data);
 # [[false, false],[false,false],[true,false],[false,false],[false,false],[false,true],[false,false],[false,false]]
 # [upper fractal, lower fractal]
 ```
+#### <a id="cross"></a>Crossover (golden cross)
+```python
+fastdata = [3,4,5,4,3]; # short period gets spliced when longer
+slowdata = [4,3,2,3,4];
+ta.cross(fastdata, slowdata);
+# output (array)
+# [{index: 1, cross True}, {index: 4, cross: False}]
+# cross is true when fastdata is greater than the slowdata
+```
 #### <a id="mom"></a>Momentum
 ```python
 data = [1, 1.1, 1.2, 1.24, 1.34];
@@ -405,6 +433,52 @@ percentage = false; # default = false (true returns percentage)
 ta.mom(data, length, percentage);
 # output (array)
 # [0.24, 0.24]
+```
+#### <a id="half"></a>HalfTrend
+```python
+# experimental (untested) function (may change in the future), ported from:
+# https://www.tradingview.com/script/U1SJ8ubc-HalfTrend/
+# data = [high, close, low]
+data = [[100,97,90],[101,98,94],[103,96,92],[106,100,95],[110,101,100],[112,110,105],[110,100,90],[103,100,97],[95,90,85],[94,80,80],[90,82,81],[85,80,70]];
+atrlen = 6;
+amplitude = 3;
+deviation = 2;
+ta.halftrend(data, atrlen, amplitude, deviation);
+# output (array)
+# [
+#   [ 115.14, 105, 94.86, 'long' ],
+#   [ 100.77, 90, 79.22, 'long' ],
+#   [ 116.32, 105, 93.68, 'long' ],
+#   [ 101.1, 90, 78.89, 'long' ],
+#   [ 116.25, 105, 93.75, 'long' ],
+#   [ 99.77, 90, 80.23, 'long' ]
+# ]
+```
+#### <a id="zigzag"></a>ZigZag
+```python
+# Based on high / low
+data = [[10,9], [12,10], [14,12], [15,13], [16,15], [11,10], [18,15]]; # [high, low]
+percentage = 0.25; # default = 0.05
+ta.zigzag(data, percentage);
+# output (array)
+# [9, 10.75, 12.5, 14.25, 16, 10, 18]
+```
+```python
+# Based on close
+data = [6,7,8,9,10,12,9,8,5,3,3,3,5,7,8,9,11];
+percentage = 0.05;
+ta.zigzag(data, percentage);
+# output (array)
+# [6, 7.2, 8.4, 9.6, 10.8, 12.0, 10.5, 9.0, 7.5, 6.0, 4.5, 3.0, 4.6, 6.2, 7.8, 9.4, 11.0]
+```
+#### <a id="psar"></a>Parabolic SAR
+```python
+data = [[82.15,81.29],[81.89,80.64],[83.03,81.31],[83.30,82.65],[83.85,83.07],[83.90,83.11],[83.33,82.49],[84.30,82.3],[84.84,84.15],[85,84.11],[75.9,74.03],[76.58,75.39],[76.98,75.76],[78,77.17],[70.87,70.01]];
+step = 0.02;
+max = 0.2;
+ta.psar(data, step, max);
+# output (array)
+# [81.29,82.15,80.64,80.64,80.7464,80.932616,81.17000672,81.3884061824,81.67956556416,82.0588176964608,85,85,84.7806,84.565588,84.35487624000001]
 ```
 ### Oscillators
 #### <a id="gator"></a>Alligator Oscillator
@@ -464,6 +538,14 @@ ta.ac(data, shortlength, longlength);
 # output (array)
 # [-5.875, -6.125, -6.5]
 ```
+#### <a id="fish"></a>Fisher Transform
+```python
+data = [8,6,8,9,7,8,9,8,7,8,6,7]; # high + low / 2
+length = 9;
+ta.fisher(data, length);
+# output (array)
+# [[-0.318, -0.11], [-0.449, -0.318], [-0.616, -0.449]] # [fisher, trigger]
+```
 ### Bands
 #### <a id="bands"></a>Bollinger Bands
 ```python
@@ -494,6 +576,15 @@ ta.don(data, length);
 # [[7, 4.5, 2], [7, 4.5, 2]]
 # [upper band, base line, lower band]
 ```
+#### <a id="fibbands"></a>Fibonacci Bollinger Bands
+```python
+data = [[1,59],[1.1,82],[1.21,27],[1.42,73],[1.32,42]];
+length = 4;
+deviations = 3;
+ta.fibbands(data, length, deviations);
+# output (array)
+# [[highest band -> fibonacci levels -> lowest band]]
+```
 #### <a id="env"></a>Envelope
 ```python
 data = [6,7,8,7,6,7,8,7,8,7,8,7,8];
@@ -508,7 +599,7 @@ ta.envelope(data, length, percentage);
 #### <a id="std"></a>Standard Deviation
 ```python
 data = [1, 2, 3];
-length = 3; # default = data.length
+length = 3; # default = len(length)
 ta.std(data, length);
 # output (float)
 # 0.81649658092773
@@ -520,6 +611,21 @@ length = 7; # default = len(data)
 ta.variance(data, length);
 # output (array)
 # [3.918, 5.061]
+```
+#### <a id="ncdf"></a>Normal CDF
+```python
+sample = 13;
+mean = 10;
+stdv = 2;
+ta.ncdf(sample, mean, stdv);
+# output (float)
+# 0.9331737996110652
+```
+```python
+zscore = 1.5;
+ta.ncdf(zscore);
+# output (float)
+# 0.9331737996110652
 ```
 #### <a id="normsinv"></a>Inverse Normal Distribution
 ```python
@@ -554,6 +660,15 @@ ta.cor(data1, data2);
 # output (float)
 # 0.8808929232684737
 ```
+#### <a id="cov"></a>Covariance
+```python
+data1 = [12,13,25,39];
+data2 = [67,45,32,21];
+length = 4;
+ta.covariance(data1, data2, 4);
+# output (array)
+# [-165.8125]
+```
 #### <a id="dif"></a>Percentage Difference
 ```python
 newval = 0.75;
@@ -569,6 +684,42 @@ ta.er(data);
 # output (float)
 # 0.0119
 ```
+#### <a id="ar"></a>Abnormal Return
+```python
+data = [0.02, -0.01, 0.03, 0.05, -0.03]; # historical return data
+length = 3;
+ta.ar(data, length);
+# output (array)
+# [0.037, -0.053]
+```
+#### <a id="kelly"></a>Kelly Criterion
+```python
+data = [0.01, 0.02, -0.01, -0.03, -0.015, 0.045, 0.005];
+ta.kelly(data);
+# output (float)
+# 0.1443
+```
+#### <a id="winratio"></a>Winratio
+```python
+var data = [0.01, 0.02, -0.01, -0.03, -0.015, 0.005];
+ta.winratio(data);
+# output (float)
+# 0.5
+```
+#### <a id="avgwin"></a> Average Win
+```python
+data = [0.01, 0.02, -0.01, -0.03, -0.015, 0.005];
+ta.avgwin(data);
+# output (float)
+# 0.012
+```
+#### <a id="avgloss"></a> Average Loss
+```python
+data = [0.01, 0.02, -0.01, -0.03, -0.015, 0.005];
+ta.avgloss(data);
+# output (float)
+# -0.018
+```
 #### <a id="drawdown"></a>Drawdown
 ```python
 data = [1, 2, 3, 4, 2, 3];
@@ -579,7 +730,7 @@ ta.drawdown([1,2,3,4,2,3]);
 #### <a id="median"></a>Median
 ```python
 data = [4, 6, 3, 1, 2, 5];
-length = 4; # default = data.length
+length = 4; # default = len(data)
 ta.median(data, length);
 # output (array)
 # [3, 2, 2]
@@ -616,13 +767,35 @@ ta.aad(data, length);
 # output (array)
 # [1.673, 1.469]
 ```
+#### <a id="stderr"></a>Standard Error
+```python
+data = [34, 54, 45, 43, 57, 38, 49];
+size = 10; # default = len(data)
+ta.se(data, size);
+# output (float)
+# 2.424
+```
 #### <a id="ssd"></a>Sum Squared Differences
 ```python
 data = [7, 6, 5, 7, 9, 8, 3, 5, 4];
-length = 7; # default = data.length
+length = 7; # default = len(length)
 ta.ssd(data, length);
 # output (array)
 # [4.87, 4.986, 5.372]
+```
+#### <a id="log"></a>Logarithm
+```python
+data = [5, 14, 18, 28, 68, 103];
+ta.log(data);
+# output (array)
+# [1.61, 2.64, 2.89, 3.33, 4.22, 4.63]
+```
+#### <a id="exp"></a>Exponent
+```python
+data = [1.6, 2.63, 2.89, 3.33, 4.22, 4.63];
+ta.exp(data);
+# output (array)
+# [4.95, 13.87, 17.99, 27.94, 68.03, 102.51]
 ```
 #### <a id="norm"></a>Normalize
 ```python
@@ -641,12 +814,36 @@ ta.denormalize(data, norm, margin);
 # output (array)
 # [5 ,4, 9, 4, 6.4]
 ```
+#### <a id="normp"></a>Normalize Pair
+```python
+pair1 = [10,12,11,13];
+pair2 = [100,130,100,140];
+ta.normalize_pair(pair1, pair2);
+# output (array)
+# [[55, 55], [66, 71.5], [60.5, 54.99], [71.5, 76.99]]
+```
+#### <a id="normf"></a>Normalize From
+```python
+data = [8, 12, 10, 11];
+baseline = 100;
+ta.normalize_from(data, baseline);
+# output (array)
+# [100, 150, 125, 137.5]
+```
 #### <a id="standard"></a>Standardize
 ```python
 data = [6,4,6,8,6];
 ta.standardize(data);
 # output (array)
 # [0, -1.581, 0, 1.581, 0]
+```
+#### <a id="zscore"></a>Z-Score
+```python
+data = [34,54,45,43,57,38,49];
+length = 5;
+ta.zscore(data, length);
+# output (array)
+# [1.266, -1.331, 0.408]
 ```
 #### <a id="kmeans"></a>K-means Clustering
 ```python

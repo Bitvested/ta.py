@@ -1,5 +1,4 @@
-import math;
-import random;
+import math, random;
 def median(data, l=0):
     l = (l) if l > 0 else len(data); pl = []; med = [];
     for i in range(len(data)):
@@ -94,7 +93,7 @@ def rsi(data, l=14):
     pl = []; rs = [];
     for i in range(1, len(data)):
         pl.append(data[i] - data[i - 1]);
-        if (len(pl)) >= l:
+        if (len(pl)) >= l-1:
             gain = 0.0; loss = 0.0;
             for a in range(len(pl)):
                 if pl[a] > 0: gain += float(pl[a]);
@@ -748,6 +747,12 @@ def fisher(data, l=20):
         fish = 0.5 * math.log((1+v1)/(1-v1)) + 0.5 * pf;
         out.append([fish,pf]);
     return out[1:];
+def ar(data, l):
+    out = [];
+    for i in range(l, len(data)):
+        exp = er(data[i-l:i]);
+        out.append(data[i]-exp);
+    return out;
 def winratio(data):
     wins = 0; losses = 0;
     for i in range(len(data)):
@@ -760,6 +765,12 @@ def avgwin(data):
     wins = [];
     for i in range(len(data)):
         if data[i] >= 0: wins.append(data[i]);
+    return wins / (losses + wins);
+def avgwin(data):
+    wins = [];
+    for i in range(len(data)):
+        if data[i] >= 0:
+            wins.append(data[i]);
     avg = sma(wins, len(wins));
     return avg[0];
 def avgloss(data):
@@ -768,3 +779,317 @@ def avgloss(data):
         if data[i] < 0: loss.append(data[i]);
     avg = sma(loss, len(loss));
     return avg[0];
+        if data[i] < 0:
+            loss.append(data[i]);
+    avg = sma(loss, len(loss));
+    return avg[0];
+def kelly(data):
+    exp = er(data) + 1
+    winr = winratio(data);
+    return winr - (1-winr) / exp;
+def se(data, size=0):
+    if size == 0:
+        size = len(data);
+    stdv = std(data);
+    return stdv / (size ** 0.5)
+def zscore(data, l):
+    out = []; pl = data[0:l-1];
+    for i in range(l-1, len(data)):
+        pl.append(data[i]);
+        mean = sma(pl, l);
+        stdv = std(pl, l);
+        out.append((data[i]-mean[0])/stdv);
+        pl = pl[1:];
+    return out;
+def normalize_pair(data1, data2):
+    f = (data1[0] + data2[0]) / 2; ret = [[f,f]];
+    for i in range(1, len(data1)):
+        ret.append([ret[len(ret)-1][0]*((data1[i]-data1[i-1])/data1[i-1]+1),ret[len(ret)-1][1]*((data2[i]-data2[i-1])/data2[i-1]+1)]);
+    return ret;
+def normalize_from(data, value):
+    ret = [value];
+    for i in range(1, len(data)):
+        ret.append(ret[len(ret)-1]*((data[i]-data[i-1])/data[i-1]+1));
+    return ret;
+def fisher(data, l):
+    out = []; fish = 0; v1 = 0;
+    for i in range(l, len(data)+1):
+        pl = data[i-l:i]; pf = fish;
+        mn = min(pl);
+        v1 = .33*2*((data[i-1]-mn)/(max(pl)-mn)-.5)+.67*v1;
+        if v1 > .99:
+            v1 = .999;
+        if v1 < -.99:
+            v1 = -.999;
+        fish = 0.5 * math.log((1+v1)/(1-v1)) + 0.5 * pf;
+        out.append([fish, pf]);
+    return out[1:];
+def cross(d1, d2):
+    d1 = d1[len(d1)-len(d2):];
+    cross = (d1[0] > d2[0]);
+    indexes = [];
+    for i in range(len(d1)):
+        if d1[i] < d2[i] and cross:
+            indexes.append({"index": i, "cross": False});
+            cross = False;
+        if d1[i] > d2[i] and cross == False:
+            indexes.append({"index": i, "cross": True});
+            cross = True;
+    return indexes;
+def halftrend(data, atrlen, amplitude, deviation):
+    out = []; nexttrend = [0]; trend = [0]; up = [0]; down = [0]; direction = None;
+    for i in range(atrlen, len(data)+1):
+        pl = data[i-atrlen:i];
+        maxlow = pl[len(pl)-2][2];
+        minhigh = pl[len(pl)-2][0];
+        atr2 = atr(pl, atrlen);
+        atr2 = atr2[len(atr2)-1] / 2;
+        dev = deviation * atr2;
+        highprice = max(pl[len(pl)-2][0], pl[len(pl)-1][0]);
+        lowprice = min(pl[len(pl)-2][2], pl[len(pl)-1][2]);
+        highs = list(map(lambda x: x[0], pl[len(pl)-amplitude:len(pl)]));
+        lows = list(map(lambda x: x[2], pl[len(pl)-amplitude:len(pl)]));
+        highma = sma(highs, amplitude);
+        lowma = sma(lows, amplitude);
+        if nexttrend[len(nexttrend)-1] == 1:
+            maxlow = max(lowprice, maxlow);
+            if highma[0] < maxlow and pl[len(pl)-1][1] < pl[len(pl)-2][2]:
+                trend.append(1);
+                nexttrend.append(0);
+                minhigh = pl[len(pl)-2][0]
+        else:
+            minhigh = min(highprice, minhigh);
+            if lowma[0] > minhigh and pl[len(pl)-1][1] < pl[len(pl)-2][0]:
+                trend.append(0);
+                nexttrend.append(1);
+                maxlow = lowprice
+        if trend[len(trend)-1] == 0:
+            if not math.isnan(trend[len(trend)-2]) and trend[len(trend)-2] != 0:
+                if math.isnan(down[len(down)-2]):
+                    up.append(down[len(down-1)]);
+                else:
+                    up.append(down[len(down)-2]);
+            else:
+                if math.isnan(up[len(up)-2]):
+                    up.append(maxlow);
+                else:
+                    up.append(max(up[len(up)-2], maxlow));
+            direction = 'long';
+            atrHigh = up[len(up)-1] + dev;
+            atrLow = up[len(up)-1] - dev;
+        else:
+            if not math.isnan(trend[len(trend)-2] and trend[len(trend)-2] != 1):
+                if math.isnan(up[len(up)-2]):
+                    down.append(up[len(up)-1]);
+                else:
+                    down.append(up[len(up)-2]);
+            else:
+                if math.isnan(down[len(down)-2]):
+                    down.append(minhigh);
+                else:
+                    down.append(min(minhigh, down[len(down)-2]));
+            direction = 'short';
+            atrHigh = down[len(down)-1] + dev;
+            atrLow = down[len(down)-1] - dev;
+        if trend[len(trend)-1] == 0:
+            out.append([atrHigh, up[len(up)-1], atrLow, direction]);
+        else:
+            out.append([atrHigh, down[len(down)-1], atrLow, direction]);
+    return out
+def log(d):
+    return list(map(lambda x: math.log(x),d));
+def exp(d):
+    return list(map(lambda x: math.exp(x),d));
+def covariance(data1, data2, length):
+    out = []; x_mean = sma(data1, len(data1));
+    y_mean = sma(data2, len(data2)); res = 0;
+    for z in range(length, len(data1)+1):
+        x = data1[z-length:z]; y = data2[z-length:z];
+        x_mean = sma(x, length); y_mean = sma(y, length);
+        for i in range(length):
+            res += (x[i]-x_mean[0])*(y[i]-y_mean[0]);
+        out.append(res/length);
+    return out;
+def ncdf(x, mean=0, std=0):
+    if mean != 0 and std != 0:
+        x = (x - mean) / std;
+    t = 1 / ( 1+ .2315419 * abs(x));
+    d = .3989423*math.exp(-x*x/2);
+    p = d*t*(.3193815+t*(-.3565638+t*(1.781478+t*(-1.821256+t*1.330274))));
+    if x > 0:
+        return 1 - p;
+    else:
+        return p;
+def zigzag(data, perc=0.05):
+    indexes = []; min = float('inf'); max = float('-inf');
+    lmin = False; lmax = False;
+    if isinstance(data[0], list):
+        for i in range(len(data)):
+            if lmin:
+                if min >= data[i][1]: min = data[i][1];
+                if indexes[len(indexes)-1]['value'] >= data[i][1]:
+                    indexes[len(indexes)-1]['value'] = data[i][1];
+                    indexes[len(indexes)-1]['index'] = i;
+                    continue
+                try:
+                    hdif = (data[i][0]-min)/min;
+                except:
+                    hdif = 100
+                if hdif > perc:
+                    indexes.append({'index': i, 'value': data[i][0]});
+                    lmax = True;
+                    lmin = False;
+                    min = float('inf');
+            elif lmax:
+                if max <= data[i][1]: max = data[i][1];
+                if indexes[len(indexes)-1]['value'] <= data[i][0]:
+                    indexes[len(indexes)-1]['value'] = data[i][0];
+                    indexes[len(indexes)-1]['index'] = i;
+                    continue
+                try:
+                    ldif = (max-data[i][1])/data[i][1];
+                except:
+                    ldif = 100
+                if ldif > perc:
+                    indexes.append({'index': i, 'value': data[i][1]});
+                    lmin = True;
+                    lmax = False;
+                    max = float('-inf');
+            else:
+                if min >= data[i][0]: min = data[i][1];
+                if max <= data[i][0]: max = data[i][0];
+                if i == 0: continue
+                try:
+                    hdif = (data[i][0]-min)/min;
+                except:
+                    hdif = 100
+                try:
+                    ldif = (max-data[i][1])/max;
+                except:
+                    ldif = 100
+                if ldif > perc and hdif < perc:
+                    lmin = True;
+                    indexes.append({'index': 0, 'value': data[0][0]});
+                    indexes.append({'index': i, 'value': data[i][1]});
+                elif hdif > perc and ldif < perc:
+                    lmax = True;
+                    indexes.append({'index': 0, 'value': data[0][1]});
+                    indexes.append({'index': i, 'value': data[i][0]});
+                else:
+                    if ldif > hdif:
+                        lmin = True;
+                        indexes.append({'index': 0, 'value': data[0][0]});
+                        indexes.append({'index': i, 'value': data[i][1]});
+                    else:
+                        lmax = True;
+                        indexes.append({'index': 0, 'value': data[0][1]});
+                        indexes.append({'index': i, 'value': data[i][0]});
+    else:
+        for i in range(len(data)):
+            if lmin:
+                if min >= data[i]: min = data[i];
+                if indexes[len(indexes)-1]['value'] >= data[i]:
+                    indexes[len(indexes)-1]['value'] = data[i];
+                    indexes[len(indexes)-1]['index'] = i;
+                    continue
+                try:
+                    hdif = (data[i]-min)/min;
+                except:
+                    hdif = 100
+                if hdif > perc:
+                    indexes.append({'index': i, 'value': data[i]});
+                    lmax = True;
+                    lmin = False;
+                    min = float('inf');
+            elif lmax:
+                if max <= data[i]: max = data[i];
+                if indexes[len(indexes)-1]['value'] <= data[i]:
+                    indexes[len(indexes)-1]['value'] = data[i];
+                    indexes[len(indexes)-1]['index'] = i;
+                    continue
+                ldif = (max-data[i])/data[i];
+                if ldif > perc:
+                    indexes.append({'index': i, 'value': data[i]});
+                    lmin = True;
+                    lmax = False;
+                    max = float('-inf');
+            else:
+                if min >= data[i]: min = data[i];
+                if max <= data[i]: max = data[i];
+                if i == 0: continue
+                try:
+                    hdif = (data[i]-min)/min;
+                except:
+                    hdif = 100
+                try:
+                    ldif = (max-data[i])/max;
+                except:
+                    ldif = 100
+                indexes.append({'index': 0, 'value': data[0]});
+                indexes.append({'index': i, 'value': data[i]});
+                if ldif > perc and hdif < perc:
+                    lmin = True;
+                elif hdif > perc and ldif < perc:
+                    lmax = True;
+                else:
+                    if ldif > hdif:
+                        lmin = True;
+                    else:
+                        lmax = True;
+    final = [indexes[0]['value']];
+    for i in range(1,len(indexes)):
+        length = indexes[i]['index'] - indexes[i-1]['index'];
+        delta = (indexes[i]['value'] - indexes[i-1]['value']) / length;
+        for x in range(1, length+1):
+            final.append(x*delta+indexes[i-1]['value']);
+    return final;
+def psar(data, step=0.02, maxi=0.2):
+    furthest = data[0]; up = True; accel = step; prev = data[0];
+    sar = data[0][1]; extreme = data[0][0]; final = [sar];
+    for i in range(1, len(data)):
+        sar = sar + accel * (extreme - sar);
+        if up:
+            sar = min(sar, furthest[1], prev[1]);
+            if data[i][0] > extreme:
+                extreme = data[i][0];
+                accel = min(accel+step, maxi);
+        else:
+            sar = max(sar, furthest[0], prev[0]);
+            if data[i][1] < extreme:
+                extreme = data[i][0];
+                accel = min(accel + step, maxi);
+        if (up and data[i][1] < sar) or (not up and data[i][0] > sar):
+            accel = step;
+            sar = extreme;
+            up = not up;
+            if not up:
+                extreme = data[i][1];
+            else:
+                extreme = data[i][0];
+        furthest = prev;
+        prev = data[i];
+        final.append(sar);
+    return final;
+def fibbands(data, length=20, deviations=3):
+    pl = []; deviation = []; ma = vwma(data, length); boll = [];
+    for i in range(0, len(data)):
+        pl.append(data[i][0]);
+        if len(pl) >= length:
+            devi = std(pl, length);
+            deviation.append(devi*deviations);
+            pl = pl[1:];
+    for i in range(0, len(ma)):
+        upper1 = ma[i] + (0.236 * deviation[i]);
+        upper2 = ma[i] + (0.382 * deviation[i]);
+        upper3 = ma[i] + (0.5 * deviation[i]);
+        upper4 = ma[i] + (0.618 * deviation[i]);
+        upper5 = ma[i] + (0.764 * deviation[i]);
+        upper6 = ma[i] + deviation[i];
+        lower1 = ma[i] - 0.236 * deviation[i];
+        lower2 = ma[i] - 0.382 * deviation[i];
+        lower3 = ma[i] - 0.5 * deviation[i];
+        lower4 = ma[i] - 0.618 * deviation[i];
+        lower5 = ma[i] - 0.764 * deviation[i];
+        lower6 = ma[i] - deviation[i];
+        boll.append([upper6, upper5, upper4, upper3, upper2, upper1, ma[i], lower1, lower2, lower3, lower4, lower5, lower6])
+    return boll;
