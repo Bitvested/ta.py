@@ -1089,6 +1089,11 @@ def fibbands(data, length=20, deviations=3):
         lower6 = ma[i] - deviation[i];
         boll.append([upper6, upper5, upper4, upper3, upper2, upper1, ma[i], lower1, lower2, lower3, lower4, lower5, lower6])
     return boll;
+def supertrend(data, length=20, multiplier=3):
+    at = atr(data, length); trend = [];
+    for i in range(length-1, len(data)):
+        trend.append([(data[i][0] + data[i][2]) / 2 + multiplier * at[i], (data[i][0] + data[i][2]) / 2 - multiplier * at[i]]);
+    return trend
 def elderray(data, length=13):
     eld = [];
     for i in range(length, len(data)+1):
