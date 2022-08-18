@@ -56,6 +56,7 @@ import ta_py as ta;
 - [HalfTrend](#half)
 - [ZigZag](#zigzag)
 - [Parabolic SAR](#psar)
+- [Elder Ray Index](#elderray)
 #### Oscillators
 - [Alligator Oscillator](#gator)
 - [Chande Momentum Oscillator](#mom_osc)
@@ -479,6 +480,15 @@ max = 0.2;
 ta.psar(data, step, max);
 # output (array)
 # [81.29,82.15,80.64,80.64,80.7464,80.932616,81.17000672,81.3884061824,81.67956556416,82.0588176964608,85,85,84.7806,84.565588,84.35487624000001]
+```
+#### <a id="elderray"></a>Elder Ray Index
+```python
+data = [6,5,4,7,8,9,6,8];
+length = 7;
+ta.elderray(data, length);
+# output (array)
+# [[2.57,-2.43],[2.29,-2.71]]
+# [bull, bear]
 ```
 ### Oscillators
 #### <a id="gator"></a>Alligator Oscillator

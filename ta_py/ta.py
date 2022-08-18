@@ -779,10 +779,6 @@ def avgloss(data):
         if data[i] < 0: loss.append(data[i]);
     avg = sma(loss, len(loss));
     return avg[0];
-        if data[i] < 0:
-            loss.append(data[i]);
-    avg = sma(loss, len(loss));
-    return avg[0];
 def kelly(data):
     exp = er(data) + 1
     winr = winratio(data);
@@ -1093,3 +1089,16 @@ def fibbands(data, length=20, deviations=3):
         lower6 = ma[i] - deviation[i];
         boll.append([upper6, upper5, upper4, upper3, upper2, upper1, ma[i], lower1, lower2, lower3, lower4, lower5, lower6])
     return boll;
+def elderray(data, length=13):
+    eld = [];
+    for i in range(length, len(data)+1):
+        pl = data[i-length:i];
+        print(pl)
+        low = min(pl);
+        high = max(pl);
+        em = ema(pl, len(pl))
+        print(low)
+        print(high)
+        print(em)
+        eld.append([high-em[0],low-em[0]]);
+    return eld;
