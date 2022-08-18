@@ -1094,6 +1094,15 @@ def supertrend(data, length=20, multiplier=3):
     for i in range(length-1, len(data)):
         trend.append([(data[i][0] + data[i][2]) / 2 + multiplier * at[i], (data[i][0] + data[i][2]) / 2 - multiplier * at[i]]);
     return trend
+def cwma(data, weights):
+    ma = [];
+    for i in range(len(weights),len(data)+1):
+        pl = data[i-len(weights):i]; sum = 0; weight = 0;
+        for q in range(len(weights)):
+            sum += pl[q] * weights[q];
+            weight += weights[q];
+        ma.append(sum / weight);
+    return ma;
 def elderray(data, length=13):
     eld = [];
     for i in range(length, len(data)+1):

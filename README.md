@@ -27,6 +27,7 @@ import ta_py as ta;
 - [Parabolic Weighted Moving Average](#pwma)
 - [Hyperbolic Weighted Moving Average](#hwma)
 - [Kaufman Adaptive Moving Average](#kama)
+- [Custom Weighted Moving Average](#cwma)
 #### Indicators
 - [Moving Average Convergence / Divergence](#macd)
 - [Relative Strength Index](#rsi)
@@ -201,6 +202,14 @@ length3 = 8; # default = 30
 ta.kama(data, length1, length2, length3);
 # output (array)
 # [8, 8.64, 8.57, 8.57]
+```
+#### <a id="cwma"></a>Custom Weighted Moving Average
+```python
+data = [69,68,66,70,68,69];
+weights = [1,2,3,5,8];
+ta.cwma(data, weights);
+# output (array)
+# [68.26315789473684, 68.52631578947368]
 ```
 ### Indicators
 #### <a id="macd"></a>Moving Average Convergence / Divergence (MACD)
