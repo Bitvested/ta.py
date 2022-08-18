@@ -1103,6 +1103,12 @@ def cwma(data, weights):
             weight += weights[q];
         ma.append(sum / weight);
     return ma;
+fibnumbers = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181];
+def permutations(data):
+    total = 1;
+    for i in range(len(data)):
+        total *= data[i];
+    return total;
 def elderray(data, length=13):
     eld = [];
     for i in range(length, len(data)+1):

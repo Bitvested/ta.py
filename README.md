@@ -86,6 +86,7 @@ import ta_py as ta;
 - [Expected Return](#er)
 - [Abnormal Return](#ar)
 - [Kelly Criterion](#kelly)
+- [Permutations](#perm)
 - [Winratio](#winratio)
 - [Average Win](#avgwin)
 - [Average Loss](#avgloss)
@@ -728,6 +729,13 @@ data = [0.01, 0.02, -0.01, -0.03, -0.015, 0.045, 0.005];
 ta.kelly(data);
 # output (float)
 # 0.1443
+```
+#### <a id="permutations"></a>Permutations
+```python
+data = [10,10,10];
+ta.permutations(data);
+# output (int)
+# 1000
 ```
 #### <a id="winratio"></a>Winratio
 ```python
