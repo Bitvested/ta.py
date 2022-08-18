@@ -1093,12 +1093,8 @@ def elderray(data, length=13):
     eld = [];
     for i in range(length, len(data)+1):
         pl = data[i-length:i];
-        print(pl)
         low = min(pl);
         high = max(pl);
         em = ema(pl, len(pl))
-        print(low)
-        print(high)
-        print(em)
         eld.append([high-em[0],low-em[0]]);
     return eld;
