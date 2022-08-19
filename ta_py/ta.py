@@ -1119,6 +1119,20 @@ def cum(data, length):
     for i in range(length, len(data)+1):
         res.append(sum(data[i-length:i]));
     return res;
+def vwwma(d, length=20):
+    data = []; weight = 0; vwm = [];
+    for i in range(len(d)):
+        data.append([d[i][0]*d[i][1],d[i][1]]);
+    for i in range(1, length+1):
+        weight += i;
+    for i in range(length, len(data)+1):
+        pl = data[i-length:i];
+        totalv = 0; totalp = 0;
+        for q in range(len(pl)):
+            totalv += pl[q][1] * (q+1) / weight;
+            totalp += pl[q][0] * (q+1) / weight;
+        vwm.append(totalp / totalv);
+    return vwm;
 def elderray(data, length=13):
     eld = [];
     for i in range(length, len(data)+1):

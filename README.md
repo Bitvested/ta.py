@@ -23,6 +23,7 @@ import ta_py as ta;
 - [Hull Moving Average](#hull)
 - [Least Squares Moving Average](#lsma)
 - [Volume Weighted Moving Average](#vwma)
+- [Volume Weighted Weighted Moving Average](#vwwma)
 - [Wilder's Smoothing Moving Average](#wsma)
 - [Parabolic Weighted Moving Average](#pwma)
 - [Hyperbolic Weighted Moving Average](#hwma)
@@ -171,6 +172,14 @@ length = 4; # default = 20
 ta.vwma(data, length);
 # output (array)
 # [1.185, 1.259]
+```
+#### <a id="vwma"></a>Volume Weighted Weighted Moving Average (VWWMA)
+```python
+data = [[1,59],[1.1,82],[1.21,27],[1.42,73],[1.32,42]];
+length = 4;
+ta.vwwma(data, length);
+# output (array)
+# [1.262, 1.316]
 ```
 #### <a id="wsma"></a>Wilder's Smoothing Moving Average
 ```python
