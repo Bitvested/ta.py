@@ -107,6 +107,7 @@ import ta_py as ta;
 - [Standardize](#standard)
 - [Z-Score](#zscore)
 - [K-means Clustering](#kmeans)
+- [Mean Squared Error](#mse)
 #### Chart Types
 - [Heikin Ashi](#ha)
 - [Renko](#ren)
@@ -890,6 +891,14 @@ length = 4;
 ta.kmeans(data, length);
 # output (array)
 # [[ 4, 5, 5, 4 ], [ 7, 6, 6, 6 ], [ 8, 8 ], [ 2, 3, 3, 2 ]]
+```
+#### <a id="mse"></a>Mean Squared Error
+```python
+data1 = [7,8,7,8,6,9];
+data2 = [6,8,8,9,6,8];
+ta.mse(data1, data2);
+# output (float)
+# 0.6666666666666666
 ```
 ### Chart types
 #### <a id="ha"></a>Heikin Ashi
