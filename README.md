@@ -60,6 +60,7 @@ import ta_py as ta;
 - [Parabolic SAR](#psar)
 - [SuperTrend](#supertrend)
 - [Elder Ray Index](#elderray)
+- [Historical Volatility](#hv)
 #### Oscillators
 - [Alligator Oscillator](#gator)
 - [Chande Momentum Oscillator](#mom_osc)
@@ -521,6 +522,14 @@ ta.elderray(data, length);
 # output (array)
 # [[2.57,-2.43],[2.29,-2.71]]
 # [bull, bear]
+```
+#### <a id="hv"></a>Historical Volatility
+```python
+data = [7,6,5,7,8,9,7,6,5];
+length = 8;
+ta.hv(data, length);
+# output (array)
+# [0.642, 0.682]
 ```
 ### Oscillators
 #### <a id="gator"></a>Alligator Oscillator

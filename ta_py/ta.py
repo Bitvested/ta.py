@@ -1142,3 +1142,10 @@ def elderray(data, length=13):
         em = ema(pl, len(pl))
         eld.append([high-em[0],low-em[0]]);
     return eld;
+def hv(data, length=20):
+    hv = [];
+    for i in range(length, len(data)+1):
+        ss = ssd(data[i-length:i]);
+        vari = ss[0] / length;
+        hv.append(math.sqrt(vari));
+    return hv;
