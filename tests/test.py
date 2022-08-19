@@ -186,6 +186,8 @@ perm = ta.permutations([10,10,10]);
 assert perm == 1000;
 mse = ta.mse([7,8,7,8,6,9],[6,8,8,9,6,8]);
 assert mse == 0.6666666666666666;
+cum = ta.cum([3,5,7,5,10], 4);
+assert cum == [20,27];
 elder = ta.elderray([6,5,4,7,8,9,6,8], 7);
 assert elder == [[2.571428571428571,-2.428571428571429],[2.2857142857142856,-2.7142857142857144]];
 print('Test Passed');

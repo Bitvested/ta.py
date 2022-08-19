@@ -1114,6 +1114,11 @@ def mse(data1, data2):
     for i in range(len(data1)):
         err += math.pow((data2[i]-data1[i]), 2);
     return err / len(data1);
+def cum(data, length):
+    res = [];
+    for i in range(length, len(data)+1):
+        res.append(sum(data[i-length:i]));
+    return res;
 def elderray(data, length=13):
     eld = [];
     for i in range(length, len(data)+1):

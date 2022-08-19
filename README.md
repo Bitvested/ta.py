@@ -108,6 +108,7 @@ import ta_py as ta;
 - [Z-Score](#zscore)
 - [K-means Clustering](#kmeans)
 - [Mean Squared Error](#mse)
+- [Cumulative](#cum)
 #### Chart Types
 - [Heikin Ashi](#ha)
 - [Renko](#ren)
@@ -899,6 +900,14 @@ data2 = [6,8,8,9,6,8];
 ta.mse(data1, data2);
 # output (float)
 # 0.6666666666666666
+```
+#### <a id="cum"></a>Cumulative
+```python
+data = [3,5,7,5,10];
+length = 4;
+ta.cum(data, length);
+# output (array)
+# [20, 27]
 ```
 ### Chart types
 #### <a id="ha"></a>Heikin Ashi
