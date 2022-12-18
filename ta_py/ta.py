@@ -1149,3 +1149,20 @@ def hv(data, length=20):
         vari = ss[0] / length;
         hv.append(math.sqrt(vari));
     return hv;
+def rvi(data, l=20):
+    num = []; dnom = []; rv = [];
+    for i in range(3, len(data)):
+        num.append((data[i][3]-data[i][0]+2*(data[i][3]-data[i-1][0])+2*(data[i][3]-data[i-2][0])+(data[i][3]-data[i-3][0]))/6);
+        dnom.append((data[i][1]-data[i][2]+2*(data[i][1]-data[i-1][2])+2*(data[i][1]-data[i-2][2])+(data[i][1]-data[i-3][2]))/6);
+        if len(num) >= l:
+            sn = sma(num, l);
+            dn = sma(dnom, l);
+            rv.append(sn[0]/dn[0]);
+            num = num[1:len(num)];
+            dnom = dnom[1:len(dnom)];
+    return rv;
+def rvi_signal(rv):
+    sig = [];
+    for i in range(3,len(rv)):
+        sig.append((rv[i]+2*rv[i-1]+2*rv[i-2]+rv[i-3])/6);
+    return sig;
