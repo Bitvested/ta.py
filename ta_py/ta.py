@@ -1166,3 +1166,12 @@ def rvi_signal(rv):
     for i in range(3,len(rv)):
         sig.append((rv[i]+2*rv[i-1]+2*rv[i-2]+rv[i-3])/6);
     return sig;
+def rsi_divergence(data, length, rs=wrsi):
+    rd = rs(data, length); out = [];
+    data = mom(data[length-1:], 2);
+    for i in range(0, len(data)):
+        if (data[i] > 0 and rd[i] < 0) or (data[i] < 0 and rd[i] > 0):
+            out.append(1);
+        else:
+            out.append(0);
+    return out;
