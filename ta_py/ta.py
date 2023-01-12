@@ -1175,3 +1175,15 @@ def rsi_divergence(data, length, rs=wrsi):
         else:
             out.append(0);
     return out;
+def divergence(data1, data2):
+    if len(data1) > len(data2):
+        data1 = data1[len(data1)-len(data2):];
+    if len(data2) > len(data1):
+        data2 = data2[len(data2)-len(data1):];
+    out = [];
+    for i in range(1, len(data1)):
+        if (data1[i] > data1[i-1] and data2[i] < data2[i-1]) or (data1[i] < data1[i-1] and data2[i] > data2[i-1]):
+            out.append(1);
+        else:
+            out.append(0);
+    return out;

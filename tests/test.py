@@ -200,4 +200,6 @@ rvs = ta.rvi_signal([0.29878048780487804,0.21951219512195122,0.1589403973509934,
 assert rvs == [0.2027541389316547,0.1596104767996724,0.12148278468863555];
 rsi_divergence = ta.rsi_divergence([74,83,66,78,69,70,84,73,74,73,83],5);
 assert rsi_divergence == [0,0,1,0,1,0];
+divergence = ta.divergence([48,34,43,54,56,64,43],[76,74,43,55,34,32,45,47]);
+assert divergence == [0, 0, 1, 1, 0, 1];
 print('Test Passed');
