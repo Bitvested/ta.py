@@ -120,6 +120,7 @@ import ta_py as ta;
 - [Renko](#ren)
 #### Miscellaneous
 - [Times Up](#times_up)
+- [Times Down](#times_dn)
 #### Experimental
 - [Support Line](#sup)
 - [Resistance Line](#res)
@@ -996,6 +997,14 @@ length = 3;
 ta.times_up(data, length);
 # output (array)
 # [1, 0, 0, 0]
+```
+#### <a id="times_dn"></a>Times Down
+```python
+data = [5,6,7,8,7,6,5];
+length = 3;
+ta.times_down(data, length);
+# output (array)
+# [0, 0, 0, 1]
 ```
 ### Experimental Functions
 #### <a id="sup"></a>Support Line

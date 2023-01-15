@@ -204,4 +204,6 @@ divergence = ta.divergence([48,34,43,54,56,64,43],[76,74,43,55,34,32,45,47]);
 assert divergence == [0, 0, 1, 1, 0, 1];
 times_up = ta.times_up([5,6,7,8,7,6,5],3);
 assert times_up == [1, 0, 0, 0];
+times_dn = ta.times_down([5,6,7,8,7,6,5],3);
+assert times_dn == [0, 0, 0, 1];
 print('Test Passed');
