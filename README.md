@@ -118,6 +118,8 @@ import ta_py as ta;
 #### Chart Types
 - [Heikin Ashi](#ha)
 - [Renko](#ren)
+#### Miscellaneous
+- [Times Up](#times_up)
 #### Experimental
 - [Support Line](#sup)
 - [Resistance Line](#res)
@@ -985,6 +987,15 @@ bricksize = 3;
 ta.ren(data, bricksize);
 # output (array)
 # [open, high, low, close]
+```
+### Miscellaneous
+#### <a id="times_up"></a>Times Up
+```python
+data = [5,6,7,8,7,6,5];
+length = 3;
+ta.times_up(data, length);
+# output (array)
+# [1, 0, 0, 0]
 ```
 ### Experimental Functions
 #### <a id="sup"></a>Support Line
