@@ -1,5 +1,7 @@
 # Technical Analysis (ta.py)
 
+[![PyPI version](https://badge.fury.io/py/ta_py.svg)](https://pypi.org/project/ta_py/) [![Downloads](https://img.shields.io/pypi/dm/ta_py.svg)](https://pypi.org/project/ta_py/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ta.py is a Python package for dealing with financial technical analysis.
 
 ## Installation
@@ -31,6 +33,8 @@ import ta_py as ta;
 - [Custom Weighted Moving Average](#cwma)
 #### Indicators
 - [Moving Average Convergence / Divergence](#macd)
+- [MACD Signal Line](#macd_signal)
+- [MACD Histogram (Bars)](#macd_bars)
 - [Relative Strength Index](#rsi)
 - [Wilder's Relative Strength Index](#wrsi)
 - [True Strength Index](#tsi)
@@ -115,6 +119,13 @@ import ta_py as ta;
 - [K-means Clustering](#kmeans)
 - [Mean Squared Error](#mse)
 - [Cumulative](#cum)
+- [Sum](#sum)
+- [Return Positive](#return_positive)
+- [Return Negative](#return_negative)
+- [P-Value](#pvalue)
+- [Martingale](#martingale)
+- [Anti-Martingale](#antimartingale)
+- [Expected Trails](#expected_trails)
 #### Chart Types
 - [Heikin Ashi](#ha)
 - [Renko](#ren)
@@ -124,6 +135,9 @@ import ta_py as ta;
 #### Experimental
 - [Support Line](#sup)
 - [Resistance Line](#res)
+- [Divergence State](#divergence_state)
+#### Random
+- [Seeded PRNG](#prng)
 ### Moving Averages
 #### <a id="sma"></a>Simple Moving Average (SMA)
 ```python
@@ -240,6 +254,26 @@ length2 = 6; # default = 26
 ta.macd(data, length1, length2);
 # output (array)
 # [1.5, 3]
+```
+#### <a id="macd_signal"></a>MACD Signal Line
+```python
+data = [1, 2, 3, 4, 5, 6, 14, 8, 10, 11];
+length1 = 3; # default = 12
+length2 = 6; # default = 26
+length3 = 3; # signal line length, default = 9
+ta.macd_signal(data, length1, length2, length3);
+# output (array)
+# [2.107, 1.838, 1.653]
+```
+#### <a id="macd_bars"></a>MACD Histogram (Bars)
+```python
+data = [1, 2, 3, 4, 5, 6, 14, 8, 10, 11];
+length1 = 3; # default = 12
+length2 = 6; # default = 26
+length3 = 3; # signal line length, default = 9
+ta.macd_bars(data, length1, length2, length3);
+# output (array)
+# [-0.286, -0.269, -0.185]
 ```
 #### <a id="rsi"></a>Relative Strength Index (RSI)
 ```python
@@ -972,6 +1006,63 @@ ta.cum(data, length);
 # output (array)
 # [20, 27]
 ```
+#### <a id="sum"></a>Sum
+```python
+data = [1,2,3,4,5];
+ta.sum(data);
+# output (number)
+# 15
+```
+#### <a id="return_positive"></a>Return Positive
+```python
+data = [0.02, 0.01, -0.03, -0.01, 0.005];
+ta.return_positive(data);
+# output (array)
+# [0.02, 0.01, 0.005]
+```
+#### <a id="return_negative"></a>Return Negative
+```python
+data = [0.02, 0.01, -0.03, -0.01, 0.005];
+ta.return_negative(data);
+# output (array)
+# [-0.03, -0.01]
+```
+#### <a id="pvalue"></a>P-Value
+```python
+# linear interpolation of a t-statistic across a built-in t-table (df 1..25)
+t = 2;
+df = 4;
+ta.pvalue(t, df);
+# output (float)
+# 0.061018363939899845
+```
+#### <a id="martingale"></a>Martingale
+```python
+data = [-1, -1, 1, 1, -1, -1]; # sequence of trade outcomes (sign matters)
+bet = 5;
+maximum = None; # optional cap; default = None (no cap)
+multiplier = 2; # default = 2
+ta.martingale(data, bet, maximum, multiplier);
+# output (number)
+# 20
+```
+#### <a id="antimartingale"></a>Anti-Martingale
+```python
+data = [1, 1, -1, -1, 1, 1];
+bet = 5;
+maximum = None;
+multiplier = 2;
+ta.antimartingale(data, bet, maximum, multiplier);
+# output (number)
+# 20
+```
+#### <a id="expected_trails"></a>Expected Trails
+```python
+n = 100;
+ta.expected_trails(n);
+# output (int)
+# 519 (= ceil(n * H_n) where H_n is the n-th harmonic number)
+```
 ### Chart types
 #### <a id="ha"></a>Heikin Ashi
 ```python
@@ -1033,10 +1124,45 @@ resistance = ta.resistance(data, start);
 # to get the line at the current candle / chart period
 current = resistance['calculate'](len(data)-resistance['index']);
 ```
+#### <a id="divergence_state"></a>Divergence State
+```python
+data1 = [48,34,43,54,56,64,43,51,52,53,55,51,48,45,40,42,44,45];
+data2 = [76,74,43,55,34,32,45,47,48,53,54,54,50,52,49,47,48,46];
+length = 12;
+lookback = 3;
+# optional: smoother=1, threshold_ex=0.03, threshold_nm=0.01
+ta.divergence_state(data1, data2, length, lookback);
+# output (array of arrays of strings)
+# possible labels per bar: 'convergence', 'divergence',
+#   'exaggerated_bullish' / 'exaggerated_bearish',
+#   'hidden_bullish'      / 'hidden_bearish',
+#   'regular_bullish'     / 'regular_bearish'
+```
+### Random
+#### <a id="prng"></a>Seeded Pseudo-Random Number Generator
+```python
+# Deterministic, reproducible across languages (matches ta.js).
+# Returns a callable that yields floats in [0, 1).
+rand = ta.prng('seed');
+rand(); # -> 0.4674...
+rand(); # -> 0.0934...
+# Same seed always produces the same sequence.
+# Note: Python's stdlib already provides random.random(), random.choice(),
+# random.sample(), and random.randint() — those JS-side helpers
+# (float, pick, order, range) are intentionally not ported.
+```
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
 ## License
-[MIT](https:#choosealicense.com/licenses/mit/)
+[MIT](https://choosealicense.com/licenses/mit/)
+
+## 👨‍💻 Maintained By
+
+**ta.py** is an open-source project created and actively maintained by [**Nino Kroesen**](https://ninokroesen.com).
+
+This library was built with performance in mind for high-frequency data and algorithmic trading systems. If you are interested in seeing these indicators in action within a live quantitative trading environment, check out [**Bitvested**](https://bitvested.com).
+
+---

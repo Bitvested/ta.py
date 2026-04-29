@@ -1207,3 +1207,103 @@ def times_down(data, l):
                 break;
         out.append(dn);
     return out;
+def sum(data):
+    s = 0;
+    for i in range(len(data)): s += data[i];
+    return s;
+def return_positive(data):
+    out = [];
+    for i in range(len(data)):
+        if data[i] > 0: out.append(data[i]);
+    return out;
+def return_negative(data):
+    out = [];
+    for i in range(len(data)):
+        if data[i] < 0: out.append(data[i]);
+    return out;
+def martingale(data, bet, max=None, multiplier=2):
+    current = bet;
+    for i in range(len(data)):
+        if data[i] < 0:
+            current *= multiplier;
+        elif data[i] > 0:
+            current = bet;
+    return max if max is not None and current > max else current;
+def antimartingale(data, bet, max=None, multiplier=2):
+    current = bet;
+    for i in range(len(data)):
+        if data[i] > 0:
+            current *= multiplier;
+        elif data[i] < 0:
+            current = bet;
+    return max if max is not None and current > max else current;
+def expected_trails(n):
+    s = 0;
+    for i in range(1, n+1): s += 1.0 / i;
+    return math.ceil(n * s);
+def pvalue(t, df):
+    t_table = [
+        {'value':0.5,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0,13:0,14:0,15:0,16:0,17:0,18:0,19:0,20:0,21:0,22:0,23:0,24:0,25:0},
+        {'value':0.25,1:1,2:0.816,3:0.765,4:0.741,5:0.727,6:0.718,7:0.711,8:0.706,9:0.703,10:0.7,11:0.697,12:0.695,13:0.694,14:0.692,15:0.691,16:0.69,17:0.689,18:0.688,19:0.688,20:0.687,21:0.686,22:0.686,23:0.685,24:0.685,25:0.684},
+        {'value':0.2,1:1.376,2:1.061,3:0.978,4:0.941,5:0.92,6:0.906,7:0.896,8:0.889,9:0.883,10:0.879,11:0.876,12:0.873,13:0.87,14:0.868,15:0.866,16:0.865,17:0.863,18:0.862,19:0.861,20:0.86,21:0.859,22:0.858,23:0.858,24:0.857,25:0.856},
+        {'value':0.15,1:1.963,2:1.386,3:1.25,4:1.19,5:1.156,6:1.134,7:1.119,8:1.108,9:1.1,10:1.093,11:1.088,12:1.088,13:1.079,14:1.076,15:1.074,16:1.071,17:1.069,18:1.067,19:1.066,20:1.064,21:1.063,22:1.061,23:1.06,24:1.059,25:1.058},
+        {'value':0.1,1:3.078,2:1.886,3:1.638,4:1.533,5:1.476,6:1.44,7:1.415,8:1.397,9:1.383,10:1.372,11:1.363,12:1.356,13:1.35,14:1.345,15:1.341,16:1.337,17:1.333,18:1.33,19:1.328,20:1.325,21:1.323,22:1.321,23:1.319,24:1.318,25:1.316},
+        {'value':0.05,1:6.314,2:2.92,3:2.353,4:2.132,5:2.015,6:1.943,7:1.895,8:1.86,9:1.833,10:1.812,11:1.796,12:1.782,13:1.771,14:1.761,15:1.753,16:1.746,17:1.74,18:1.734,19:1.729,20:1.725,21:1.721,22:1.717,23:1.714,24:1.711,25:1.708},
+        {'value':0.025,1:12.71,2:4.303,3:3.182,4:2.776,5:2.571,6:2.447,7:2.365,8:2.306,9:2.262,10:2.228,11:2.201,12:2.179,13:2.16,14:2.145,15:2.131,16:2.12,17:2.11,18:2.101,19:2.093,20:2.086,21:2.08,22:2.074,23:2.069,24:2.064,25:2.06},
+        {'value':0.01,1:31.82,2:6.965,3:4.541,4:3.747,5:3.365,6:3.143,7:2.998,8:2.896,9:2.821,10:2.764,11:2.718,12:2.681,13:2.65,14:2.624,15:2.602,16:2.583,17:2.567,18:2.552,19:2.539,20:2.528,21:2.518,22:2.508,23:2.5,24:2.492,25:2.485},
+        {'value':0.005,1:63.66,2:9.925,3:5.841,4:4.604,5:4.032,6:3.707,7:3.499,8:3.355,9:3.25,10:3.169,11:3.106,12:3.055,13:3.012,14:2.977,15:2.947,16:2.921,17:2.898,18:2.878,19:2.861,20:2.845,21:2.831,22:2.819,23:2.807,24:2.797,25:2.787},
+        {'value':0.001,1:318.13,2:22.327,3:10.215,4:7.173,5:5.893,6:5.208,7:4.785,8:4.501,9:4.297,10:4.144,11:4.025,12:3.93,13:3.852,14:3.787,15:3.733,16:3.686,17:3.646,18:3.61,19:3.579,20:3.552,21:3.527,22:3.505,23:3.485,24:3.467,25:3.45},
+        {'value':0.0005,1:636.62,2:31.599,3:12.924,4:8.61,5:6.869,6:5.959,7:5.408,8:5.041,9:4.781,10:4.587,11:4.437,12:4.318,13:4.221,14:4.14,15:4.073,16:4.015,17:3.965,18:3.922,19:3.883,20:3.85,21:3.819,22:3.792,23:3.768,24:3.745,25:3.725}
+    ];
+    if df > 25: raise Exception('ta.py | pvalue | df too high!');
+    if df < 1: raise Exception('ta.py | pvalue | df too low!');
+    for x in range(len(t_table) - 1):
+        if t >= t_table[x][df] and t <= t_table[x+1][df]:
+            return t_table[x+1]['value'] + (t_table[x+1]['value'] - t_table[x]['value']) * (t_table[x+1][df] - t) / (t_table[x][df] - t_table[x+1][df]);
+    return 0.0001;
+def macd_signal(data, l1=12, l2=26, l3=9):
+    return ema(macd(data, l1, l2), l3);
+def macd_bars(data, l1=12, l2=26, l3=9):
+    ma = macd(data, l1, l2); mas = ema(ma, l3); ret = [];
+    ma = ma[len(ma)-len(mas):];
+    for i in range(len(ma)): ret.append(ma[i] - mas[i]);
+    return ret;
+def divergence_state(data1, data2, length, lb, smoother=1, threshold_ex=0.03, threshold_nm=0.01):
+    if len(data1) > len(data2): data1 = data1[len(data1)-len(data2):];
+    if len(data2) > len(data1): data2 = data2[len(data2)-len(data1):];
+    out = [];
+    for i in range(length, len(data1)):
+        pl1 = data1[i-length:i+1];
+        s1 = support(pl1, recent_low(pl1, lb)); s1d = s1['slope'] / s1['lowest'];
+        r1 = resistance(pl1, recent_high(pl1, lb)); r1d = r1['slope'] / r1['highest'];
+        pl2 = data2[i-length:i+1];
+        s2 = support(pl2, recent_low(pl2, lb)); s2d = s2['slope'] / s2['lowest'];
+        r2 = resistance(pl2, recent_high(pl2, lb)); r2d = r2['slope'] / r2['highest'];
+        if (data1[i] > data1[i-smoother] and data2[i] < data2[i-smoother]) or (data1[i] < data1[i-smoother] and data2[i] > data2[i-smoother]):
+            obj = [];
+            if r1d < -threshold_ex and r2d > -threshold_nm: obj.append('exaggerated_bearish');
+            if s1d < threshold_nm and s2d > threshold_ex: obj.append('exaggerated_bullish');
+            if r1d < -threshold_nm and r2d < threshold_nm: obj.append('hidden_bearish');
+            if s1d > threshold_nm and s2d < -threshold_nm: obj.append('hidden_bullish');
+            if r1d > threshold_nm and r2d < -threshold_nm: obj.append('regular_bearish');
+            if s1d < -threshold_nm and s2d > threshold_nm: obj.append('regular_bullish');
+            if len(obj) <= 0: obj.append('divergence');
+            out.append(obj);
+        else:
+            out.append(['convergence']);
+    return out;
+def prng(seed):
+    h = (1779033703 ^ len(seed)) & 0xFFFFFFFF;
+    for i in range(len(seed)):
+        h = ((h ^ ord(seed[i])) * 3432918353) & 0xFFFFFFFF;
+        h = ((h << 13) | (h >> 19)) & 0xFFFFFFFF;
+    h = ((h ^ (h >> 16)) * 2246822507) & 0xFFFFFFFF;
+    h = ((h ^ (h >> 13)) * 3266489909) & 0xFFFFFFFF;
+    state = [(h ^ (h >> 16)) & 0xFFFFFFFF];
+    def gen():
+        state[0] = (state[0] + 0x6D2B79F5) & 0xFFFFFFFF;
+        t = state[0];
+        t = ((t ^ (t >> 15)) * (t | 1)) & 0xFFFFFFFF;
+        t = (t ^ ((t + ((t ^ (t >> 7)) * (t | 61))) & 0xFFFFFFFF)) & 0xFFFFFFFF;
+        return ((t ^ (t >> 14)) & 0xFFFFFFFF) / 4294967296;
+    return gen;
