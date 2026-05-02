@@ -6,3 +6,7 @@ from .chart_types import ha, ren  # noqa: F401
 from .experimental import support, resistance, divergence_state  # noqa: F401
 from .bands import bands, bandwidth, keltner, don, envelope, fibbands  # noqa: F401
 from .oscillators import gator, mom_osc, chaikin_osc, ao, ac, fisher  # noqa: F401
+from .moving_averages import (  # noqa: F401
+    sma, smma, wma, wsma, pwma, hwma, ema,
+    vwma, vwwma, hull, kama, cwma, lsma,
+)

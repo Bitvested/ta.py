@@ -1,6 +1,6 @@
 """Oscillator indicators."""
 import math
-from .ta import smma, sma, ema
+from .moving_averages import smma, sma, ema
 
 
 def gator(

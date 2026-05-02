@@ -1,5 +1,6 @@
 """Bands and channels."""
-from .ta import sma, std, atr, vwma
+from .ta import std, atr
+from .moving_averages import sma, vwma
 
 
 def bands(data: list[float], l1: int = 14, l2: float = 1) -> list[list[float]]:
