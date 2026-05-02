@@ -10,3 +10,11 @@ from .moving_averages import (  # noqa: F401
     sma, smma, wma, wsma, pwma, hwma, ema,
     vwma, vwwma, hull, kama, cwma, lsma,
 )
+from .statistics import (  # noqa: F401
+    median, kmeans, normalize, denormalize, standardize, mad, aad, ssd,
+    er, variance, std, normsinv, sim, percentile, cor, dif, drawdown,
+    cum, mse, permutations, winratio, avgwin, avgloss, kelly, se,
+    zscore, ar, normalize_pair, normalize_from, log, exp, covariance,
+    ncdf, pvalue, expected_trails, martingale, antimartingale,
+    return_positive, return_negative, recent_high, recent_low, sum,
+)

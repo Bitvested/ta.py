@@ -1,6 +1,6 @@
 """Experimental indicators. API may change in future releases."""
 
-from .ta import recent_low, recent_high
+from .statistics import recent_low, recent_high
 
 
 def support(d: list[float], hl: int = 0) -> dict:

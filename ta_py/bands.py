@@ -1,5 +1,6 @@
 """Bands and channels."""
-from .ta import std, atr
+from .ta import atr
+from .statistics import std
 from .moving_averages import sma, vwma
 
 
