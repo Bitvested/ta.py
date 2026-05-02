@@ -1171,26 +1171,6 @@ def divergence(data1, data2):
         else:
             out.append(0);
     return out;
-def times_up(data, l):
-    out = [];
-    for i in range(l, len(data)):
-        up = 1;
-        for x in range(i-l+1, i+1):
-            if data[x-1] > data[x]:
-                up = 0;
-                break;
-        out.append(up);
-    return out;
-def times_down(data, l):
-    out = [];
-    for i in range(l, len(data)):
-        dn = 1;
-        for x in range(i-l+1, i+1):
-            if data[x-1] < data[x]:
-                dn = 0;
-                break;
-        out.append(dn);
-    return out;
 def sum(data):
     s = 0;
     for i in range(len(data)): s += data[i];
