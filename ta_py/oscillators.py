@@ -1,6 +1,6 @@
 """Oscillator indicators."""
 import math
-from .moving_averages import smma, sma, ema
+from ._registry import registry
 
 
 def gator(
@@ -9,7 +9,7 @@ def gator(
     js: int = 8, ts: int = 5, ls: int = 3,
 ) -> list[list[float]]:
     """Gator Oscillator (alligator-derived)."""
-    ret = []; jaw = smma(data, jl); teeth = smma(data, tl); lips = smma(data, ll);
+    ret = []; jaw = registry["smma"](data, jl); teeth = registry["smma"](data, tl); lips = registry["smma"](data, ll);
     teeth = teeth[len(teeth)-len(jaw):];
     lips = lips[len(lips)-len(jaw):];
     for i in range(len(jaw)-1, (js-2), -1):
@@ -38,7 +38,7 @@ def chaikin_osc(data: list[list[float]], ema1: int = 3, ema2: int = 10) -> list[
     for i in range(len(data)):
         mfm = ((data[i][1]-data[i][2])-(data[i][0]-data[i][1]))/(data[i][0]-data[i][2]) if data[i][0]-data[i][2] != 0 else 0;
         adl.append(mfm*data[i][3]);
-    ef = ema(adl, ema1); es = ema(adl, ema2);
+    ef = registry["ema"](adl, ema1); es = registry["ema"](adl, ema2);
     if len(ef) > len(es):
         ef = ef[len(ef)-len(es):];
     else:
@@ -54,8 +54,8 @@ def ao(data: list[list[float]], l1: int = 5, l2: int = 35) -> list[float]:
     for i in range(len(data)):
         pl.append((float(data[i][0]) + float(data[i][1])) / 2.0);
         if(len(pl) >= l2):
-            f = sma(pl[:], l1);
-            s = sma(pl[:], l2);
+            f = registry["sma"](pl[:], l1);
+            s = registry["sma"](pl[:], l2);
             a.append(f[len(f)-1] - s[len(s)-1]);
             pl = pl[1:];
     return a;
@@ -66,7 +66,7 @@ def ac(data: list[list[float]], l1: int = 5, l2: int = 35) -> list[float]:
     pl = [];
     for i in range(len(data)):
         pl.append((data[i][0]+data[i][1])/2);
-    a = ao(data, l1, l2); sm =sma(a, l1); acr = [];
+    a = ao(data, l1, l2); sm = registry["sma"](a, l1); acr = [];
     if len(a) > len(sm):
         a = a[len(a)-len(sm):]
     else:

@@ -56,3 +56,8 @@ __all__ = [
     # random
     "prng",
 ]
+
+from . import _registry
+_registry.registry.update({
+    name: globals()[name] for name in __all__
+})

@@ -1,7 +1,6 @@
 """Indicator functions: trend, momentum, volume, volatility."""
 import math
-from .moving_averages import sma, smma, wma, wsma, ema
-from .statistics import ssd, sum
+from ._registry import registry
 
 
 def rsi(data: list[float], l: int = 14) -> list[float]:
@@ -31,7 +30,7 @@ def wrsi(data: list[float], l: int = 14) -> list[float]:
         else:
             d.append(0.0);
             u.append(data[i]-data[i-1]);
-    d = wsma(d, l); u = wsma(u, l);
+    d = registry["wsma"](d, l); u = registry["wsma"](u, l);
     for i in range(0, len(d)):
         try:
             f = 100.0-100.0/(1.0+(u[i]/d[i]));
@@ -44,26 +43,26 @@ def tsi(data: list[float], long: int = 25, short: int = 13, sig: int = 13) -> li
     for i in range(1, len(data)):
         mo.append(data[i] - data[i - 1]);
         ab.append(abs(data[i] - data[i - 1]));
-    sma1 = ema(mo, long); sma2 = ema(ab, long);
-    ema1 = ema(sma1, short); ema2 = ema(sma2, short);
+    sma1 = registry["ema"](mo, long); sma2 = registry["ema"](ab, long);
+    ema1 = registry["ema"](sma1, short); ema2 = registry["ema"](sma2, short);
     for i in range(len(ema1)):
         ts.append(ema1[i] / ema2[i]);
-    tma = ema(ts, sig);
+    tma = registry["ema"](ts, sig);
     ts = ts[(len(ts)-len(tma)):];
     for i in range(len(tma)):
         tsi.append([tma[i], ts[i]]);
     return tsi;
 def macd(data: list[float], l1: int = 12, l2: int = 26) -> list[float]:
     if l1 > l2: [l1, l2] = [l2, l1];
-    em1 = ema(data[:], l1); em2 = ema(data[:], l2);
+    em1 = registry["ema"](data[:], l1); em2 = registry["ema"](data[:], l2);
     em1 = em1[-(len(em2) - len(em1)):]; emf = [];
     for i in range(len(em1)):
         emf.append(em1[i] - em2[i]);
     return emf;
 def macd_signal(data: list[float], l1: int = 12, l2: int = 26, l3: int = 9) -> list[float]:
-    return ema(macd(data, l1, l2), l3);
+    return registry["ema"](macd(data, l1, l2), l3);
 def macd_bars(data: list[float], l1: int = 12, l2: int = 26, l3: int = 9) -> list[float]:
-    ma = macd(data, l1, l2); mas = ema(ma, l3); ret = [];
+    ma = macd(data, l1, l2); mas = registry["ema"](ma, l3); ret = [];
     ma = ma[len(ma)-len(mas):];
     for i in range(len(ma)): ret.append(ma[i] - mas[i]);
     return ret;
@@ -78,7 +77,7 @@ def mfi(data: list[list[float]], l1: int = 14) -> list[float]:
     for i in range(len(data)):
         p.append(float(data[i][0])); n.append(float(data[i][1]));
         if(len(p) >= l1):
-            mfi.append((100.0 - 100.0 / (1 + sum(p) / sum(n))));
+            mfi.append((100.0 - 100.0 / (1 + registry["sum"](p) / registry["sum"](n))));
             p = p[1:]; n = n[1:];
     return mfi;
 def roc(data: list[float], l1: int = 14) -> list[float]:
@@ -98,9 +97,9 @@ def kst(data: list[float], r1: int = 10, s1: int = 10, r2: int = 15, s2: int = 1
     ks = []; fs = []; ms = (max(r1, r2, r3, r4) + max(s1, s2, s3, s4));
     for i in range(ms, len(data)+1):
         rcma1 = roc(data[i-ms:i], r1); rcma2 = roc(data[i-ms:i], r2); rcma3 = roc(data[i-ms:i], r3); rcma4 = roc(data[i-ms:i], r4);
-        rcma1 = sma(rcma1, s1); rcma2 = sma(rcma2, s2); rcma3 = sma(rcma3, s3); rcma4 = sma(rcma4, s4);
+        rcma1 = registry["sma"](rcma1, s1); rcma2 = registry["sma"](rcma2, s2); rcma3 = registry["sma"](rcma3, s3); rcma4 = registry["sma"](rcma4, s4);
         ks.append(rcma1[len(rcma1)-1] + rcma2[len(rcma2)-1] + rcma3[len(rcma3)-1] + rcma4[len(rcma4)-1]);
-    sl = sma(ks[:], sig);
+    sl = registry["sma"](ks[:], sig);
     ks = ks[(len(ks) - len(sl)):];
     for i in range(len(ks)): fs.append([ks[i], sl[i]]);
     return fs;
@@ -112,7 +111,7 @@ def cop(data: list[float], l1: int = 11, l2: int = 14, l3: int = 10) -> list[flo
         r1 = r1[(len(r1) - len(r2)):];
         for a in range(len(r1)):
             tmp.append(r1[a] + r2[a]);
-        tmp = wma(tmp[:], l3);
+        tmp = registry["wma"](tmp[:], l3);
         co.append(tmp[len(tmp)-1]);
     return co;
 def obv(data: list[list[float]]) -> list[float]:
@@ -187,8 +186,8 @@ def halftrend(data: list[list[float]], atrlen: int, amplitude: int, deviation: i
         lowprice = min(pl[len(pl)-2][2], pl[len(pl)-1][2]);
         highs = list(map(lambda x: x[0], pl[len(pl)-amplitude:len(pl)]));
         lows = list(map(lambda x: x[2], pl[len(pl)-amplitude:len(pl)]));
-        highma = sma(highs, amplitude);
-        lowma = sma(lows, amplitude);
+        highma = registry["sma"](highs, amplitude);
+        lowma = registry["sma"](lows, amplitude);
         if nexttrend[len(nexttrend)-1] == 1:
             maxlow = max(lowprice, maxlow);
             if highma[0] < maxlow and pl[len(pl)-1][1] < pl[len(pl)-2][2]:
@@ -395,13 +394,13 @@ def elderray(data: list[float], length: int = 13) -> list[list[float]]:
         pl = data[i-length:i];
         low = min(pl);
         high = max(pl);
-        em = ema(pl, len(pl))
+        em = registry["ema"](pl, len(pl))
         eld.append([high-em[0],low-em[0]]);
     return eld;
 def hv(data: list[float], length: int = 20) -> list[float]:
     hv = [];
     for i in range(length, len(data)+1):
-        ss = ssd(data[i-length:i]);
+        ss = registry["ssd"](data[i-length:i]);
         vari = ss[0] / length;
         hv.append(math.sqrt(vari));
     return hv;
@@ -411,8 +410,8 @@ def rvi(data: list[list[float]], l: int = 20) -> list[float]:
         num.append((data[i][3]-data[i][0]+2*(data[i][3]-data[i-1][0])+2*(data[i][3]-data[i-2][0])+(data[i][3]-data[i-3][0]))/6);
         dnom.append((data[i][1]-data[i][2]+2*(data[i][1]-data[i-1][2])+2*(data[i][1]-data[i-2][2])+(data[i][1]-data[i-3][2]))/6);
         if len(num) >= l:
-            sn = sma(num, l);
-            dn = sma(dnom, l);
+            sn = registry["sma"](num, l);
+            dn = registry["sma"](dnom, l);
             rv.append(sn[0]/dn[0]);
             num = num[1:len(num)];
             dnom = dnom[1:len(dnom)];
@@ -424,7 +423,7 @@ def rvi_signal(rv: list[float]) -> list[float]:
     return sig;
 def rsi_divergence(data: list[float], length: int, rs=None) -> list[int]:
     if rs is None:
-        rs = wrsi
+        rs = registry["wrsi"]
     rd = rs(data, length); out = [];
     data = mom(data[length-1:], 2);
     for i in range(0, len(data)):
@@ -449,14 +448,14 @@ def bop(data: list[list[float]], l1: int = 14) -> list[float]:
     bo = [];
     for i in range(len(data)):
         bo.append((data[i][3] - data[i][0]) / (data[i][1] - data[i][2]) if (data[i][1] - data[i][2]) != 0 else 0);
-    bo = sma(bo, l1);
+    bo = registry["sma"](bo, l1);
     return bo;
 def fi(data: list[list[float]], l1: int = 13) -> list[float]:
     pl = []; ff = [];
     for i in range(1, len(data)):
         pl.append((data[i][0] - data[i-1][0]) * data[i][1]);
         if(len(pl) >= l1):
-            vfi = ema(pl[:], l1);
+            vfi = registry["ema"](pl[:], l1);
             ff.append(vfi[len(vfi)-1]);
             pl = pl[1:];
     return ff;
@@ -473,7 +472,7 @@ def asi(data: list[list[float]]) -> list[float]:
         a.append(50.0 * ((cy - c + (cy - oy) / 2.0 + (c - o) / 2.0) / r) * k / t if r and t != 0 else 0);
     return a;
 def alligator(data: list[float], jl: int = 13, tl: int = 8, ll: int = 5, js: int = 8, ts: int = 5, ls: int = 3) -> list[list[float]]:
-    ret = []; jaw = smma(data, jl); teeth = smma(data, tl); lips = smma(data, ll);
+    ret = []; jaw = registry["smma"](data, jl); teeth = registry["smma"](data, tl); lips = registry["smma"](data, ll);
     teeth = teeth[len(teeth)-len(jaw):];
     lips = lips[len(lips)-len(jaw):];
     for i in range(len(jaw)-1, (js-2), -1):
@@ -498,10 +497,10 @@ def stoch(data: list[list[float]], l1: int = 14, sd: int = 3, sk: int = 3) -> li
             k = 100.0 * (data[i][1] - lowd) / (highd - lowd) if highd - lowd != 0 else 0;
             ka.append(k);
         if(sk > 0 & len(ka) > sk):
-            smoothedk = sma(ka[:], sk);
+            smoothedk = registry["sma"](ka[:], sk);
             ka.push(smoothedk[len(smoothedk)-1]);
         if(len(ka) - sk >= sd):
-            d = sma(ka[:], sd);
+            d = registry["sma"](ka[:], sd);
             stoch.append([k, d[len(d)-1]]);
             high = high[1:];
             low = low[1:];

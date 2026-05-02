@@ -1,17 +1,15 @@
 """Bands and channels."""
-from .ta import atr
-from .statistics import std
-from .moving_averages import sma, vwma
+from ._registry import registry
 
 
 def bands(data: list[float], l1: int = 14, l2: float = 1) -> list[list[float]]:
     """Bollinger Bands. Each row of output is [upper, middle, lower]."""
     pl = []; deviation = []; boll = [];
-    sm = sma(data[:], l1);
+    sm = registry["sma"](data[:], l1);
     for i in range(len(data)):
         pl.append(data[i]);
         if (len(pl)) >= l1:
-            devi = std(pl[:], l1);
+            devi = registry["std"](pl[:], l1);
             deviation.append(devi);
             pl = pl[1:];
     for i in range(len(sm)):
@@ -28,9 +26,9 @@ def bandwidth(data: list[float], l1: int = 14, l2: float = 1) -> list[float]:
 
 def keltner(data: list[list[float]], l1: int = 14, l2: float = 1) -> list[list[float]]:
     """Keltner Channels. Each row of data is [high, low, close]."""
-    closing = []; tr = atr(data[:], l1); kelt = [];
+    closing = []; tr = registry["atr"](data[:], l1); kelt = [];
     for i in range(len(data)): closing.append(sum(data[i]) / 3.0);
-    kma = sma(closing, l1);
+    kma = registry["sma"](closing, l1);
     tr = tr[(len(tr) - len(kma)):];
     for i in range(len(kma)): kelt.append([kma[i] + tr[i] * l2, kma[i], kma[i] - tr[i] * l2]);
     return kelt
@@ -56,18 +54,18 @@ def envelope(data: list[float], l1: int = 10, p: float = 0.005) -> list[list[flo
     """Percent envelope around an SMA."""
     enve = [];
     for i in range(l1, len(data)):
-        sm = sma(data[i-l1:i], l1);
+        sm = registry["sma"](data[i-l1:i], l1);
         enve.append([sm[0]*(1+p),sm[0],sm[0]*(1-p)]);
     return enve;
 
 
 def fibbands(data: list[list[float]], length: int = 20, deviations: float = 3) -> list[list[float]]:
     """Fibonacci-spaced Bollinger-style bands. Each row of data is [price, volume]."""
-    pl = []; deviation = []; ma = vwma(data, length); boll = [];
+    pl = []; deviation = []; ma = registry["vwma"](data, length); boll = [];
     for i in range(0, len(data)):
         pl.append(data[i][0]);
         if len(pl) >= length:
-            devi = std(pl, length);
+            devi = registry["std"](pl, length);
             deviation.append(devi*deviations);
             pl = pl[1:];
     for i in range(0, len(ma)):
