@@ -320,35 +320,12 @@ def percentile(data, perc=0.5):
         tmp.sort();
         final.append(tmp[round((len(tmp)-1)*perc)])
     return final;
-def bands(data, l1=14, l2=1):
-    pl = []; deviation = []; boll = [];
-    sm = sma(data[:], l1);
-    for i in range(len(data)):
-        pl.append(data[i]);
-        if (len(pl)) >= l1:
-            devi = std(pl[:], l1);
-            deviation.append(devi);
-            pl = pl[1:];
-    for i in range(len(sm)):
-        boll.append([sm[i] + deviation[i] * l2, sm[i], sm[i] - deviation[i] * l2]);
-    return boll;
-def bandwidth(data, l1=14, l2=1):
-    band = bands(data[:], l1, l2); boll = [];
-    for i in range(len(band)): boll.append((band[i][0] - band[i][2]) / band[i][1]);
-    return boll;
 def atr(data, l1=14):
     atr = [float(data[0][0]) - float(data[0][2])];
     for i in range(1, len(data)):
         t0 = max((float(data[i][0]) - float(data[i - 1][1])), (float(data[i][2]) - float(data[i - 1][1])), (float(data[i][0]) - float(data[i][2])));
         atr.append((atr[len(atr)-1] * (l1 - 1) + t0) / l1)
     return atr;
-def keltner(data, l1=14, l2=1):
-    closing = []; tr = atr(data[:], l1); kelt = [];
-    for i in range(len(data)): closing.append(sum(data[i]) / 3.0);
-    kma = sma(closing, l1);
-    tr = tr[(len(tr) - len(kma)):];
-    for i in range(len(kma)): kelt.append([kma[i] + tr[i] * l2, kma[i], kma[i] - tr[i] * l2]);
-    return kelt
 def cor(data1, data2):
     d1avg = sma(data1[:], len(data1)); d1avg = d1avg[len(d1avg)-1];
     d2avg = sma(data2[:], len(data2)); d2avg = d2avg[len(d2avg)-1]
@@ -534,19 +511,6 @@ def lsma(data, l1=25):
             lr.append(m * l1 + b);
             pl = pl[1:];
     return lr;
-def don(data, l1=20):
-    pl = []; channel = [];
-    for i in range(len(data)):
-        pl.append(data[i]);
-        if(len(pl) >= l1):
-            highs = []; lows = [];
-            for h in range(len(pl)):
-                highs.append(float(pl[h][0]));
-                lows.append(float(pl[h][1]));
-            m = max(highs); l = min(lows);
-            channel.append([m, (m+l) / 2.0, l]);
-            pl = pl[1:];
-    return channel;
 def ichimoku(data, l1=9, l2=26, l3=52, l4=26):
     cloud = []; place = []; pl = [];
     for i in range(len(data)):
@@ -585,12 +549,6 @@ def stoch(data, l1=14, sd=3, sk=3):
             low = low[1:];
             ka = ka[1:];
     return stoch;
-def envelope(data, l1=10, p=0.005):
-    enve = [];
-    for i in range(l1, len(data)):
-        sm = sma(data[i-l1:i], l1);
-        enve.append([sm[0]*(1+p),sm[0],sm[0]*(1-p)]);
-    return enve;
 def chaikin_osc(data, ema1=3, ema2=10):
     cha = []; adl = [];
     for i in range(len(data)):
@@ -976,29 +934,6 @@ def psar(data, step=0.02, maxi=0.2):
         prev = data[i];
         final.append(sar);
     return final;
-def fibbands(data, length=20, deviations=3):
-    pl = []; deviation = []; ma = vwma(data, length); boll = [];
-    for i in range(0, len(data)):
-        pl.append(data[i][0]);
-        if len(pl) >= length:
-            devi = std(pl, length);
-            deviation.append(devi*deviations);
-            pl = pl[1:];
-    for i in range(0, len(ma)):
-        upper1 = ma[i] + (0.236 * deviation[i]);
-        upper2 = ma[i] + (0.382 * deviation[i]);
-        upper3 = ma[i] + (0.5 * deviation[i]);
-        upper4 = ma[i] + (0.618 * deviation[i]);
-        upper5 = ma[i] + (0.764 * deviation[i]);
-        upper6 = ma[i] + deviation[i];
-        lower1 = ma[i] - 0.236 * deviation[i];
-        lower2 = ma[i] - 0.382 * deviation[i];
-        lower3 = ma[i] - 0.5 * deviation[i];
-        lower4 = ma[i] - 0.618 * deviation[i];
-        lower5 = ma[i] - 0.764 * deviation[i];
-        lower6 = ma[i] - deviation[i];
-        boll.append([upper6, upper5, upper4, upper3, upper2, upper1, ma[i], lower1, lower2, lower3, lower4, lower5, lower6])
-    return boll;
 def supertrend(data, length=20, multiplier=3):
     at = atr(data, length); trend = [];
     for i in range(length-1, len(data)):

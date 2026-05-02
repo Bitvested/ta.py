@@ -4,3 +4,4 @@ from .random_ import prng  # noqa: F401
 from .misc import times_up, times_down  # noqa: F401
 from .chart_types import ha, ren  # noqa: F401
 from .experimental import support, resistance, divergence_state  # noqa: F401
+from .bands import bands, bandwidth, keltner, don, envelope, fibbands  # noqa: F401
