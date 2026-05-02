@@ -436,18 +436,6 @@ def mom(data, l1=10, p=False):
     for i in range(l1-1, len(data)):
         mom.append(data[i] / data[i - (l1-1)] * 100) if p == True else mom.append(data[i] - data[i - (l1 - 1)]);
     return mom
-def mom_osc(data, l1=9):
-    pl = []; osc = []; l1+=1;
-    for i in range(len(data)):
-        pl.append(data[i]);
-        if(len(pl) >= l1):
-            sumh = 0; suml = 0;
-            for a in range(1, l1):
-                if(pl[a-1] < pl[a]): sumh = sumh+pl[a];
-                else: suml = suml+pl[a];
-            osc.append((sumh - suml) / (sumh + suml) * 100);
-            pl = pl[1:];
-    return osc;
 def bop(data, l1=14):
     bo = [];
     for i in range(len(data)):
@@ -474,16 +462,6 @@ def asi(data):
         if((l - cy > h - cy) & (l - cy > h - l)): r = l - cy - (h - cy) / 2.0 + (cy - oy) / 4.0;
         if((h - l > h - cy) & (h - l > l - cy)): r = h - l + (cy - oy) / 4.0;
         a.append(50.0 * ((cy - c + (cy - oy) / 2.0 + (c - o) / 2.0) / r) * k / t if r and t != 0 else 0);
-    return a;
-def ao(data, l1=5, l2=35):
-    pl = []; a = [];
-    for i in range(len(data)):
-        pl.append((float(data[i][0]) + float(data[i][1])) / 2.0);
-        if(len(pl) >= l2):
-            f = sma(pl[:], l1);
-            s = sma(pl[:], l2);
-            a.append(f[len(f)-1] - s[len(s)-1]);
-            pl = pl[1:];
     return a;
 def pr(data, l1=14):
     n = []; pl = [];
@@ -549,19 +527,6 @@ def stoch(data, l1=14, sd=3, sk=3):
             low = low[1:];
             ka = ka[1:];
     return stoch;
-def chaikin_osc(data, ema1=3, ema2=10):
-    cha = []; adl = [];
-    for i in range(len(data)):
-        mfm = ((data[i][1]-data[i][2])-(data[i][0]-data[i][1]))/(data[i][0]-data[i][2]) if data[i][0]-data[i][2] != 0 else 0;
-        adl.append(mfm*data[i][3]);
-    ef = ema(adl, ema1); es = ema(adl, ema2);
-    if len(ef) > len(es):
-        ef = ef[len(ef)-len(es):];
-    else:
-        es = es[len(es)-len(ef):];
-    for i in range(len(ef)):
-        cha.append(ef[i]-es[i]);
-    return cha;
 def fractals(data):
     fractals = [[False, False], [False, False]];
     for i in range(2, len(data)-2):
@@ -577,13 +542,6 @@ def alligator(data, jl=13, tl=8, ll=5, js=8, ts=5, ls=3):
     lips = lips[len(lips)-len(jaw):];
     for i in range(len(jaw)-1, (js-2), -1):
         ret.append([jaw[i-(js-1)], teeth[i-(ts-1)], lips[i-(ls-1)]]);
-    return ret;
-def gator(data, jl=13, tl=8, ll=5, js=8, ts=5, ls=3):
-    ret = []; jaw = smma(data, jl); teeth = smma(data, tl); lips = smma(data, ll);
-    teeth = teeth[len(teeth)-len(jaw):];
-    lips = lips[len(lips)-len(jaw):];
-    for i in range(len(jaw)-1, (js-2), -1):
-        ret.append([jaw[i-(js-1)]-teeth[i-(ts-1)], -(abs(teeth[i-(ts-1)]-lips[i-(ls-1)]))]);
     return ret;
 def recent_high(data, lb=25):
     xback = lb; hindex = 0; highest = data[len(data)-1];
@@ -607,17 +565,6 @@ def recent_low(data, lb=25):
             xback -= 1;
         if xback <= 0: break;
     return {"index": lindex, "value": lowest};
-def ac(data, l1=5, l2=35):
-    pl = [];
-    for i in range(len(data)):
-        pl.append((data[i][0]+data[i][1])/2);
-    a = ao(data, l1, l2); sm =sma(a, l1); acr = [];
-    if len(a) > len(sm):
-        a = a[len(a)-len(sm):]
-    else:
-        sm = sm[len(sm)-len(a):];
-    for i in range(len(a)): acr.append(a[i]-sm[i]);
-    return acr;
 def fib(start, end):
     return [start, (end-start)*.236+start, (end-start)*.382+start, (end-start)*.5+start, (end-start)*.618+start, (end-start)*.786+start, end, (end-start)*1.618+start, (end-start)*2.618+start, (end-start)*3.618+start, (end-start)*4.236+start]
 def ar(data, l):
@@ -675,19 +622,6 @@ def normalize_from(data, value):
     for i in range(1, len(data)):
         ret.append(ret[len(ret)-1]*((data[i]-data[i-1])/data[i-1]+1));
     return ret;
-def fisher(data, l):
-    out = []; fish = 0; v1 = 0;
-    for i in range(l, len(data)+1):
-        pl = data[i-l:i]; pf = fish;
-        mn = min(pl);
-        v1 = .33*2*((data[i-1]-mn)/(max(pl)-mn)-.5)+.67*v1;
-        if v1 > .99:
-            v1 = .999;
-        if v1 < -.99:
-            v1 = -.999;
-        fish = 0.5 * math.log((1+v1)/(1-v1)) + 0.5 * pf;
-        out.append([fish, pf]);
-    return out[1:];
 def cross(d1, d2):
     d1 = d1[len(d1)-len(d2):];
     cross = (d1[0] > d2[0]);
