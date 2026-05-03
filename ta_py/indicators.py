@@ -842,6 +842,24 @@ def dx(data: list[list[float]], length: int = 14) -> list[float]:
         out[i] = float("nan") if s == 0 else 100.0 * abs(p[i] - m[i]) / s
     return out
 
+def trix(data: list[float], length: int = 30) -> list[float]:
+    """TRIX: rate of change of triple-EMA. ``trix[i] = 100·(EMA³[i] − EMA³[i−1])/EMA³[i−1]``."""
+    _ema = registry["ema"]
+    e1 = _ema(data, length)
+    if len(e1) < length:
+        return []
+    e2 = _ema(e1, length)
+    if len(e2) < length:
+        return []
+    e3 = _ema(e2, length)
+    if len(e3) < 2:
+        return []
+    out: list[float] = [0.0] * (len(e3) - 1)
+    for i in range(1, len(e3)):
+        prev = e3[i - 1]
+        out[i - 1] = float("nan") if prev == 0 else 100.0 * (e3[i] - prev) / prev
+    return out
+
 def natr(data: list[list[float]], length: int = 14) -> list[float]:
     """Normalized ATR. ``NATR[k] = 100 · ATR[k] / Close[k + length − 1]``.
 
