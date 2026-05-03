@@ -772,6 +772,31 @@ def pdm(data: list[list[float]], length: int = 14) -> list[float]:
         out[i - length] = prev
     return out
 
+def mdm(data: list[list[float]], length: int = 14) -> list[float]:
+    """Wilder -DM (average form). Each row of data is [high, close, low].
+
+    Output length is ``n - length``.
+    """
+    n = len(data)
+    if n < length + 1:
+        return []
+    s = 0.0
+    for i in range(1, length + 1):
+        up = float(data[i][0]) - float(data[i - 1][0])
+        dn = float(data[i - 1][2]) - float(data[i][2])
+        if dn > up and dn > 0:
+            s += dn
+    prev = s / length
+    out: list[float] = [0.0] * (n - length)
+    out[0] = prev
+    for i in range(length + 1, n):
+        up = float(data[i][0]) - float(data[i - 1][0])
+        dn = float(data[i - 1][2]) - float(data[i][2])
+        dm = dn if (dn > up and dn > 0) else 0.0
+        prev = (prev * (length - 1) + dm) / length
+        out[i - length] = prev
+    return out
+
 def ulcer(data: list[float], length: int = 14) -> list[float]:
     """Ulcer Index over ``length`` bars.
 
