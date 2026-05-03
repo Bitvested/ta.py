@@ -89,3 +89,43 @@ def fisher(data: list[float], l: int) -> list[list[float]]:
         fish = 0.5 * math.log((1+v1)/(1-v1)) + 0.5 * pf;
         out.append([fish, pf]);
     return out[1:];
+
+
+def kvo(data: list[list[float]], fast: int = 34, slow: int = 55) -> list[float]:
+    """Klinger Volume Oscillator. Each row of data is [high, close, low, volume].
+
+    Streaming dual EMA seeded from the first volume-flow value, plus a
+    trend/cumulative-range accumulator. Output length is ``n - 1``.
+    """
+    n = len(data)
+    if n <= 1:
+        return []
+    a_f = 2.0 / (fast + 1.0)
+    a_s = 2.0 / (slow + 1.0)
+    prev_hlc = float(data[0][0]) + float(data[0][1]) + float(data[0][2])
+    trend = -1
+    cm = 0.0
+    ema_fast = 0.0; ema_slow = 0.0
+    out: list[float] = [0.0] * (n - 1)
+    for i in range(1, n):
+        h = float(data[i][0]); c = float(data[i][1]); lo = float(data[i][2]); v = float(data[i][3])
+        hlc = h + c + lo
+        dm = h - lo
+        if hlc > prev_hlc and trend != 1:
+            trend = 1
+            cm = float(data[i - 1][0]) - float(data[i - 1][2])
+        elif hlc < prev_hlc and trend != 0:
+            trend = 0
+            cm = float(data[i - 1][0]) - float(data[i - 1][2])
+        cm += dm
+        sign = -1.0 if trend == 0 else 1.0
+        vf = 0.0 if cm == 0 else v * abs(2.0 * dm / cm - 1.0) * 100.0 * sign
+        if i == 1:
+            ema_fast = vf
+            ema_slow = vf
+        else:
+            ema_fast = (vf - ema_fast) * a_f + ema_fast
+            ema_slow = (vf - ema_slow) * a_s + ema_slow
+        out[i - 1] = ema_fast - ema_slow
+        prev_hlc = hlc
+    return out
