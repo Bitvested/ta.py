@@ -746,3 +746,35 @@ def dpo(data: list[float], length: int = 21) -> list[float]:
         return []
     off = length - 2 - length // 2
     return [float(data[i + off]) - sm[i] for i in range(len(sm))]
+
+def ulcer(data: list[float], length: int = 14) -> list[float]:
+    """Ulcer Index over ``length`` bars.
+
+    For each bar, drawdown_pct = 100 * (data[i] - rolling_max) / rolling_max,
+    where rolling_max spans the trailing ``length`` bars (inclusive).
+    Ulcer[k] = sqrt(mean(drawdown_pct ** 2 over length bars)).
+    """
+    from collections import deque
+    n = len(data)
+    if n < length:
+        return []
+    hi_dq: deque[int] = deque()
+    dd = [0.0] * n
+    for i in range(n):
+        v = float(data[i])
+        while hi_dq and float(data[hi_dq[-1]]) <= v:
+            hi_dq.pop()
+        hi_dq.append(i)
+        if hi_dq[0] <= i - length:
+            hi_dq.popleft()
+        hi = float(data[hi_dq[0]])
+        dd[i] = 0.0 if hi == 0 else 100.0 * (v - hi) / hi
+    out: list[float] = [0.0] * (n - length + 1)
+    s = 0.0
+    for i in range(length):
+        s += dd[i] * dd[i]
+    out[0] = (s / length) ** 0.5
+    for i in range(length, n):
+        s += dd[i] * dd[i] - dd[i - length] * dd[i - length]
+        out[i - length + 1] = (s / length) ** 0.5
+    return out
