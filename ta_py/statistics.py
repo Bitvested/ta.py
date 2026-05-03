@@ -491,6 +491,14 @@ def lr_intercept(data: list[float], length: int = 14) -> list[float]:
     return [pair[1] for pair in w]
 
 
+def lr_angle(data: list[float], length: int = 14) -> list[float]:
+    """Linear regression angle in degrees: ``atan(slope) · 180/π``."""
+    import math
+    w = _lr_windows(data, length)
+    rad_to_deg = 180.0 / math.pi
+    return [math.atan(pair[0]) * rad_to_deg for pair in w]
+
+
 # --- sum MUST be last: it shadows the builtin sum() for all code defined above ---
 def sum(data: list[float]) -> float:
     """Compute the running total of all elements in data."""

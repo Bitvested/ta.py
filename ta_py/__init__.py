@@ -12,7 +12,7 @@ from .statistics import (
     zscore, ar, normalize_pair, normalize_from, log, exp, covariance,
     ncdf, pvalue, expected_trails, martingale, antimartingale,
     return_positive, return_negative, recent_high, recent_low, sum,
-    lr_slope, lr_intercept,
+    lr_slope, lr_intercept, lr_angle,
 )
 from .indicators import (
     rsi, wrsi, tsi, macd, macd_signal, macd_bars, atr, mfi, roc, mom,
@@ -45,7 +45,7 @@ __all__ = [
     "zscore", "ar", "normalize_pair", "normalize_from", "log", "exp", "covariance",
     "ncdf", "pvalue", "expected_trails", "martingale", "antimartingale",
     "return_positive", "return_negative", "recent_high", "recent_low", "sum",
-    "lr_slope", "lr_intercept",
+    "lr_slope", "lr_intercept", "lr_angle",
     # indicators
     "rsi", "wrsi", "tsi", "macd", "macd_signal", "macd_bars", "atr", "mfi", "roc", "mom",
     "kst", "cop", "obv", "vwap", "ichimoku", "fractals", "cross", "halftrend", "zigzag",
