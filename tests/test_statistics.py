@@ -9,7 +9,7 @@ CASES = [
     "er", "variance", "std", "normsinv", "percentile", "cor", "dif",
     "drawdown", "cum", "mse", "permutations", "winratio", "avgwin",
     "avgloss", "kelly", "se", "zscore", "ar", "normalize_pair",
-    "normalize_from", "log", "covariance", "ncdf", "expected_trails",
+    "normalize_from", "log", "exp", "covariance", "ncdf", "expected_trails",
     "pvalue", "martingale", "antimartingale", "return_positive",
     "return_negative", "recent_high", "recent_low", "standardize",
 ]
