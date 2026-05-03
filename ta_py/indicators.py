@@ -723,3 +723,17 @@ def pvi(data: list[list[float]]) -> list[float]:
         else:
             out[i] = out[i - 1]
     return out
+
+def emv(data: list[list[float]]) -> list[float]:
+    """Ease of Movement (scale=10000). Each row of data is [high, low, volume]."""
+    n = len(data)
+    if n < 2:
+        return []
+    out: list[float] = [0.0] * (n - 1)
+    for i in range(1, n):
+        h = float(data[i][0]); lo = float(data[i][1]); v = float(data[i][2])
+        hp = float(data[i - 1][0]); lp = float(data[i - 1][1])
+        move = (h + lo) / 2 - (hp + lp) / 2
+        rng = h - lo
+        out[i - 1] = float("nan") if (rng == 0 or v == 0) else move * rng * 10000 / v
+    return out
