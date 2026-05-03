@@ -31,7 +31,10 @@ from .bands import bands, bandwidth, keltner, don, envelope, fibbands
 from .chart_types import ha, ren
 from .misc import times_up, times_down, fibnumbers
 from .experimental import support, resistance, divergence_state
-from .random_ import prng
+from types import SimpleNamespace
+from .random_ import prng, pick as _pick, range_ as _range_, float_ as _float_, order as _order
+
+random = SimpleNamespace(prng=prng, pick=_pick, range=_range_, float=_float_, order=_order)
 
 __all__ = [
     # moving_averages
@@ -68,7 +71,7 @@ __all__ = [
     # experimental
     "support", "resistance", "divergence_state",
     # random
-    "prng",
+    "prng", "random",
 ]
 
 from . import _registry
