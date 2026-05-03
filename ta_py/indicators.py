@@ -1072,6 +1072,37 @@ def ulcer(data: list[float], length: int = 14) -> list[float]:
         out[i - length + 1] = (s / length) ** 0.5
     return out
 
+def vortex(data: list[list[float]], length: int = 14) -> list[list[float]]:
+    """Vortex Indicator. Each row of data is [high, close, low].
+
+    ``VM+ = |H[i] − L[i−1]|``, ``VM− = |L[i] − H[i−1]|``, ``TR`` is the
+    standard true range. ``VI± = ΣVM± / ΣTR`` over the trailing ``length``
+    bars. Returns ``[[VI+, VI−], ...]`` with output length ``n - length``.
+    """
+    n = len(data)
+    if n < length + 1:
+        return []
+    vmp = [0.0] * n
+    vmn = [0.0] * n
+    tr = [0.0] * n
+    for i in range(1, n):
+        h = float(data[i][0]); lo = float(data[i][2]); cprev = float(data[i - 1][1])
+        hprev = float(data[i - 1][0]); lprev = float(data[i - 1][2])
+        vmp[i] = abs(h - lprev)
+        vmn[i] = abs(lo - hprev)
+        tr[i] = max(h - lo, abs(h - cprev), abs(lo - cprev))
+    s_p = 0.0; s_n = 0.0; s_t = 0.0
+    for i in range(1, length + 1):
+        s_p += vmp[i]; s_n += vmn[i]; s_t += tr[i]
+    out: list[list[float]] = [[0.0, 0.0]] * (n - length)
+    out[0] = [float("nan") if s_t == 0 else s_p / s_t, float("nan") if s_t == 0 else s_n / s_t]
+    for i in range(length + 1, n):
+        s_p += vmp[i] - vmp[i - length]
+        s_n += vmn[i] - vmn[i - length]
+        s_t += tr[i] - tr[i - length]
+        out[i - length] = [float("nan") if s_t == 0 else s_p / s_t, float("nan") if s_t == 0 else s_n / s_t]
+    return out
+
 def cmf(data: list[list[float]], length: int = 20) -> list[float]:
     """Chaikin Money Flow. Each row of data is [high, close, low, volume].
 

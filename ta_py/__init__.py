@@ -23,7 +23,7 @@ from .indicators import (
     pdm, mdm, pdi, mdi, dx, adx, adxr, natr,
     trix, ppo, apo, mass,
     cci, stoch_rsi, kdj,
-    cmf,
+    cmf, vortex,
 )
 from .oscillators import gator, mom_osc, chaikin_osc, ao, ac, fisher
 from .bands import bands, bandwidth, keltner, don, envelope, fibbands
@@ -54,7 +54,7 @@ __all__ = [
     "pdm", "mdm", "pdi", "mdi", "dx", "adx", "adxr", "natr",
     "trix", "ppo", "apo", "mass",
     "cci", "stoch_rsi", "kdj",
-    "cmf",
+    "cmf", "vortex",
     # oscillators
     "gator", "mom_osc", "chaikin_osc", "ao", "ac", "fisher",
     # bands
