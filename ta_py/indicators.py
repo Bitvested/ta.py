@@ -797,6 +797,37 @@ def mdm(data: list[list[float]], length: int = 14) -> list[float]:
         out[i - length] = prev
     return out
 
+def mdi(data: list[list[float]], length: int = 14) -> list[float]:
+    """-DI = 100 · smoothed(-DM) / smoothed(TR). Each row of data is [high, close, low].
+
+    Mirror of pdi using -DM. Output length is ``n - length``.
+    """
+    n = len(data)
+    if n < length + 1:
+        return []
+    sum_dm = 0.0; sum_tr = 0.0
+    for i in range(1, length + 1):
+        h = float(data[i][0]); lo = float(data[i][2]); cprev = float(data[i - 1][1])
+        up = float(data[i][0]) - float(data[i - 1][0])
+        dn = float(data[i - 1][2]) - float(data[i][2])
+        if dn > up and dn > 0:
+            sum_dm += dn
+        sum_tr += max(h - lo, abs(h - cprev), abs(lo - cprev))
+    dm = sum_dm / length
+    tr = sum_tr / length
+    out: list[float] = [0.0] * (n - length)
+    out[0] = float("nan") if tr == 0 else 100.0 * dm / tr
+    for i in range(length + 1, n):
+        h = float(data[i][0]); lo = float(data[i][2]); cprev = float(data[i - 1][1])
+        up = float(data[i][0]) - float(data[i - 1][0])
+        dn = float(data[i - 1][2]) - float(data[i][2])
+        cur_dm = dn if (dn > up and dn > 0) else 0.0
+        cur_tr = max(h - lo, abs(h - cprev), abs(lo - cprev))
+        dm = (dm * (length - 1) + cur_dm) / length
+        tr = (tr * (length - 1) + cur_tr) / length
+        out[i - length] = float("nan") if tr == 0 else 100.0 * dm / tr
+    return out
+
 def pdi(data: list[list[float]], length: int = 14) -> list[float]:
     """+DI = 100 · smoothed(+DM) / smoothed(TR). Each row of data is [high, close, low].
 
