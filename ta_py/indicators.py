@@ -539,21 +539,58 @@ def pr(data: list[float], l1: int = 14) -> list[float]:
     return out
 def stoch(data: list[list[float]], l1: int = 14, sd: int = 3, sk: int = 3) -> list[list[float]]:
     """Stochastic Oscillator (%K, %D)."""
-    stoch = []; high = []; low = []; ka = [];
-    for i in range(len(data)):
-        high.append(float(data[i][0]));
-        low.append(float(data[i][2]));
-        if(len(high) >= l1):
-            highd = max(high); lowd = min(low);
-            k = 100.0 * (data[i][1] - lowd) / (highd - lowd) if highd - lowd != 0 else 0;
-            ka.append(k);
-        if(len(ka) - sk >= sd):
-            d = registry["sma"](ka[:], sd);
-            stoch.append([k, d[len(d)-1]]);
-            high = high[1:];
-            low = low[1:];
-            ka = ka[1:];
-    return stoch;
+    from collections import deque
+    n = len(data)
+    out: list[list[float]] = []
+    # Effective window: original grows high/low over l1+sk+sd-1 bars before first output
+    l1_eff = l1 + sk + sd - 1
+    hi_dq: deque[int] = deque()
+    lo_dq: deque[int] = deque()
+    raw_buf: list[float] = [0.0] * sk
+    sm_buf: list[float] = [0.0] * sd
+    raw_sum = 0.0; sm_sum = 0.0
+    raw_count = 0; sm_count = 0
+    raw_idx = 0; sm_idx = 0
+    for i in range(n):
+        h = float(data[i][0]); lo = float(data[i][2])
+        while hi_dq and float(data[hi_dq[-1]][0]) <= h:
+            hi_dq.pop()
+        hi_dq.append(i)
+        while lo_dq and float(data[lo_dq[-1]][2]) >= lo:
+            lo_dq.pop()
+        lo_dq.append(i)
+        if hi_dq[0] <= i - l1_eff:
+            hi_dq.popleft()
+        if lo_dq[0] <= i - l1_eff:
+            lo_dq.popleft()
+        if i < l1_eff - 1:
+            continue
+        highd = float(data[hi_dq[0]][0]); lowd = float(data[lo_dq[0]][2])
+        rng = highd - lowd
+        raw_k = 0.0 if rng == 0 else 100.0 * (float(data[i][1]) - lowd) / rng
+        if raw_count < sk:
+            raw_buf[raw_idx] = raw_k
+            raw_sum += raw_k
+            raw_count += 1
+        else:
+            raw_sum += raw_k - raw_buf[raw_idx]
+            raw_buf[raw_idx] = raw_k
+        raw_idx = (raw_idx + 1) % sk
+        if raw_count < sk:
+            continue
+        sm_k = raw_sum / sk
+        if sm_count < sd:
+            sm_buf[sm_idx] = sm_k
+            sm_sum += sm_k
+            sm_count += 1
+        else:
+            sm_sum += sm_k - sm_buf[sm_idx]
+            sm_buf[sm_idx] = sm_k
+        sm_idx = (sm_idx + 1) % sd
+        if sm_count < sd:
+            continue
+        out.append([sm_k, sm_sum / sd])
+    return out
 def fib(start: float, end: float) -> list[float]:
     """Fibonacci retracement levels."""
     return [start, (end-start)*.236+start, (end-start)*.382+start, (end-start)*.5+start, (end-start)*.618+start, (end-start)*.786+start, end, (end-start)*1.618+start, (end-start)*2.618+start, (end-start)*3.618+start, (end-start)*4.236+start]
