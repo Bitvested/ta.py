@@ -9,9 +9,10 @@ monkey-patch implementations at runtime:
     ta_py._registry.registry["smma"] = my_custom_smma
     # ta_py.alligator now uses my_custom_smma
 
-Until Task 16 wires call sites through this dict, it is populated but
-unused.
+Mutation contract: keys may be reassigned (`registry["smma"] = my_fn`)
+but must never be `del`'d. Indicator callsites index without `.get()`,
+so a deleted key surfaces as `KeyError` at indicator runtime.
 """
-from typing import Callable, Dict
+from typing import Callable
 
-registry: Dict[str, Callable] = {}
+registry: dict[str, Callable] = {}
