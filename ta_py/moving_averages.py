@@ -155,19 +155,20 @@ def vwma(data: list[list[float]], l: int = 20) -> list[float]:
 
 def vwwma(d: list[list[float]], length: int = 20) -> list[float]:
     """Volume Weighted Weighted Moving Average. Each row of data is [price, volume]."""
-    data = []; weight = 0; vwm = [];
-    for i in range(len(d)):
-        data.append([d[i][0]*d[i][1],d[i][1]]);
-    for i in range(1, length+1):
-        weight += i;
-    for i in range(length, len(data)+1):
-        pl = data[i-length:i];
-        totalv = 0; totalp = 0;
-        for q in range(len(pl)):
-            totalv += pl[q][1] * (q+1) / weight;
-            totalp += pl[q][0] * (q+1) / weight;
-        vwm.append(totalp / totalv);
-    return vwm;
+    n = len(d)
+    weight = length * (length + 1) // 2
+    out: list[float] = []
+    for i in range(length, n + 1):
+        totalv = 0.0
+        totalp = 0.0
+        base = i - length
+        for q in range(length):
+            row = d[base + q]
+            v = float(row[1])
+            totalv += v * (q + 1) / weight
+            totalp += float(row[0]) * v * (q + 1) / weight
+        out.append(totalp / totalv)
+    return out
 
 def hull(data: list[float], l: int = 14) -> list[float]:
     """Hull Moving Average. Calls wma() internally (same module)."""
