@@ -846,6 +846,32 @@ def apo(data: list[float], length1: int = 12, length2: int = 26) -> list[float]:
     """Absolute Price Oscillator. Thin wrapper for ``macd`` (TA-Lib's APO == MACD with EMA MA-type)."""
     return registry["macd"](data, length1, length2)
 
+def mass(data: list[list[float]], length: int = 25) -> list[float]:
+    """Mass Index. Rolling sum over ``length`` bars of EMA(range, 9) / EMA(EMA(range, 9), 9).
+
+    Each row of data is [high, low].
+    """
+    _ema = registry["ema"]
+    n = len(data)
+    rng = [float(data[i][0]) - float(data[i][1]) for i in range(n)]
+    e1 = _ema(rng, 9)
+    if len(e1) < 9:
+        return []
+    e2 = _ema(e1, 9)
+    if len(e2) < length:
+        return []
+    offset = len(e1) - len(e2)
+    ratio = [float("nan") if e2[i] == 0 else e1[i + offset] / e2[i] for i in range(len(e2))]
+    s = 0.0
+    for i in range(length):
+        s += ratio[i]
+    out: list[float] = [0.0] * (len(ratio) - length + 1)
+    out[0] = s
+    for i in range(length, len(ratio)):
+        s += ratio[i] - ratio[i - length]
+        out[i - length + 1] = s
+    return out
+
 def ppo(data: list[float], length1: int = 12, length2: int = 26) -> list[float]:
     """Percentage Price Oscillator. ``ppo[i] = 100 · MACD[i] / EMA(data, max(length1, length2))[i]``."""
     if length1 > length2:

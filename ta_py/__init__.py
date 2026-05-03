@@ -21,7 +21,7 @@ from .indicators import (
     aroon_up, aroon_down, aroon_osc,
     adl, nvi, pvi, emv, dpo, ulcer,
     pdm, mdm, pdi, mdi, dx, adx, adxr, natr,
-    trix, ppo, apo,
+    trix, ppo, apo, mass,
 )
 from .oscillators import gator, mom_osc, chaikin_osc, ao, ac, fisher
 from .bands import bands, bandwidth, keltner, don, envelope, fibbands
@@ -50,7 +50,7 @@ __all__ = [
     "aroon_up", "aroon_down", "aroon_osc",
     "adl", "nvi", "pvi", "emv", "dpo", "ulcer",
     "pdm", "mdm", "pdi", "mdi", "dx", "adx", "adxr", "natr",
-    "trix", "ppo", "apo",
+    "trix", "ppo", "apo", "mass",
     # oscillators
     "gator", "mom_osc", "chaikin_osc", "ao", "ac", "fisher",
     # bands
