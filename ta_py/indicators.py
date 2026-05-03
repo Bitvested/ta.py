@@ -6,51 +6,40 @@ from ._registry import registry
 
 
 def rsi(data: list[float], l: int = 14) -> list[float]:
-    """Relative Strength Index."""
+    """Relative Strength Index (Wilder smoothing).
+
+    Matches ta.js 2.0's ``rsi``: gains/losses are seeded as the mean of the
+    first ``l`` raw gains/losses, then smoothed via Wilder's recurrence
+    ``avg = (avg * (l - 1) + cur) / l``. Output length is ``n - l``.
+    """
     n = len(data)
-    if n < l:
-        return []
-    deltas: list[float] = [float(data[i]) - float(data[i - 1]) for i in range(1, n)]
-    m = len(deltas)
-    window = l - 1
-    if m < window:
+    if n <= l:
         return []
     gain = 0.0; loss = 0.0
-    for i in range(window):
-        d = deltas[i]
-        if d > 0: gain += d
-        elif d < 0: loss += -d
-    out: list[float] = []
-    g = gain / l; lo = loss / l
-    out.append(100.0 if lo == 0 else 100.0 - 100.0 / (1 + g / lo))
-    for i in range(window, m):
-        d_in = deltas[i]
-        d_out = deltas[i - window]
-        if d_in > 0: gain += d_in
-        elif d_in < 0: loss += -d_in
-        if d_out > 0: gain -= d_out
-        elif d_out < 0: loss -= -d_out
-        g = gain / l; lo = loss / l
-        out.append(100.0 if lo == 0 else 100.0 - 100.0 / (1 + g / lo))
+    for i in range(1, l + 1):
+        d = float(data[i]) - float(data[i - 1])
+        if d > 0:
+            gain += d
+        else:
+            loss -= d
+    avg_g = gain / l
+    avg_l = loss / l
+    def _rsi_val(g: float, lo: float) -> float:
+        if g == 0.0 and lo == 0.0:
+            return float("nan")
+        if lo == 0.0:
+            return 100.0
+        return 100.0 - 100.0 / (1 + g / lo)
+    out: list[float] = [_rsi_val(avg_g, avg_l)]
+    for i in range(l + 1, n):
+        d = float(data[i]) - float(data[i - 1])
+        avg_g = (avg_g * (l - 1) + (d if d > 0 else 0.0)) / l
+        avg_l = (avg_l * (l - 1) + (-d if d < 0 else 0.0)) / l
+        out.append(_rsi_val(avg_g, avg_l))
     return out
 def wrsi(data: list[float], l: int = 14) -> list[float]:
-    """Wilder's RSI (smoothed via WSMA)."""
-    arrsi = []; u = []; d = [];
-    for i in range(1,len(data)):
-        if(data[i]-data[i-1]<0):
-            d.append(abs(data[i]-data[i-1]));
-            u.append(0.0);
-        else:
-            d.append(0.0);
-            u.append(data[i]-data[i-1]);
-    d = registry["wsma"](d, l); u = registry["wsma"](u, l);
-    for i in range(0, len(d)):
-        try:
-            f = 100.0-100.0/(1.0+(u[i]/d[i]));
-        except ZeroDivisionError:
-            f = 100.0;
-        arrsi.append(f);
-    return arrsi;
+    """Wilder's RSI. Alias for :func:`rsi` (matches ta.js 2.0)."""
+    return rsi(data, l)
 def tsi(data: list[float], long: int = 25, short: int = 13, sig: int = 13) -> list[list[float]]:
     """True Strength Index."""
     _ema = registry["ema"]  # alias once per call (registry contract: keys never deleted)

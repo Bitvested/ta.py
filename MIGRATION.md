@@ -62,6 +62,24 @@ ta_py.mfi([[10, 8, 9, 100], [12, 10, 11, 150], [11, 9, 10, 200], [13, 11, 12, 12
 # → [60.70726915520628, 33.333333333333336]
 ```
 
+#### `rsi(data, length=14)` — Wilder smoothing
+
+`rsi` previously used Cutler RSI (a strict sliding window of the last `length - 1` deltas). It now uses Wilder smoothing — gains and losses are seeded as the mean of the first `length` raw values, then smoothed via the recurrence `avg = (avg * (length - 1) + cur) / length`. This matches ta.js 2.0's `rsi` exactly and aligns with TA-Lib's RSI / Wilder's original definition.
+
+`wrsi` is now a thin alias for `rsi` (same as ta.js 2.0). Output length drops by one (was `n - length + 1`, now `n - length`).
+
+```python
+# 1.17.0 (Cutler / sliding window)
+ta_py.rsi([1, 2, 3, 4, 5, 6, 7, 5], 6)
+# → [100.0, 100.0, 66.66666666666666]    # 3 rows
+
+# 2.0.0 (Wilder smoothing)
+ta_py.rsi([1, 2, 3, 4, 5, 6, 7, 5, 6, 4], 6)
+# → [100, 71.42857142857143, 75.60975609756098, 55.95667870036102]   # n - length rows
+```
+
+If you want the old Cutler-style RSI, the simplest substitute is to copy the 1.x rsi source out of git history into your own module — there's no equivalent in ta.py 2.0.
+
 ### Aroon namespace (Phase 3)
 
 `aroon_up` / `aroon_down` / `aroon_osc` (still importable for one cycle) become the canonical `aroon.up` / `aroon.down` / `aroon.osc` namespace, mirroring ta.js. Both forms work during the deprecation window.
