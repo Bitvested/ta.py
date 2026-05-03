@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ta_py"
-version = "1.17.0"
-description = "ta.py is a Python package for dealing with financial technical analysis"
+version = "2.0.0"
+description = "Fastest zero-dependency pure-Python technical analysis library — full functional parity with ta.js 2.0"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -26,6 +26,7 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+    "Typing :: Typed",
 ]
 dependencies = []
 
@@ -34,7 +35,16 @@ dev = ["pytest>=7"]
 
 [project.urls]
 Homepage = "https://github.com/Bitvested/ta.py"
+Repository = "https://github.com/Bitvested/ta.py"
+Issues = "https://github.com/Bitvested/ta.py/issues"
+Changelog = "https://github.com/Bitvested/ta.py/blob/main/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
 include = ["ta_py*"]
 exclude = ["tests*", "bench*"]
+
+[tool.setuptools.package-data]
+ta_py = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
