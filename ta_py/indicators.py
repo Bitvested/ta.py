@@ -109,20 +109,39 @@ def atr(data: list[list[float]], l1: int = 14) -> list[float]:
     return out
 
 def mfi(data: list[list[float]], l1: int = 14) -> list[float]:
-    """Money Flow Index."""
+    """Money Flow Index. Each row of data is [high, low, close, volume].
+
+    Output length is ``n - l1``.
+    """
     n = len(data)
-    if n < l1:
+    if n <= l1:
         return []
-    out: list[float] = []
+    pos = [0.0] * n
+    neg = [0.0] * n
+    prev_tp = (float(data[0][0]) + float(data[0][1]) + float(data[0][2])) / 3.0
+    for i in range(1, n):
+        h = float(data[i][0]); lo = float(data[i][1]); c = float(data[i][2]); v = float(data[i][3])
+        tp = (h + lo + c) / 3.0
+        flow = tp * v
+        if tp > prev_tp:
+            pos[i] = flow
+        elif tp < prev_tp:
+            neg[i] = flow
+        prev_tp = tp
     sum_p = 0.0; sum_n = 0.0
-    for i in range(l1):
-        sum_p += float(data[i][0])
-        sum_n += float(data[i][1])
-    out.append(100.0 - 100.0 / (1 + sum_p / sum_n))
-    for i in range(l1, n):
-        sum_p += float(data[i][0]) - float(data[i - l1][0])
-        sum_n += float(data[i][1]) - float(data[i - l1][1])
-        out.append(100.0 - 100.0 / (1 + sum_p / sum_n))
+    for i in range(1, l1 + 1):
+        sum_p += pos[i]; sum_n += neg[i]
+    def _mfi_val(p: float, ng: float) -> float:
+        if p == 0.0 and ng == 0.0:
+            return float("nan")
+        if ng == 0.0:
+            return 100.0
+        return 100.0 * p / (p + ng)
+    out: list[float] = [_mfi_val(sum_p, sum_n)]
+    for i in range(l1 + 1, n):
+        sum_p += pos[i] - pos[i - l1]
+        sum_n += neg[i] - neg[i - l1]
+        out.append(_mfi_val(sum_p, sum_n))
     return out
 def roc(data: list[float], l1: int = 14) -> list[float]:
     """Rate of Change."""

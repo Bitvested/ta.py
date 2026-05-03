@@ -48,6 +48,20 @@ ta_py.smma([1, 2, 3, 4, 5, 6, 10], 5)
 
 Cascading effects: `alligator` and `gator` outputs change. Both indicators continue to align via existing slice-trim logic; no caller code change required.
 
+#### `mfi(data, length=14)` — input tuple shape
+
+Inputs are now OHLCV rows `[high, low, close, volume]` (matching ta.js 2.0). Previously each row was a precomputed `[positive_flow, negative_flow]` pair. Internally, typical price `(H + L + C) / 3` and money flow are now derived per bar; positive/negative flows are tracked separately and the `length`-window ratio uses the standard `100 × pos / (pos + neg)` formula.
+
+```python
+# 1.17.0 — caller had to precompute pos/neg flows
+ta_py.mfi([[19, 13], [14, 38], [21, 25], [32, 17]], 3)
+# → [41.53846153846154, 45.578231292517]
+
+# 2.0.0 — pass raw OHLCV
+ta_py.mfi([[10, 8, 9, 100], [12, 10, 11, 150], [11, 9, 10, 200], [13, 11, 12, 120], [12, 10, 11, 80]], 3)
+# → [60.70726915520628, 33.333333333333336]
+```
+
 ### Aroon namespace (Phase 3)
 
 `aroon_up` / `aroon_down` / `aroon_osc` (still importable for one cycle) become the canonical `aroon.up` / `aroon.down` / `aroon.osc` namespace, mirroring ta.js. Both forms work during the deprecation window.
