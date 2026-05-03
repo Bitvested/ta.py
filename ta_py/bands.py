@@ -67,11 +67,20 @@ def don(data: list[list[float]], l1: int = 20) -> list[list[float]]:
 
 def envelope(data: list[float], l1: int = 10, p: float = 0.005) -> list[list[float]]:
     """Percent envelope around an SMA."""
-    enve = [];
-    for i in range(l1, len(data)):
-        sm = registry["sma"](data[i-l1:i], l1);
-        enve.append([sm[0]*(1+p),sm[0],sm[0]*(1-p)]);
-    return enve;
+    n = len(data)
+    if n <= l1:
+        return []
+    out: list[list[float]] = []
+    s = 0.0
+    for k in range(l1):
+        s += float(data[k])
+    sm = s / l1
+    out.append([sm * (1 + p), sm, sm * (1 - p)])
+    for j in range(l1, n - 1):
+        s += float(data[j]) - float(data[j - l1])
+        sm = s / l1
+        out.append([sm * (1 + p), sm, sm * (1 - p)])
+    return out
 
 
 def fibbands(data: list[list[float]], length: int = 20, deviations: float = 3) -> list[list[float]]:
