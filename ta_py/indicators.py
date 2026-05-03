@@ -842,6 +842,18 @@ def dx(data: list[list[float]], length: int = 14) -> list[float]:
         out[i] = float("nan") if s == 0 else 100.0 * abs(p[i] - m[i]) / s
     return out
 
+def ppo(data: list[float], length1: int = 12, length2: int = 26) -> list[float]:
+    """Percentage Price Oscillator. ``ppo[i] = 100 · MACD[i] / EMA(data, max(length1, length2))[i]``."""
+    if length1 > length2:
+        length1, length2 = length2, length1
+    _ema = registry["ema"]; _macd = registry["macd"]
+    eb = _ema(data, length2)
+    m = _macd(data, length1, length2)
+    out: list[float] = [0.0] * len(m)
+    for i in range(len(m)):
+        out[i] = float("nan") if eb[i] == 0 else 100.0 * m[i] / eb[i]
+    return out
+
 def trix(data: list[float], length: int = 30) -> list[float]:
     """TRIX: rate of change of triple-EMA. ``trix[i] = 100·(EMA³[i] − EMA³[i−1])/EMA³[i−1]``."""
     _ema = registry["ema"]
