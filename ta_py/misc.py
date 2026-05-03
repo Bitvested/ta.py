@@ -1,6 +1,9 @@
 """Miscellaneous helpers."""
 
 
+fibnumbers: list[int] = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181]
+
+
 def times_up(data: list[float], l: int) -> list[int]:
     """Return [1, 0, …] with 1 where the previous `l` consecutive diffs in `data` are all positive."""
     out = [];

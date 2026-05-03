@@ -24,7 +24,7 @@ from .indicators import (
 from .oscillators import gator, mom_osc, chaikin_osc, ao, ac, fisher
 from .bands import bands, bandwidth, keltner, don, envelope, fibbands
 from .chart_types import ha, ren
-from .misc import times_up, times_down
+from .misc import times_up, times_down, fibnumbers
 from .experimental import support, resistance, divergence_state
 from .random_ import prng
 
@@ -54,7 +54,7 @@ __all__ = [
     # chart types
     "ha", "ren",
     # misc
-    "times_up", "times_down",
+    "times_up", "times_down", "fibnumbers",
     # experimental
     "support", "resistance", "divergence_state",
     # random
