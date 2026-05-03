@@ -112,12 +112,29 @@ def er(data: list[float]) -> float:
 
 def variance(data: list[float], l1: int = 0) -> list[float] | float:
     """Compute the rolling variance of data."""
-    l1 = l1 if l1 > 0 else len(data); va = [];
-    for i in range(l1, len(data)+1):
-        tmp = data[i-l1:i]; mean = sma(tmp, len(tmp)); sum = 0;
-        for x in range(len(tmp)): sum += ((tmp[x] - mean[len(mean)-1]) ** 2);
-        va.append(sum/l1);
-    return va;
+    n = len(data)
+    L = l1 if l1 > 0 else n
+    if n < L:
+        return []
+    out: list[float] = []
+    sum_x = 0.0
+    sum_x2 = 0.0
+    for i in range(L):
+        v = float(data[i])
+        sum_x += v
+        sum_x2 += v * v
+    mean = sum_x / L
+    var = sum_x2 / L - mean * mean
+    out.append(var if var > 0 else 0.0)
+    for i in range(L, n):
+        v_in = float(data[i])
+        v_out = float(data[i - L])
+        sum_x += v_in - v_out
+        sum_x2 += v_in * v_in - v_out * v_out
+        mean = sum_x / L
+        var = sum_x2 / L - mean * mean
+        out.append(var if var > 0 else 0.0)
+    return out
 
 def std(data: list[float], l1: int = 0) -> list[float] | float:
     """Compute the standard deviation of data."""
