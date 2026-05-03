@@ -1071,3 +1071,29 @@ def ulcer(data: list[float], length: int = 14) -> list[float]:
         s += dd[i] * dd[i] - dd[i - length] * dd[i - length]
         out[i - length + 1] = (s / length) ** 0.5
     return out
+
+def cmf(data: list[list[float]], length: int = 20) -> list[float]:
+    """Chaikin Money Flow. Each row of data is [high, close, low, volume].
+
+    ``MFV[i] = ((C - L) - (H - C)) / (H - L) · V``;
+    ``CMF[k] = ΣMFV / ΣV`` over the trailing ``length`` bars. Output length
+    is ``n - length + 1``.
+    """
+    n = len(data)
+    if n < length:
+        return []
+    mfv = [0.0] * n
+    for i in range(n):
+        h = float(data[i][0]); c = float(data[i][1]); lo = float(data[i][2]); v = float(data[i][3])
+        rng = h - lo
+        mfv[i] = 0.0 if rng == 0 else (((c - lo) - (h - c)) / rng) * v
+    s_m = 0.0; s_v = 0.0
+    for i in range(length):
+        s_m += mfv[i]; s_v += float(data[i][3])
+    out: list[float] = [0.0] * (n - length + 1)
+    out[0] = float("nan") if s_v == 0 else s_m / s_v
+    for i in range(length, n):
+        s_m += mfv[i] - mfv[i - length]
+        s_v += float(data[i][3]) - float(data[i - length][3])
+        out[i - length + 1] = float("nan") if s_v == 0 else s_m / s_v
+    return out

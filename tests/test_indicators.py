@@ -14,6 +14,7 @@ CASES = [
     "pdm", "mdm", "pdi", "mdi", "dx", "adx", "adxr", "natr",
     "trix", "ppo", "apo", "mass",
     "cci", "stoch_rsi", "kdj",
+    "cmf",
 ]
 
 
