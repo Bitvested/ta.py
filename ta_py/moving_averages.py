@@ -17,17 +17,22 @@ def sma(data: list[float], l: int = 14) -> list[float]:
 
 def smma(data: list[float], l: int = 14) -> list[float]:
     """Smoothed Moving Average."""
-    pl = []; sm = [];
-    for i in range(len(data)):
-        pl.append(float(data[i]));
-        if (len(pl)) >= l:
-            average = 0;
-            for a in range(len(pl)): average += pl[a];
-            f = average / l if len(sm) <= 0 else (average - sm[len(sm) - 1]) / l;
-            sm.append(f);
-            pl = pl[1:];
-    sm = sm[1:];
-    return sm;
+    n = len(data)
+    if n < l + 1:
+        return []
+    s = 0.0
+    for i in range(l):
+        s += float(data[i])
+    first = s / l
+    s += float(data[l]) - float(data[0])
+    prev = (s - first) / l
+    out = [prev]
+    for i in range(l + 1, n):
+        s += float(data[i]) - float(data[i - l])
+        cur = (s - prev) / l
+        out.append(cur)
+        prev = cur
+    return out
 
 def wma(data: list[float], l: int = 14) -> list[float]:
     """Weighted Moving Average (linear weights)."""
