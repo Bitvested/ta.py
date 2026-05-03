@@ -16,22 +16,21 @@ def sma(data: list[float], l: int = 14) -> list[float]:
     return out
 
 def smma(data: list[float], l: int = 14) -> list[float]:
-    """Smoothed Moving Average."""
+    """Smoothed Moving Average (Wilder smoothing seeded from SMA).
+
+    Output length is ``n - l + 1`` (matching ta.js 2.0).
+    """
     n = len(data)
-    if n < l + 1:
+    if n < l:
         return []
-    s = 0.0
+    seed = 0.0
     for i in range(l):
-        s += float(data[i])
-    first = s / l
-    s += float(data[l]) - float(data[0])
-    prev = (s - first) / l
+        seed += float(data[i])
+    prev = seed / l
     out = [prev]
-    for i in range(l + 1, n):
-        s += float(data[i]) - float(data[i - l])
-        cur = (s - prev) / l
-        out.append(cur)
-        prev = cur
+    for i in range(l, n):
+        prev = prev + (float(data[i]) - prev) / l
+        out.append(prev)
     return out
 
 def wma(data: list[float], l: int = 14) -> list[float]:

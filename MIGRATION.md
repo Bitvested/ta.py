@@ -32,6 +32,22 @@ ta_py.atr([[3, 2, 1], [2, 2, 1], [4, 3, 1], [2, 2, 1]], 3)
 
 Cascading effects: `keltner` (now uses correct ATR), `supertrend` (output values shift on the second row onward), `halftrend` (loop range tightened to match ta.js, atr-derived deviation values shift). All callers updated.
 
+#### `smma(data, length=14)` — Wilder smoothing
+
+Replaced an idiosyncratic `(sliding_sum − prev) / length` recurrence with the standard Wilder smoothing `prev = prev + (data[i] − prev) / length`, seeded from `sma(data[:length], length)`. Output now includes the SMA seed, so the result is `length n − length + 1` rows (was `n − length`).
+
+```python
+# 1.17.0
+ta_py.smma([1, 2, 3, 4, 5, 6, 10], 5)
+# → [3.4, 4.92]              # 2 rows; non-Wilder recurrence
+
+# 2.0.0
+ta_py.smma([1, 2, 3, 4, 5, 6, 10], 5)
+# → [3, 3.6, 4.88]            # 3 rows; Wilder recurrence seeded from SMA
+```
+
+Cascading effects: `alligator` and `gator` outputs change. Both indicators continue to align via existing slice-trim logic; no caller code change required.
+
 ### Aroon namespace (Phase 3)
 
 `aroon_up` / `aroon_down` / `aroon_osc` (still importable for one cycle) become the canonical `aroon.up` / `aroon.down` / `aroon.osc` namespace, mirroring ta.js. Both forms work during the deprecation window.
