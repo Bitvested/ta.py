@@ -842,6 +842,22 @@ def dx(data: list[list[float]], length: int = 14) -> list[float]:
         out[i] = float("nan") if s == 0 else 100.0 * abs(p[i] - m[i]) / s
     return out
 
+def natr(data: list[list[float]], length: int = 14) -> list[float]:
+    """Normalized ATR. ``NATR[k] = 100 · ATR[k] / Close[k + length − 1]``.
+
+    Each row of data is [high, close, low]. Output length matches atr's
+    ``n - length + 1``.
+    """
+    _atr = registry["atr"]
+    a = _atr(data, length)
+    if len(a) == 0:
+        return []
+    out: list[float] = [0.0] * len(a)
+    for i in range(len(a)):
+        c = float(data[i + length - 1][1])
+        out[i] = float("nan") if c == 0 else 100.0 * a[i] / c
+    return out
+
 def adxr(data: list[list[float]], length: int = 14) -> list[float]:
     """Average Directional Index Rating. ``ADXR[k] = (ADX[k] + ADX[k − length + 1]) / 2``.
 
