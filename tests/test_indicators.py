@@ -26,6 +26,15 @@ def test_indicator(name: str) -> None:
     assert_close(actual, fixture["out"], name=name)
 
 
+def test_aroon_namespace() -> None:
+    """ta_py.aroon.{up,down,osc} are silent aliases of the flat names."""
+    data = [5, 4, 5, 2]
+    assert ta_py.aroon.up(data, 3) == ta_py.aroon_up(data, 3)
+    data2 = [2, 5, 4, 5]
+    assert ta_py.aroon.down(data2, 3) == ta_py.aroon_down(data2, 3)
+    assert ta_py.aroon.osc(data2, 3) == ta_py.aroon_osc(data2, 3)
+
+
 def test_zigzag_pairs() -> None:
     fixture = p.zigzag__pairs
     actual = ta_py.zigzag(*fixture["in"])

@@ -35,6 +35,7 @@ from types import SimpleNamespace
 from .random_ import prng, pick as _pick, range_ as _range_, float_ as _float_, order as _order
 
 random = SimpleNamespace(prng=prng, pick=_pick, range=_range_, float=_float_, order=_order)
+aroon = SimpleNamespace(up=aroon_up, down=aroon_down, osc=aroon_osc)
 
 __all__ = [
     # moving_averages
@@ -54,7 +55,7 @@ __all__ = [
     "kst", "cop", "obv", "vwap", "ichimoku", "fractals", "cross", "halftrend", "zigzag",
     "psar", "supertrend", "elderray", "hv", "rvi", "rvi_signal", "rsi_divergence",
     "divergence", "bop", "fi", "asi", "alligator", "pr", "stoch", "fib",
-    "aroon_up", "aroon_down", "aroon_osc",
+    "aroon_up", "aroon_down", "aroon_osc", "aroon",
     "adl", "nvi", "pvi", "emv", "dpo", "ulcer",
     "pdm", "mdm", "pdi", "mdi", "dx", "adx", "adxr", "natr",
     "trix", "ppo", "apo", "mass",
