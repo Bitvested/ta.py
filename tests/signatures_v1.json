@@ -1,0 +1,2264 @@
+{
+  "aad": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "0",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[float] | float"
+  },
+  "ac": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "5",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "35",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l2"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "alligator": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "13",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "jl"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "8",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "tl"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "5",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "ll"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "8",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "js"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "5",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "ts"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "3",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "ls"
+      }
+    ],
+    "return": "list[list[float]]"
+  },
+  "antimartingale": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[int]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "bet"
+      },
+      {
+        "annotation": "float | None",
+        "default": "None",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "max"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "2",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "multiplier"
+      }
+    ],
+    "return": "<class 'float'>"
+  },
+  "ao": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "5",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "35",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l2"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "ar": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "aroon_down": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "10",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "aroon_osc": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "10",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "aroon_up": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "10",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "asi": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "atr": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "14",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "avgloss": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      }
+    ],
+    "return": "<class 'float'>"
+  },
+  "avgwin": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      }
+    ],
+    "return": "<class 'float'>"
+  },
+  "bands": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "14",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "1",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l2"
+      }
+    ],
+    "return": "list[list[float]]"
+  },
+  "bandwidth": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "14",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "1",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l2"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "bop": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "14",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "chaikin_osc": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "3",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "ema1"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "10",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "ema2"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "cop": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "11",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "14",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l2"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "10",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l3"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "cor": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data1"
+      },
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data2"
+      }
+    ],
+    "return": "<class 'float'>"
+  },
+  "covariance": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data1"
+      },
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data2"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "length"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "cross": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "d1"
+      },
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "d2"
+      }
+    ],
+    "return": "list[dict]"
+  },
+  "cum": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "length"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "cwma": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "weights"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "denormalize": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "norm"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "0",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "marg"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "dif": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "<class 'float'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "n"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "o"
+      }
+    ],
+    "return": "<class 'float'>"
+  },
+  "divergence": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data1"
+      },
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data2"
+      }
+    ],
+    "return": "list[int]"
+  },
+  "divergence_state": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data1"
+      },
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data2"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "length"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "lb"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "1",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "smoother"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "0.03",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "threshold_ex"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "0.01",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "threshold_nm"
+      }
+    ],
+    "return": "list[list[str]]"
+  },
+  "don": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "20",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      }
+    ],
+    "return": "list[list[float]]"
+  },
+  "drawdown": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "d"
+      }
+    ],
+    "return": "<class 'float'>"
+  },
+  "elderray": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "13",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "length"
+      }
+    ],
+    "return": "list[list[float]]"
+  },
+  "ema": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "12",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "envelope": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "10",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "0.005",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "p"
+      }
+    ],
+    "return": "list[list[float]]"
+  },
+  "er": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      }
+    ],
+    "return": "<class 'float'>"
+  },
+  "exp": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "d"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "expected_trails": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "<class 'int'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "n"
+      }
+    ],
+    "return": "<class 'int'>"
+  },
+  "fi": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "13",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "fib": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "<class 'float'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "start"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "end"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "fibbands": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "20",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "length"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "3",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "deviations"
+      }
+    ],
+    "return": "list[list[float]]"
+  },
+  "fisher": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[list[float]]"
+  },
+  "fractals": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      }
+    ],
+    "return": "list[list[bool]]"
+  },
+  "gator": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "13",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "jl"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "8",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "tl"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "5",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "ll"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "8",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "js"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "5",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "ts"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "3",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "ls"
+      }
+    ],
+    "return": "list[list[float]]"
+  },
+  "ha": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      }
+    ],
+    "return": "list[list[float]]"
+  },
+  "halftrend": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "atrlen"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "amplitude"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "deviation"
+      }
+    ],
+    "return": "list[list[float | str]]"
+  },
+  "hull": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "14",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "hv": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "20",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "length"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "hwma": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "14",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "ichimoku": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "9",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "26",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l2"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "52",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l3"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "26",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l4"
+      }
+    ],
+    "return": "list[list[float]]"
+  },
+  "kama": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "10",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "2",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l2"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "30",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l3"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "kelly": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      }
+    ],
+    "return": "<class 'float'>"
+  },
+  "keltner": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "14",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "1",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l2"
+      }
+    ],
+    "return": "list[list[float]]"
+  },
+  "kmeans": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "clusters"
+      }
+    ],
+    "return": "list[list[float]]"
+  },
+  "kst": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "10",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "r1"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "10",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "s1"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "15",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "r2"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "10",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "s2"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "20",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "r3"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "10",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "s3"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "30",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "r4"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "15",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "s4"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "9",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "sig"
+      }
+    ],
+    "return": "list[list[float]]"
+  },
+  "log": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "d"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "lsma": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "25",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "macd": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "12",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "26",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l2"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "macd_bars": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "12",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "26",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l2"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "9",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l3"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "macd_signal": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "12",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "26",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l2"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "9",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l3"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "mad": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "0",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[float] | float"
+  },
+  "martingale": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[int]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "bet"
+      },
+      {
+        "annotation": "float | None",
+        "default": "None",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "max"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "2",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "multiplier"
+      }
+    ],
+    "return": "<class 'float'>"
+  },
+  "median": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "0",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[float] | float"
+  },
+  "mfi": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "14",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "mom": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "10",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      },
+      {
+        "annotation": "<class 'bool'>",
+        "default": "False",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "p"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "mom_osc": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "9",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "mse": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data1"
+      },
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data2"
+      }
+    ],
+    "return": "<class 'float'>"
+  },
+  "ncdf": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "<class 'float'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "x"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "0",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "mean"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "0",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "std"
+      }
+    ],
+    "return": "<class 'float'>"
+  },
+  "normalize": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "0",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "marg"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "normalize_from": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "value"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "normalize_pair": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data1"
+      },
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data2"
+      }
+    ],
+    "return": "list[list[float]]"
+  },
+  "normsinv": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "<class 'float'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "p"
+      }
+    ],
+    "return": "<class 'float'>"
+  },
+  "obv": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "percentile": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "0.5",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "perc"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "permutations": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      }
+    ],
+    "return": "<class 'float'>"
+  },
+  "pr": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "14",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "prng": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "<class 'str'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "seed"
+      }
+    ],
+    "return": "typing.Callable[[], float]"
+  },
+  "psar": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "0.02",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "step"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "0.2",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "maxi"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "pvalue": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "<class 'float'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "t"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "df"
+      }
+    ],
+    "return": "<class 'float'>"
+  },
+  "pwma": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "14",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "recent_high": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "25",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "lb"
+      }
+    ],
+    "return": "<class 'dict'>"
+  },
+  "recent_low": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "25",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "lb"
+      }
+    ],
+    "return": "<class 'dict'>"
+  },
+  "ren": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "1",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "bs"
+      }
+    ],
+    "return": "list[list[float]]"
+  },
+  "resistance": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "d"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "0",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "hl"
+      }
+    ],
+    "return": "<class 'dict'>"
+  },
+  "return_negative": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "return_positive": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "roc": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "14",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "rsi": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "14",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "rsi_divergence": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "length"
+      },
+      {
+        "annotation": "typing.Callable[[list[float], int], list[float]] | None",
+        "default": "None",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "rs"
+      }
+    ],
+    "return": "list[int]"
+  },
+  "rvi": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "20",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "rvi_signal": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "rv"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "se": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "0",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "size"
+      }
+    ],
+    "return": "<class 'float'>"
+  },
+  "sim": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "50",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "1000",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "sims"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "-1",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "perc"
+      }
+    ],
+    "return": "list[list[float]]"
+  },
+  "sma": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "14",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "smma": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "14",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "ssd": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "0",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[float] | float"
+  },
+  "standardize": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "std": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "0",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      }
+    ],
+    "return": "list[float] | float"
+  },
+  "stoch": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "14",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "3",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "sd"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "3",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "sk"
+      }
+    ],
+    "return": "list[list[float]]"
+  },
+  "sum": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      }
+    ],
+    "return": "<class 'float'>"
+  },
+  "supertrend": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "20",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "length"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "3",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "multiplier"
+      }
+    ],
+    "return": "list[list[float]]"
+  },
+  "support": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "d"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "0",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "hl"
+      }
+    ],
+    "return": "<class 'dict'>"
+  },
+  "times_down": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[int]"
+  },
+  "times_up": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[int]"
+  },
+  "tsi": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "25",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "long"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "13",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "short"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "13",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "sig"
+      }
+    ],
+    "return": "list[list[float]]"
+  },
+  "variance": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "0",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      }
+    ],
+    "return": "list[float] | float"
+  },
+  "vwap": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "0",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l1"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "vwma": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "20",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "vwwma": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "d"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "20",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "length"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "winratio": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      }
+    ],
+    "return": "<class 'float'>"
+  },
+  "wma": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "14",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "wrsi": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "14",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "wsma": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "14",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "zigzag": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float] | list[list[float]]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'float'>",
+        "default": "0.05",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "perc"
+      }
+    ],
+    "return": "list[float]"
+  },
+  "zscore": {
+    "kind": "callable",
+    "parameters": [
+      {
+        "annotation": "list[float]",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "data"
+      },
+      {
+        "annotation": "<class 'int'>",
+        "default": "<empty>",
+        "kind": "POSITIONAL_OR_KEYWORD",
+        "name": "l"
+      }
+    ],
+    "return": "list[float]"
+  }
+}
