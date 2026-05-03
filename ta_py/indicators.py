@@ -18,7 +18,7 @@ def rsi(data: list[float], l: int = 14) -> list[float]:
             gain /= l; loss /= l;
             try:
                 f = 100.0 - 100.0 / (1.0 + (gain/loss));
-            except:
+            except ZeroDivisionError:
                 f = 100.0
             rs.append(f);
             pl = pl[1:];
@@ -37,7 +37,7 @@ def wrsi(data: list[float], l: int = 14) -> list[float]:
     for i in range(0, len(d)):
         try:
             f = 100.0-100.0/(1.0+(u[i]/d[i]));
-        except:
+        except ZeroDivisionError:
             f = 100.0;
         arrsi.append(f);
     return arrsi;
@@ -266,7 +266,7 @@ def zigzag(data: list[float] | list[list[float]], perc: float = 0.05) -> list[fl
                     continue
                 try:
                     hdif = (data[i][0]-min)/min;
-                except:
+                except ZeroDivisionError:
                     hdif = 100
                 if hdif > perc:
                     indexes.append({'index': i, 'value': data[i][0]});
@@ -281,7 +281,7 @@ def zigzag(data: list[float] | list[list[float]], perc: float = 0.05) -> list[fl
                     continue
                 try:
                     ldif = (max-data[i][1])/data[i][1];
-                except:
+                except ZeroDivisionError:
                     ldif = 100
                 if ldif > perc:
                     indexes.append({'index': i, 'value': data[i][1]});
@@ -294,11 +294,11 @@ def zigzag(data: list[float] | list[list[float]], perc: float = 0.05) -> list[fl
                 if i == 0: continue
                 try:
                     hdif = (data[i][0]-min)/min;
-                except:
+                except ZeroDivisionError:
                     hdif = 100
                 try:
                     ldif = (max-data[i][1])/max;
-                except:
+                except ZeroDivisionError:
                     ldif = 100
                 if ldif > perc and hdif < perc:
                     lmin = True;
@@ -327,7 +327,7 @@ def zigzag(data: list[float] | list[list[float]], perc: float = 0.05) -> list[fl
                     continue
                 try:
                     hdif = (data[i]-min)/min;
-                except:
+                except ZeroDivisionError:
                     hdif = 100
                 if hdif > perc:
                     indexes.append({'index': i, 'value': data[i]});
@@ -352,11 +352,11 @@ def zigzag(data: list[float] | list[list[float]], perc: float = 0.05) -> list[fl
                 if i == 0: continue
                 try:
                     hdif = (data[i]-min)/min;
-                except:
+                except ZeroDivisionError:
                     hdif = 100
                 try:
                     ldif = (max-data[i])/max;
-                except:
+                except ZeroDivisionError:
                     ldif = 100
                 indexes.append({'index': 0, 'value': data[0]});
                 indexes.append({'index': i, 'value': data[i]});
@@ -530,9 +530,6 @@ def stoch(data: list[list[float]], l1: int = 14, sd: int = 3, sk: int = 3) -> li
             highd = max(high); lowd = min(low);
             k = 100.0 * (data[i][1] - lowd) / (highd - lowd) if highd - lowd != 0 else 0;
             ka.append(k);
-        if(sk > 0 & len(ka) > sk):
-            smoothedk = registry["sma"](ka[:], sk);
-            ka.push(smoothedk[len(smoothedk)-1]);
         if(len(ka) - sk >= sd):
             d = registry["sma"](ka[:], sd);
             stoch.append([k, d[len(d)-1]]);
