@@ -92,13 +92,20 @@ def atr(data: list[list[float]], l1: int = 14) -> list[float]:
     return atr;
 def mfi(data: list[list[float]], l1: int = 14) -> list[float]:
     """Money Flow Index."""
-    mfi = []; n = []; p = [];
-    for i in range(len(data)):
-        p.append(float(data[i][0])); n.append(float(data[i][1]));
-        if(len(p) >= l1):
-            mfi.append((100.0 - 100.0 / (1 + registry["sum"](p) / registry["sum"](n))));
-            p = p[1:]; n = n[1:];
-    return mfi;
+    n = len(data)
+    if n < l1:
+        return []
+    out: list[float] = []
+    sum_p = 0.0; sum_n = 0.0
+    for i in range(l1):
+        sum_p += float(data[i][0])
+        sum_n += float(data[i][1])
+    out.append(100.0 - 100.0 / (1 + sum_p / sum_n))
+    for i in range(l1, n):
+        sum_p += float(data[i][0]) - float(data[i - l1][0])
+        sum_n += float(data[i][1]) - float(data[i - l1][1])
+        out.append(100.0 - 100.0 / (1 + sum_p / sum_n))
+    return out
 def roc(data: list[float], l1: int = 14) -> list[float]:
     """Rate of Change."""
     pl = []; roc = [];
