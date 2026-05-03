@@ -11,3 +11,4 @@ bench/results/*.json
 bench/.venv/
 bench/build/
 bench/*.egg-info/
+notes
