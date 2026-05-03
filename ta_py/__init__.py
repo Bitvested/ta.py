@@ -19,7 +19,7 @@ from .indicators import (
     psar, supertrend, elderray, hv, rvi, rvi_signal, rsi_divergence,
     divergence, bop, fi, asi, alligator, pr, stoch, fib,
     aroon_up, aroon_down, aroon_osc,
-    adl,
+    adl, nvi,
 )
 from .oscillators import gator, mom_osc, chaikin_osc, ao, ac, fisher
 from .bands import bands, bandwidth, keltner, don, envelope, fibbands
@@ -46,7 +46,7 @@ __all__ = [
     "psar", "supertrend", "elderray", "hv", "rvi", "rvi_signal", "rsi_divergence",
     "divergence", "bop", "fi", "asi", "alligator", "pr", "stoch", "fib",
     "aroon_up", "aroon_down", "aroon_osc",
-    "adl",
+    "adl", "nvi",
     # oscillators
     "gator", "mom_osc", "chaikin_osc", "ao", "ac", "fisher",
     # bands

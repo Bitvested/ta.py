@@ -693,3 +693,18 @@ def adl(data: list[list[float]]) -> list[float]:
         acc += mfm * v
         out[i] = acc
     return out
+
+def nvi(data: list[list[float]]) -> list[float]:
+    """Negative Volume Index. Each row of data is [close, volume]. Seed = 1000."""
+    n = len(data)
+    if n == 0:
+        return []
+    out: list[float] = [0.0] * n
+    out[0] = 1000.0
+    for i in range(1, n):
+        cprev = float(data[i - 1][0])
+        if float(data[i][1]) < float(data[i - 1][1]) and cprev != 0:
+            out[i] = out[i - 1] * float(data[i][0]) / cprev
+        else:
+            out[i] = out[i - 1]
+    return out
