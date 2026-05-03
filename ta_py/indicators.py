@@ -828,6 +828,20 @@ def mdi(data: list[list[float]], length: int = 14) -> list[float]:
         out[i - length] = float("nan") if tr == 0 else 100.0 * dm / tr
     return out
 
+def dx(data: list[list[float]], length: int = 14) -> list[float]:
+    """Directional Movement Index. ``DX = 100 · |+DI − −DI| / (+DI + −DI)``.
+
+    Each row of data is [high, close, low]. Output length is ``n - length``.
+    """
+    _pdi = registry["pdi"]; _mdi = registry["mdi"]
+    p = _pdi(data, length)
+    m = _mdi(data, length)
+    out: list[float] = [0.0] * len(p)
+    for i in range(len(p)):
+        s = p[i] + m[i]
+        out[i] = float("nan") if s == 0 else 100.0 * abs(p[i] - m[i]) / s
+    return out
+
 def pdi(data: list[list[float]], length: int = 14) -> list[float]:
     """+DI = 100 · smoothed(+DM) / smoothed(TR). Each row of data is [high, close, low].
 
