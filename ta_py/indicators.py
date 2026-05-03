@@ -842,6 +842,26 @@ def dx(data: list[list[float]], length: int = 14) -> list[float]:
         out[i] = float("nan") if s == 0 else 100.0 * abs(p[i] - m[i]) / s
     return out
 
+def adx(data: list[list[float]], length: int = 14) -> list[float]:
+    """Average Directional Index. Wilder smoothing of DX over ``length`` bars.
+
+    Each row of data is [high, close, low]. Output length is ``n - 2*length + 1``.
+    """
+    _dx = registry["dx"]
+    d = _dx(data, length)
+    if len(d) < length:
+        return []
+    s = 0.0
+    for i in range(length):
+        s += d[i]
+    prev = s / length
+    out: list[float] = [0.0] * (len(d) - length + 1)
+    out[0] = prev
+    for i in range(length, len(d)):
+        prev = (prev * (length - 1) + d[i]) / length
+        out[i - length + 1] = prev
+    return out
+
 def pdi(data: list[list[float]], length: int = 14) -> list[float]:
     """+DI = 100 · smoothed(+DM) / smoothed(TR). Each row of data is [high, close, low].
 
