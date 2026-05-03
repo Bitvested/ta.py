@@ -11,7 +11,7 @@ CASES = [
     "hv", "rvi", "rvi_signal", "rsi_divergence", "divergence", "bop",
     "fi", "asi", "alligator", "pr", "stoch", "fib", "aroon_up",
     "aroon_down", "aroon_osc", "adl", "nvi", "pvi", "emv", "dpo", "ulcer",
-    "pdm", "mdm",
+    "pdm", "mdm", "pdi",
 ]
 
 
