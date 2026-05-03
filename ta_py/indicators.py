@@ -7,22 +7,32 @@ from ._registry import registry
 
 def rsi(data: list[float], l: int = 14) -> list[float]:
     """Relative Strength Index."""
-    pl = []; rs = [];
-    for i in range(1, len(data)):
-        pl.append(data[i] - data[i - 1]);
-        if (len(pl)) >= l-1:
-            gain = 0.0; loss = 0.0;
-            for a in range(len(pl)):
-                if pl[a] > 0: gain += float(pl[a]);
-                if pl[a] < 0: loss += abs(float(pl[a]));
-            gain /= l; loss /= l;
-            try:
-                f = 100.0 - 100.0 / (1.0 + (gain/loss));
-            except ZeroDivisionError:
-                f = 100.0
-            rs.append(f);
-            pl = pl[1:];
-    return rs;
+    n = len(data)
+    if n < l:
+        return []
+    deltas: list[float] = [float(data[i]) - float(data[i - 1]) for i in range(1, n)]
+    m = len(deltas)
+    window = l - 1
+    if m < window:
+        return []
+    gain = 0.0; loss = 0.0
+    for i in range(window):
+        d = deltas[i]
+        if d > 0: gain += d
+        elif d < 0: loss += -d
+    out: list[float] = []
+    g = gain / l; lo = loss / l
+    out.append(100.0 if lo == 0 else 100.0 - 100.0 / (1 + g / lo))
+    for i in range(window, m):
+        d_in = deltas[i]
+        d_out = deltas[i - window]
+        if d_in > 0: gain += d_in
+        elif d_in < 0: loss += -d_in
+        if d_out > 0: gain -= d_out
+        elif d_out < 0: loss -= -d_out
+        g = gain / l; lo = loss / l
+        out.append(100.0 if lo == 0 else 100.0 - 100.0 / (1 + g / lo))
+    return out
 def wrsi(data: list[float], l: int = 14) -> list[float]:
     """Wilder's RSI (smoothed via WSMA)."""
     arrsi = []; u = []; d = [];
