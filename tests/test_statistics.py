@@ -12,7 +12,7 @@ CASES = [
     "normalize_from", "log", "exp", "covariance", "ncdf", "expected_trails",
     "pvalue", "martingale", "antimartingale", "return_positive",
     "return_negative", "recent_high", "recent_low", "standardize",
-    "lr_slope", "lr_intercept", "lr_angle",
+    "lr_slope", "lr_intercept", "lr_angle", "tsf",
 ]
 
 

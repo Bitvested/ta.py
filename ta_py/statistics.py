@@ -499,6 +499,12 @@ def lr_angle(data: list[float], length: int = 14) -> list[float]:
     return [math.atan(pair[0]) * rad_to_deg for pair in w]
 
 
+def tsf(data: list[float], length: int = 14) -> list[float]:
+    """Time Series Forecast: ``slope · length + intercept`` (one bar ahead)."""
+    w = _lr_windows(data, length)
+    return [pair[0] * length + pair[1] for pair in w]
+
+
 # --- sum MUST be last: it shadows the builtin sum() for all code defined above ---
 def sum(data: list[float]) -> float:
     """Compute the running total of all elements in data."""
