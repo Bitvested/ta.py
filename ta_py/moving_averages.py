@@ -98,22 +98,29 @@ def pwma(data: list[float], l: int = 14) -> list[float]:
 
 def hwma(data: list[float], l: int = 14) -> list[float]:
     """Hyperbolic Weighted Moving Average."""
-    weight = 0; wmaa = []; weights = []; b = l;
-    for i in range(1, round(l/2+1)):
-        if(i%1 != 0):
-            i = round(i);
-            weight += (i*b);
+    weights: list[int] = []
+    weight = 0
+    i = 1
+    b = l
+    while i <= l / 2:
+        if i % 1 != 0:
+            i = round(i)
+            weight += i * b
         else:
-            weights.append(i*b);
-            weight += (i*b*2)
-        weights.insert(0,i*b);
-        b -= 1;
-    for i in range(l, len(data)+1):
-        average = 0; pl = data[i-l:i];
+            weights.append(int(i * b))
+            weight += int(i * b * 2)
+        weights.insert(0, int(i * b))
+        i += 1
+        b -= 1
+    out: list[float] = []
+    n = len(data)
+    for j in range(l, n + 1):
+        average = 0.0
+        base = j - l
         for x in range(len(weights)):
-            average += pl[x] * weights[x] / weight;
-        wmaa.append(average);
-    return wmaa;
+            average += float(data[base + x]) * weights[x] / weight
+        out.append(average)
+    return out
 
 def ema(data: list[float], l: int = 12) -> list[float]:
     """Exponential Moving Average."""
