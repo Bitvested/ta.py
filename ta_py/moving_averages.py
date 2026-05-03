@@ -135,17 +135,23 @@ def ema(data: list[float], l: int = 12) -> list[float]:
 
 def vwma(data: list[list[float]], l: int = 20) -> list[float]:
     """Volume Weighted Moving Average. Each row of data is [price, volume]."""
-    pl = []; wm = [];
-    for i in range(len(data)):
-        pl.append(data[i]);
-        if (len(pl)) >= l:
-            weight = 0; sum = 0;
-            for a in range(len(pl)):
-                sum += (pl[a][0] * pl[a][1]);
-                weight += pl[a][1];
-            wm.append(sum/weight);
-            pl = pl[1:];
-    return wm;
+    n = len(data)
+    if n < l:
+        return []
+    sum_pv = 0.0
+    sum_v = 0.0
+    for i in range(l):
+        p = float(data[i][0]); v = float(data[i][1])
+        sum_pv += p * v
+        sum_v  += v
+    out = [sum_pv / sum_v]
+    for i in range(l, n):
+        p_in  = float(data[i][0]);     v_in  = float(data[i][1])
+        p_out = float(data[i - l][0]); v_out = float(data[i - l][1])
+        sum_pv += p_in * v_in - p_out * v_out
+        sum_v  += v_in - v_out
+        out.append(sum_pv / sum_v)
+    return out
 
 def vwwma(d: list[list[float]], length: int = 20) -> list[float]:
     """Volume Weighted Weighted Moving Average. Each row of data is [price, volume]."""
