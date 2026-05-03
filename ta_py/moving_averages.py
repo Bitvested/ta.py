@@ -3,13 +3,17 @@
 
 def sma(data: list[float], l: int = 14) -> list[float]:
     """Simple Moving Average."""
-    pl = []; sm = [];
-    for i in range(len(data)):
-        pl.append(float(data[i]));
-        if (len(pl)) >= l:
-            sm.append(sum(pl) / l);
-            pl = pl[1:];
-    return sm;
+    n = len(data)
+    if n < l:
+        return []
+    s = 0.0
+    for i in range(l):
+        s += float(data[i])
+    out = [s / l]
+    for i in range(l, n):
+        s += float(data[i]) - float(data[i - l])
+        out.append(s / l)
+    return out
 
 def smma(data: list[float], l: int = 14) -> list[float]:
     """Smoothed Moving Average."""
