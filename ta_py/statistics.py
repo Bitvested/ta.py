@@ -485,6 +485,12 @@ def lr_slope(data: list[float], length: int = 14) -> list[float]:
     return [pair[0] for pair in w]
 
 
+def lr_intercept(data: list[float], length: int = 14) -> list[float]:
+    """Linear regression intercept over rolling windows of ``length`` bars."""
+    w = _lr_windows(data, length)
+    return [pair[1] for pair in w]
+
+
 # --- sum MUST be last: it shadows the builtin sum() for all code defined above ---
 def sum(data: list[float]) -> float:
     """Compute the running total of all elements in data."""
