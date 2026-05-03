@@ -2,7 +2,17 @@
 
 [![PyPI version](https://badge.fury.io/py/ta_py.svg)](https://pypi.org/project/ta_py/) [![Downloads](https://img.shields.io/pypi/dm/ta_py.svg)](https://pypi.org/project/ta_py/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-ta.py is a Python package for dealing with financial technical analysis.
+The fastest zero-dependency pure-Python technical analysis library. Full functional parity with [ta.js 2.0](https://github.com/Bitvested/ta.js). 151 indicators, full type hints, no NumPy / pandas / C extensions required.
+
+## What's new in 2.0.0
+
+- **39 new indicators** for full ta.js 2.0 parity: DM family (`pdm` / `mdm` / `pdi` / `mdi` / `dx` / `adx` / `adxr` / `natr`), `cci`, `stoch_rsi`, `kdj`, `cmf`, `vortex`, `kvo`, `ult`, `trix`, `ppo`, `apo`, `mass`, `dema` / `tema` / `trima` / `t3` / `zlema` / `vidya`, linear regression family (`lr_slope` / `lr_intercept` / `lr_angle` / `tsf`), `std_series`, `adl`, `nvi` / `pvi`, `emv`, `dpo`, `ulcer`, `fibnumbers`, plus `ta_py.random.*` and `ta_py.aroon.*` namespaces.
+- **Multi-process Monte Carlo** via `ta_py.multi.sim` — typically 2–3× faster than the sequential `ta_py.sim` on 8-core hardware.
+- **Sliding-window O(N) rewrites** of hot paths: `std` ~13× faster, `bands` ~9× faster, plus speed-ups across `sma` / `smma` / `wma` / `ema` / `vwma` / `variance` / `envelope` / `mfi` / `rsi` / `stoch` / `pr` / `don`.
+- **6 algorithm/output-shape breaks** vs 1.17.0 — `atr`, `smma`, `mfi`, `rsi`, `wrsi` (now an alias of `rsi`), `stoch`. See [MIGRATION.md](MIGRATION.md) for before/after examples.
+- See [CHANGELOG.md](CHANGELOG.md) for the full per-batch breakdown.
+
+Cross-library benchmarks vs TA-Lib, pandas-ta, and finta live in [`bench/SAMPLE_BENCHMARKS.md`](bench/SAMPLE_BENCHMARKS.md). Run `cd bench && pip install -e .[all] && python run.py --md` to regenerate against your environment.
 
 ## Installation
 
@@ -22,6 +32,8 @@ import ta_py as ta;
 - [Smoothed Moving Average](#smma)
 - [Weighted Moving Average](#wma)
 - [Exponential Moving Average](#ema)
+- Double / Triple / Triangular EMA (`dema`, `tema`, `trima`) — *new in 2.0*
+- Tilson T3 (`t3`), Zero-Lag EMA (`zlema`), Variable Index Dynamic Average (`vidya`) — *new in 2.0*
 - [Hull Moving Average](#hull)
 - [Least Squares Moving Average](#lsma)
 - [Volume Weighted Moving Average](#vwma)
@@ -32,6 +44,7 @@ import ta_py as ta;
 - [Kaufman Adaptive Moving Average](#kama)
 - [Custom Weighted Moving Average](#cwma)
 #### Indicators
+- *New in 2.0:* DM family (`pdm`, `mdm`, `pdi`, `mdi`, `dx`, `adx`, `adxr`, `natr`); `cci`; `stoch_rsi`; `kdj`; `cmf`; `vortex`; `kvo`; `ult`; `trix`; `ppo`; `apo`; `mass`; `adl`; `nvi`; `pvi`; `emv`; `dpo`; `ulcer`. Plus `ta_py.aroon.up` / `.down` / `.osc` namespace alongside flat aroon names. All accept the same argument shapes as their ta.js 2.0 counterparts.
 - [Moving Average Convergence / Divergence](#macd)
 - [MACD Signal Line](#macd_signal)
 - [MACD Histogram (Bars)](#macd_bars)
