@@ -845,6 +845,16 @@ def apo(data: list[float], length1: int = 12, length2: int = 26) -> list[float]:
     """Absolute Price Oscillator. Thin wrapper for ``macd`` (TA-Lib's APO == MACD with EMA MA-type)."""
     return registry["macd"](data, length1, length2)
 
+def kdj(data: list[list[float]], length: int = 9, smooth_k: int = 3, smooth_d: int = 3) -> list[list[float]]:
+    """KDJ. Wraps :func:`stoch` and projects ``J = 3K − 2D``. Returns ``[[K, D, J], ...]``.
+
+    Each row of data is [high, close, low].
+    """
+    # Mirror ta.js's positional call into ta.py.stoch(data, length, sd, sk):
+    # ta.js kdj passes (length, smoothK, smoothD) into stoch's (length, smoothd, smoothk).
+    s = registry["stoch"](data, length, smooth_k, smooth_d)
+    return [[k, d, 3.0 * k - 2.0 * d] for k, d in s]
+
 def stoch_rsi(data: list[float], rsi_length: int = 14, stoch_length: int = 14, smooth_k: int = 3, smooth_d: int = 3) -> list[list[float]]:
     """SMA-smoothed Stochastic of an RSI series. Returns ``[[fastK, fastD], ...]``."""
     _rsi = registry["rsi"]; _sma = registry["sma"]
