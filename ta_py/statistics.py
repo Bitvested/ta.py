@@ -1,5 +1,5 @@
 """Statistical and utility functions."""
-from .moving_averages import ema  # used by sim()
+from .moving_averages import ema, sma
 
 
 def median(data: list[float], l: int = 0) -> list[float] | float:
@@ -59,7 +59,6 @@ def denormalize(data: list[float], norm: list[float], marg: float = 0) -> list[f
 
 def standardize(data: list[float]) -> list[float]:
     """Standardize data to zero mean and unit standard deviation."""
-    from .moving_averages import sma
     mean = sma(data, len(data));
     st = std(data); res = [];
     for i in range(len(data)):
@@ -79,7 +78,6 @@ def mad(data: list[float], l: int = 0) -> list[float] | float:
 
 def aad(data: list[float], l: int = 0) -> list[float] | float:
     """Compute the rolling average absolute deviation."""
-    from .moving_averages import sma
     l = l if l > 0 else len(data); med = [];
     for i in range(l, len(data)+1):
         tmp = data[i-l:i];
@@ -90,7 +88,6 @@ def aad(data: list[float], l: int = 0) -> list[float] | float:
 
 def ssd(data: list[float], l: int = 0) -> list[float] | float:
     """Compute the rolling sum of squared deviations (sample std dev variant)."""
-    from .moving_averages import sma
     l = l if l > 0 else len(data); sd = [];
     for i in range(l, len(data)+1):
         tmp = data[i-l:i]; mean = sma(tmp, l); sum = 0;
@@ -115,7 +112,6 @@ def er(data: list[float]) -> float:
 
 def variance(data: list[float], l1: int = 0) -> list[float] | float:
     """Compute the rolling variance of data."""
-    from .moving_averages import sma
     l1 = l1 if l1 > 0 else len(data); va = [];
     for i in range(l1, len(data)+1):
         tmp = data[i-l1:i]; mean = sma(tmp, len(tmp)); sum = 0;
@@ -151,7 +147,6 @@ def normsinv(p: float) -> float:
 def sim(data: list[float], l: int = 50, sims: int = 1000, perc: float = -1) -> list[list[float]]:
     """Run Monte Carlo simulations of price paths using geometric Brownian motion."""
     import math, random
-    from .moving_averages import sma
     sd = [];
     for i in range(sims):
         projected = data[:];
@@ -186,7 +181,6 @@ def percentile(data: list[list[float]], perc: float = 0.5) -> list[float]:
 
 def cor(data1: list[float], data2: list[float]) -> float:
     """Compute the Pearson correlation coefficient between two series."""
-    from .moving_averages import sma
     d1avg = sma(data1[:], len(data1)); d1avg = d1avg[len(d1avg)-1];
     d2avg = sma(data2[:], len(data2)); d2avg = d2avg[len(d2avg)-1]
     sumavg = 0; sx = 0; sy = 0;
@@ -251,7 +245,6 @@ def winratio(data: list[float]) -> float:
 
 def avgwin(data: list[float]) -> float:
     """Compute the average of winning (non-negative) returns."""
-    from .moving_averages import sma
     wins = [];
     for i in range(len(data)):
         if data[i] >= 0:
@@ -261,7 +254,6 @@ def avgwin(data: list[float]) -> float:
 
 def avgloss(data: list[float]) -> float:
     """Compute the average of losing (negative) returns."""
-    from .moving_averages import sma
     loss = [];
     for i in range(len(data)):
         if data[i] < 0: loss.append(data[i]);
@@ -283,7 +275,6 @@ def se(data: list[float], size: int = 0) -> float:
 
 def zscore(data: list[float], l: int) -> list[float]:
     """Compute the rolling z-score of data."""
-    from .moving_averages import sma
     out = []; pl = data[0:l-1];
     for i in range(l-1, len(data)):
         pl.append(data[i]);
@@ -327,7 +318,6 @@ def exp(d: list[float]) -> list[float]:
 
 def covariance(data1: list[float], data2: list[float], length: int) -> list[float]:
     """Compute the rolling covariance between two series."""
-    from .moving_averages import sma
     out = []; x_mean = sma(data1, len(data1));
     y_mean = sma(data2, len(data2)); res = 0;
     for z in range(length, len(data1)+1):
