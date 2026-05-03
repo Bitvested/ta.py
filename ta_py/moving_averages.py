@@ -196,14 +196,19 @@ def kama(data: list[float], l1: int = 10, l2: int = 2, l3: int = 30) -> list[flo
 
 def cwma(data: list[float], weights: list[float]) -> list[float]:
     """Custom Weighted Moving Average. Window length = len(weights)."""
-    ma = [];
-    for i in range(len(weights),len(data)+1):
-        pl = data[i-len(weights):i]; sum = 0; weight = 0;
-        for q in range(len(weights)):
-            sum += pl[q] * weights[q];
-            weight += weights[q];
-        ma.append(sum / weight);
-    return ma;
+    L = len(weights)
+    n = len(data)
+    weight_sum = 0.0
+    for w in weights:
+        weight_sum += float(w)
+    out: list[float] = []
+    for i in range(L, n + 1):
+        s = 0.0
+        base = i - L
+        for q in range(L):
+            s += float(data[base + q]) * float(weights[q])
+        out.append(s / weight_sum)
+    return out
 
 def lsma(data: list[float], l1: int = 25) -> list[float]:
     """Least Squares (linear regression) Moving Average."""
