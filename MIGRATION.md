@@ -80,6 +80,22 @@ ta_py.rsi([1, 2, 3, 4, 5, 6, 7, 5, 6, 4], 6)
 
 If you want the old Cutler-style RSI, the simplest substitute is to copy the 1.x rsi source out of git history into your own module — there's no equivalent in ta.py 2.0.
 
+#### `stoch(data, length=14, sd=3, sk=3)` — rolling window matches ta.js 2.0
+
+`stoch` previously used an extended rolling-max/min window of `length + sk + sd - 1` bars, producing fewer output rows than ta.js. It now uses just `length` bars for the high/low window (matching ta.js 2.0 and TA-Lib), and stacks the `sk`-bar SMA over raw %K plus the `sd`-bar SMA over smoothed %K independently. The function also auto-swaps `length`/`sd` and clamps `sk ≤ sd` (mirroring ta.js's lenient parameter handling).
+
+Output length increases by `sk + sd - 2` rows compared to 1.x.
+
+```python
+# 1.17.0 (extended window)
+ta_py.stoch([[3,2,1],[2,2,1],[4,3,1],[2,2,1]], 2, 1, 1)
+# → [[66.667, 66.667], [33.333, 33.333]]   # 2 rows
+
+# 2.0.0 (length-only window, ta.js parity)
+ta_py.stoch([[3,2,1],[2,2,1],[4,3,1],[2,2,1]], 2, 1, 1)
+# → [[50, 50], [66.667, 66.667], [33.333, 33.333]]   # 3 rows
+```
+
 ### Aroon namespace (Phase 3)
 
 `aroon_up` / `aroon_down` / `aroon_osc` (still importable for one cycle) become the canonical `aroon.up` / `aroon.down` / `aroon.osc` namespace, mirroring ta.js. Both forms work during the deprecation window.

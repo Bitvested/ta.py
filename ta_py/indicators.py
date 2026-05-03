@@ -584,12 +584,22 @@ def pr(data: list[float], l1: int = 14) -> list[float]:
             out.append(0.0 if rng == 0 else (highd - v) / rng * -100.0)
     return out
 def stoch(data: list[list[float]], l1: int = 14, sd: int = 3, sk: int = 3) -> list[list[float]]:
-    """Stochastic Oscillator (%K, %D)."""
+    """Stochastic Oscillator (%K, %D). Each row of data is [high, close, low].
+
+    Matches ta.js 2.0: rolling high/low span ``l1`` bars, ``sk``-bar SMA over
+    the raw %K, ``sd``-bar SMA over the smoothed %K. ``l1`` and ``sd`` are
+    swapped if passed in the wrong order; ``sk`` is clamped to ``≤ sd``.
+    Returns ``[[K, D], ...]``.
+    """
     from collections import deque
+    if l1 < sd:
+        l1, sd = sd, l1
+    if sk > sd:
+        sk, sd = sd, sk
     n = len(data)
     out: list[list[float]] = []
-    # Effective window: original grows high/low over l1+sk+sd-1 bars before first output
-    l1_eff = l1 + sk + sd - 1
+    if n < l1:
+        return out
     hi_dq: deque[int] = deque()
     lo_dq: deque[int] = deque()
     raw_buf: list[float] = [0.0] * sk
@@ -602,18 +612,18 @@ def stoch(data: list[list[float]], l1: int = 14, sd: int = 3, sk: int = 3) -> li
         while hi_dq and float(data[hi_dq[-1]][0]) <= h:
             hi_dq.pop()
         hi_dq.append(i)
+        if hi_dq[0] <= i - l1:
+            hi_dq.popleft()
         while lo_dq and float(data[lo_dq[-1]][2]) >= lo:
             lo_dq.pop()
         lo_dq.append(i)
-        if hi_dq[0] <= i - l1_eff:
-            hi_dq.popleft()
-        if lo_dq[0] <= i - l1_eff:
+        if lo_dq[0] <= i - l1:
             lo_dq.popleft()
-        if i < l1_eff - 1:
+        if i < l1 - 1:
             continue
         highd = float(data[hi_dq[0]][0]); lowd = float(data[lo_dq[0]][2])
         rng = highd - lowd
-        raw_k = 0.0 if rng == 0 else 100.0 * (float(data[i][1]) - lowd) / rng
+        raw_k = float("nan") if rng == 0 else 100.0 * (float(data[i][1]) - lowd) / rng
         if raw_count < sk:
             raw_buf[raw_idx] = raw_k
             raw_sum += raw_k
