@@ -4,17 +4,32 @@ from ._registry import registry
 
 def bands(data: list[float], l1: int = 14, l2: float = 1) -> list[list[float]]:
     """Bollinger Bands. Each row of output is [upper, middle, lower]."""
-    pl = []; deviation = []; boll = [];
-    sm = registry["sma"](data[:], l1);
-    for i in range(len(data)):
-        pl.append(data[i]);
-        if (len(pl)) >= l1:
-            devi = registry["std"](pl[:], l1);
-            deviation.append(devi);
-            pl = pl[1:];
-    for i in range(len(sm)):
-        boll.append([sm[i] + deviation[i] * l2, sm[i], sm[i] - deviation[i] * l2]);
-    return boll;
+    import math
+    n = len(data)
+    if n < l1:
+        return []
+    out: list[list[float]] = []
+    sum_x = 0.0
+    sum_x2 = 0.0
+    for i in range(l1):
+        v = float(data[i])
+        sum_x += v
+        sum_x2 += v * v
+
+    def push(sum_x: float, sum_x2: float) -> None:
+        mean = sum_x / l1
+        var = sum_x2 / l1 - mean * mean
+        sd = math.sqrt(var) if var > 0 else 0.0
+        out.append([mean + sd * l2, mean, mean - sd * l2])
+
+    push(sum_x, sum_x2)
+    for i in range(l1, n):
+        v_in = float(data[i])
+        v_out = float(data[i - l1])
+        sum_x += v_in - v_out
+        sum_x2 += v_in * v_in - v_out * v_out
+        push(sum_x, sum_x2)
+    return out
 
 
 def bandwidth(data: list[float], l1: int = 14, l2: float = 1) -> list[float]:
