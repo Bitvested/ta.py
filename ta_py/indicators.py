@@ -512,14 +512,31 @@ def alligator(data: list[float], jl: int = 13, tl: int = 8, ll: int = 5, js: int
     return ret;
 def pr(data: list[float], l1: int = 14) -> list[float]:
     """Williams %R."""
-    n = []; pl = [];
-    for i in range(len(data)):
-        pl.append(float(data[i]));
-        if(len(pl) >= l1):
-            highd = max(pl[:]); lowd = min(pl[:]);
-            n.append((highd - data[i]) / (highd - lowd) * -100.0 if highd-lowd != 0 else 0);
-            pl = pl[1:];
-    return n;
+    from collections import deque
+    n = len(data)
+    if n < l1:
+        return []
+    out: list[float] = []
+    hi_dq: deque[int] = deque()
+    lo_dq: deque[int] = deque()
+    for i in range(n):
+        v = float(data[i])
+        while hi_dq and float(data[hi_dq[-1]]) <= v:
+            hi_dq.pop()
+        hi_dq.append(i)
+        while lo_dq and float(data[lo_dq[-1]]) >= v:
+            lo_dq.pop()
+        lo_dq.append(i)
+        if hi_dq[0] <= i - l1:
+            hi_dq.popleft()
+        if lo_dq[0] <= i - l1:
+            lo_dq.popleft()
+        if i >= l1 - 1:
+            highd = float(data[hi_dq[0]])
+            lowd = float(data[lo_dq[0]])
+            rng = highd - lowd
+            out.append(0.0 if rng == 0 else (highd - v) / rng * -100.0)
+    return out
 def stoch(data: list[list[float]], l1: int = 14, sd: int = 3, sk: int = 3) -> list[list[float]]:
     """Stochastic Oscillator (%K, %D)."""
     stoch = []; high = []; low = []; ka = [];
