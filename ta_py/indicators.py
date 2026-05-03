@@ -678,3 +678,18 @@ def aroon_osc(data: list[float], l1: int = 10) -> list[float]:
     u = aroon_up(data[:], l1); d = aroon_down(data[:], l1);
     for i in range(len(u)): aroon.append(u[i] - d[i]);
     return aroon;
+
+def adl(data: list[list[float]]) -> list[float]:
+    """Accumulation/Distribution Line. Each row of data is [high, close, low, volume]."""
+    n = len(data)
+    if n == 0:
+        return []
+    out: list[float] = [0.0] * n
+    acc = 0.0
+    for i in range(n):
+        h = float(data[i][0]); c = float(data[i][1]); lo = float(data[i][2]); v = float(data[i][3])
+        rng = h - lo
+        mfm = 0.0 if rng == 0 else ((c - lo) - (h - c)) / rng
+        acc += mfm * v
+        out[i] = acc
+    return out
