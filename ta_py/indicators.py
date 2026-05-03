@@ -842,6 +842,10 @@ def dx(data: list[list[float]], length: int = 14) -> list[float]:
         out[i] = float("nan") if s == 0 else 100.0 * abs(p[i] - m[i]) / s
     return out
 
+def apo(data: list[float], length1: int = 12, length2: int = 26) -> list[float]:
+    """Absolute Price Oscillator. Thin wrapper for ``macd`` (TA-Lib's APO == MACD with EMA MA-type)."""
+    return registry["macd"](data, length1, length2)
+
 def ppo(data: list[float], length1: int = 12, length2: int = 26) -> list[float]:
     """Percentage Price Oscillator. ``ppo[i] = 100 · MACD[i] / EMA(data, max(length1, length2))[i]``."""
     if length1 > length2:
