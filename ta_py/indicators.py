@@ -1,5 +1,7 @@
 """Indicator functions: trend, momentum, volume, volatility."""
 import math
+from typing import Callable
+
 from ._registry import registry
 
 
@@ -173,7 +175,7 @@ def cross(d1: list[float], d2: list[float]) -> list[dict]:
             indexes.append({"index": i, "cross": True});
             cross = True;
     return indexes;
-def halftrend(data: list[list[float]], atrlen: int, amplitude: int, deviation: int) -> list[list]:
+def halftrend(data: list[list[float]], atrlen: int, amplitude: int, deviation: int) -> list[list[float | str]]:
     out = []; nexttrend = [0]; trend = [0]; up = [0]; down = [0]; direction = None;
     for i in range(atrlen, len(data)+1):
         pl = data[i-atrlen:i];
@@ -233,7 +235,7 @@ def halftrend(data: list[list[float]], atrlen: int, amplitude: int, deviation: i
         else:
             out.append([atrHigh, down[len(down)-1], atrLow, direction]);
     return out
-def zigzag(data, perc: float = 0.05) -> list[float]:
+def zigzag(data: list[float] | list[list[float]], perc: float = 0.05) -> list[float]:
     indexes = []; min = float('inf'); max = float('-inf');
     lmin = False; lmax = False;
     if isinstance(data[0], list):
@@ -421,7 +423,7 @@ def rvi_signal(rv: list[float]) -> list[float]:
     for i in range(3,len(rv)):
         sig.append((rv[i]+2*rv[i-1]+2*rv[i-2]+rv[i-3])/6);
     return sig;
-def rsi_divergence(data: list[float], length: int, rs=None) -> list[int]:
+def rsi_divergence(data: list[float], length: int, rs: Callable[[list[float], int], list[float]] | None = None) -> list[int]:
     if rs is None:
         rs = registry["wrsi"]
     rd = rs(data, length); out = [];

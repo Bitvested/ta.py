@@ -2,7 +2,7 @@
 from typing import Callable
 
 
-def prng(seed) -> Callable[[], float]:
+def prng(seed: str) -> Callable[[], float]:
     """Return a deterministic [0, 1) generator seeded by `seed` (str or int)."""
     h = (1779033703 ^ len(seed)) & 0xFFFFFFFF;
     for i in range(len(seed)):
