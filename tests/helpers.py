@@ -2,8 +2,8 @@
 import math
 from typing import Any
 
-ABS_TOL = 1e-9
-REL_TOL = 1e-9
+ABS_TOL = 1e-12
+REL_TOL = 1e-12
 
 
 def close_scalar(a: float, b: float) -> bool:
