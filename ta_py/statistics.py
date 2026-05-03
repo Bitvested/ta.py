@@ -505,6 +505,35 @@ def tsf(data: list[float], length: int = 14) -> list[float]:
     return [pair[0] * length + pair[1] for pair in w]
 
 
+def std_series(data: list[float], length: int) -> list[float]:
+    """Rolling standard deviation over windows of ``length`` bars.
+
+    Distinct from :func:`std` (scalar). Uses dual sliding sum
+    ``var = E[X²] − E[X]²``. Output length is ``n - length + 1``.
+    """
+    n = len(data)
+    if n < length:
+        return []
+    sum_x = 0.0
+    sum_x2 = 0.0
+    for i in range(length):
+        v = float(data[i])
+        sum_x += v
+        sum_x2 += v * v
+    def _push(sx: float, sx2: float) -> float:
+        mean = sx / length
+        var = sx2 / length - mean * mean
+        return (var if var > 0 else 0.0) ** 0.5
+    out: list[float] = [_push(sum_x, sum_x2)]
+    for i in range(length, n):
+        inc = float(data[i])
+        out_v = float(data[i - length])
+        sum_x += inc - out_v
+        sum_x2 += inc * inc - out_v * out_v
+        out.append(_push(sum_x, sum_x2))
+    return out
+
+
 # --- sum MUST be last: it shadows the builtin sum() for all code defined above ---
 def sum(data: list[float]) -> float:
     """Compute the running total of all elements in data."""
