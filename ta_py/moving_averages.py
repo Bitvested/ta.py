@@ -57,16 +57,18 @@ def wma(data: list[float], l: int = 14) -> list[float]:
 
 def wsma(data: list[float], l: int = 14) -> list[float]:
     """Wilder's Smoothing Moving Average."""
-    em = []; weight = 1/l;
-    for i in range(l, len(data)+1):
-        if len(em) > 0:
-            em.append((data[i-1]-em[len(em)-1]) * weight + em[len(em)-1]);
-            continue;
-        pl = data[i-l:i]; average = 0;
-        for q in range(0, len(pl)):
-            average += pl[q];
-        em.append(average/len(pl));
-    return em;
+    n = len(data)
+    if n < l:
+        return []
+    seed = 0.0
+    for i in range(l):
+        seed += float(data[i])
+    out = [seed / l]
+    weight = 1.0 / l
+    for j in range(l, n):
+        prev = out[-1]
+        out.append((float(data[j]) - prev) * weight + prev)
+    return out
 
 def pwma(data: list[float], l: int = 14) -> list[float]:
     """Parabolic Weighted Moving Average."""
