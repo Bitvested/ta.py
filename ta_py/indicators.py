@@ -53,33 +53,37 @@ def wrsi(data: list[float], l: int = 14) -> list[float]:
     return arrsi;
 def tsi(data: list[float], long: int = 25, short: int = 13, sig: int = 13) -> list[list[float]]:
     """True Strength Index."""
+    _ema = registry["ema"]  # alias once per call (registry contract: keys never deleted)
     mo = []; ab = []; ts = []; tsi = [];
     for i in range(1, len(data)):
         mo.append(data[i] - data[i - 1]);
         ab.append(abs(data[i] - data[i - 1]));
-    sma1 = registry["ema"](mo, long); sma2 = registry["ema"](ab, long);
-    ema1 = registry["ema"](sma1, short); ema2 = registry["ema"](sma2, short);
+    sma1 = _ema(mo, long); sma2 = _ema(ab, long);
+    ema1 = _ema(sma1, short); ema2 = _ema(sma2, short);
     for i in range(len(ema1)):
         ts.append(ema1[i] / ema2[i]);
-    tma = registry["ema"](ts, sig);
+    tma = _ema(ts, sig);
     ts = ts[(len(ts)-len(tma)):];
     for i in range(len(tma)):
         tsi.append([tma[i], ts[i]]);
     return tsi;
 def macd(data: list[float], l1: int = 12, l2: int = 26) -> list[float]:
     """Moving Average Convergence Divergence (MACD line)."""
+    _ema = registry["ema"]  # alias once per call (registry contract: keys never deleted)
     if l1 > l2: [l1, l2] = [l2, l1];
-    em1 = registry["ema"](data[:], l1); em2 = registry["ema"](data[:], l2);
+    em1 = _ema(data[:], l1); em2 = _ema(data[:], l2);
     em1 = em1[-(len(em2) - len(em1)):]; emf = [];
     for i in range(len(em1)):
         emf.append(em1[i] - em2[i]);
     return emf;
 def macd_signal(data: list[float], l1: int = 12, l2: int = 26, l3: int = 9) -> list[float]:
     """MACD signal line (EMA of MACD)."""
-    return registry["ema"](macd(data, l1, l2), l3);
+    _ema = registry["ema"]  # alias once per call (registry contract: keys never deleted)
+    return _ema(macd(data, l1, l2), l3);
 def macd_bars(data: list[float], l1: int = 12, l2: int = 26, l3: int = 9) -> list[float]:
     """MACD histogram bars (MACD minus signal)."""
-    ma = macd(data, l1, l2); mas = registry["ema"](ma, l3); ret = [];
+    _ema = registry["ema"]  # alias once per call (registry contract: keys never deleted)
+    ma = macd(data, l1, l2); mas = _ema(ma, l3); ret = [];
     ma = ma[len(ma)-len(mas):];
     for i in range(len(ma)): ret.append(ma[i] - mas[i]);
     return ret;
@@ -123,12 +127,13 @@ def mom(data: list[float], l1: int = 10, p: bool = False) -> list[float]:
     return mom
 def kst(data: list[float], r1: int = 10, s1: int = 10, r2: int = 15, s2: int = 10, r3: int = 20, s3: int = 10, r4: int = 30, s4: int = 15, sig: int = 9) -> list[list[float]]:
     """Know Sure Thing oscillator."""
+    _sma = registry["sma"]  # alias once per call (registry contract: keys never deleted)
     ks = []; fs = []; ms = (max(r1, r2, r3, r4) + max(s1, s2, s3, s4));
     for i in range(ms, len(data)+1):
         rcma1 = roc(data[i-ms:i], r1); rcma2 = roc(data[i-ms:i], r2); rcma3 = roc(data[i-ms:i], r3); rcma4 = roc(data[i-ms:i], r4);
-        rcma1 = registry["sma"](rcma1, s1); rcma2 = registry["sma"](rcma2, s2); rcma3 = registry["sma"](rcma3, s3); rcma4 = registry["sma"](rcma4, s4);
+        rcma1 = _sma(rcma1, s1); rcma2 = _sma(rcma2, s2); rcma3 = _sma(rcma3, s3); rcma4 = _sma(rcma4, s4);
         ks.append(rcma1[len(rcma1)-1] + rcma2[len(rcma2)-1] + rcma3[len(rcma3)-1] + rcma4[len(rcma4)-1]);
-    sl = registry["sma"](ks[:], sig);
+    sl = _sma(ks[:], sig);
     ks = ks[(len(ks) - len(sl)):];
     for i in range(len(ks)): fs.append([ks[i], sl[i]]);
     return fs;
