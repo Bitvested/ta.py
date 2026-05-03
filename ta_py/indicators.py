@@ -846,6 +846,29 @@ def apo(data: list[float], length1: int = 12, length2: int = 26) -> list[float]:
     """Absolute Price Oscillator. Thin wrapper for ``macd`` (TA-Lib's APO == MACD with EMA MA-type)."""
     return registry["macd"](data, length1, length2)
 
+def cci(data: list[list[float]], length: int = 20) -> list[float]:
+    """Lambert Commodity Channel Index. Each row of data is [high, close, low].
+
+    ``TP = (H + C + L) / 3``; ``CCI = (TP − SMA(TP, length)) / (0.015 · MAD(TP, length))``.
+    Output length is ``n - length + 1``.
+    """
+    n = len(data)
+    if n < length:
+        return []
+    tp = [(float(data[i][0]) + float(data[i][1]) + float(data[i][2])) / 3.0 for i in range(n)]
+    out: list[float] = [0.0] * (n - length + 1)
+    for i in range(length, n + 1):
+        s = 0.0
+        for j in range(i - length, i):
+            s += tp[j]
+        sma_tp = s / length
+        mad = 0.0
+        for j in range(i - length, i):
+            mad += abs(tp[j] - sma_tp)
+        mad /= length
+        out[i - length] = float("nan") if mad == 0 else (tp[i - 1] - sma_tp) / (0.015 * mad)
+    return out
+
 def mass(data: list[list[float]], length: int = 25) -> list[float]:
     """Mass Index. Rolling sum over ``length`` bars of EMA(range, 9) / EMA(EMA(range, 9), 9).
 
