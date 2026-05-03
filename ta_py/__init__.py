@@ -25,7 +25,7 @@ from .indicators import (
     cci, stoch_rsi, kdj,
     cmf, vortex,
 )
-from .oscillators import gator, mom_osc, chaikin_osc, ao, ac, fisher, kvo
+from .oscillators import gator, mom_osc, chaikin_osc, ao, ac, fisher, kvo, ult
 from .bands import bands, bandwidth, keltner, don, envelope, fibbands
 from .chart_types import ha, ren
 from .misc import times_up, times_down, fibnumbers
@@ -56,7 +56,7 @@ __all__ = [
     "cci", "stoch_rsi", "kdj",
     "cmf", "vortex",
     # oscillators
-    "gator", "mom_osc", "chaikin_osc", "ao", "ac", "fisher", "kvo",
+    "gator", "mom_osc", "chaikin_osc", "ao", "ac", "fisher", "kvo", "ult",
     # bands
     "bands", "bandwidth", "keltner", "don", "envelope", "fibbands",
     # chart types

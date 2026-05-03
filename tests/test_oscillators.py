@@ -4,7 +4,7 @@ import ta_py
 from tests import parameters as p
 from tests.helpers import assert_close
 
-CASES = ["gator", "mom_osc", "chaikin_osc", "ao", "ac", "fisher", "kvo"]
+CASES = ["gator", "mom_osc", "chaikin_osc", "ao", "ac", "fisher", "kvo", "ult"]
 
 
 @pytest.mark.parametrize("name", CASES)
