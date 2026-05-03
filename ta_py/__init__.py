@@ -75,6 +75,8 @@ __all__ = [
     "prng", "random",
 ]
 
+from . import multi  # noqa: E402,F401 — exposed as ta_py.multi.sim
+
 from . import _registry
 _registry.registry.update({
     name: globals()[name] for name in __all__
