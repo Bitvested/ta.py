@@ -835,6 +835,29 @@ def apo(data: list[float], length1: int = 12, length2: int = 26) -> list[float]:
     """Absolute Price Oscillator. Thin wrapper for ``macd`` (TA-Lib's APO == MACD with EMA MA-type)."""
     return registry["macd"](data, length1, length2)
 
+def stoch_rsi(data: list[float], rsi_length: int = 14, stoch_length: int = 14, smooth_k: int = 3, smooth_d: int = 3) -> list[list[float]]:
+    """SMA-smoothed Stochastic of an RSI series. Returns ``[[fastK, fastD], ...]``."""
+    _rsi = registry["rsi"]; _sma = registry["sma"]
+    r = _rsi(data, rsi_length)
+    if len(r) < stoch_length:
+        return []
+    raw_k: list[float] = [0.0] * (len(r) - stoch_length + 1)
+    for i in range(stoch_length, len(r) + 1):
+        lo = float("inf"); hi = float("-inf")
+        for j in range(i - stoch_length, i):
+            if r[j] > hi:
+                hi = r[j]
+            if r[j] < lo:
+                lo = r[j]
+        rng = hi - lo
+        raw_k[i - stoch_length] = float("nan") if rng == 0 else 100.0 * (r[i - 1] - lo) / rng
+    fast_k = _sma(raw_k, smooth_k)
+    fast_d = _sma(fast_k, smooth_d)
+    if len(fast_d) == 0:
+        return []
+    offset = len(fast_k) - len(fast_d)
+    return [[fast_k[i + offset], fast_d[i]] for i in range(len(fast_d))]
+
 def cci(data: list[list[float]], length: int = 20) -> list[float]:
     """Lambert Commodity Channel Index. Each row of data is [high, close, low].
 

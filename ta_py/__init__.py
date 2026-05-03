@@ -22,7 +22,7 @@ from .indicators import (
     adl, nvi, pvi, emv, dpo, ulcer,
     pdm, mdm, pdi, mdi, dx, adx, adxr, natr,
     trix, ppo, apo, mass,
-    cci,
+    cci, stoch_rsi,
 )
 from .oscillators import gator, mom_osc, chaikin_osc, ao, ac, fisher
 from .bands import bands, bandwidth, keltner, don, envelope, fibbands
@@ -52,7 +52,7 @@ __all__ = [
     "adl", "nvi", "pvi", "emv", "dpo", "ulcer",
     "pdm", "mdm", "pdi", "mdi", "dx", "adx", "adxr", "natr",
     "trix", "ppo", "apo", "mass",
-    "cci",
+    "cci", "stoch_rsi",
     # oscillators
     "gator", "mom_osc", "chaikin_osc", "ao", "ac", "fisher",
     # bands

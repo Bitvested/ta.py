@@ -13,7 +13,7 @@ CASES = [
     "aroon_down", "aroon_osc", "adl", "nvi", "pvi", "emv", "dpo", "ulcer",
     "pdm", "mdm", "pdi", "mdi", "dx", "adx", "adxr", "natr",
     "trix", "ppo", "apo", "mass",
-    "cci",
+    "cci", "stoch_rsi",
 ]
 
 
