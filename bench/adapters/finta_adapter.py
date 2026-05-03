@@ -38,7 +38,13 @@ if AVAILABLE:
         a = np.asarray(data, dtype=np.float64)
         df = pd.DataFrame({"open": a[:, 0], "high": a[:, 0], "low": a[:, 0], "close": a[:, 0], "volume": a[:, 1]})
         return lambda: F.VWAP(df)  # closest analog; flag in BENCHMARKS.md that this isn't a true VWMA
-    def mfi(data, length):       return None  # input shape mismatch
+    def mfi(data, length):
+        a = np.asarray(data, dtype=np.float64)
+        df = pd.DataFrame({
+            "open": a[:, 2], "high": a[:, 0], "low": a[:, 1],
+            "close": a[:, 2], "volume": a[:, 3],
+        })
+        return lambda: F.MFI(df, period=length)
 else:
     def __getattr__(name):
         return lambda *_a, **_kw: None

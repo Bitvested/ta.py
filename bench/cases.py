@@ -46,10 +46,19 @@ def _price_volume_series(size: int, seed: int = 42) -> list[list[float]]:
     return [[c, abs(rng.gauss(1_000, 200))] for c in closes]
 
 
-def _flow_series(size: int, seed: int = 42) -> list[list[float]]:
-    """[positive_flow, negative_flow] rows for mfi (ta_py's signature)."""
+def _hlcv_series(size: int, seed: int = 42) -> list[list[float]]:
+    """[high, low, close, volume] rows for mfi (ta_py 2.0 signature)."""
     rng = random.Random(seed)
-    return [[abs(rng.gauss(100, 20)), abs(rng.gauss(100, 20))] for _ in range(size)]
+    rows: list[list[float]] = []
+    p = 100.0
+    for _ in range(size):
+        c = p * math.exp(rng.gauss(0, 0.01))
+        h = max(p, c) * (1 + abs(rng.gauss(0, 0.005)))
+        lo = min(p, c) * (1 - abs(rng.gauss(0, 0.005)))
+        v = abs(rng.gauss(1_000, 200))
+        rows.append([h, lo, c, v])
+        p = c
+    return rows
 
 
 @dataclass
@@ -86,7 +95,7 @@ CASES: list[Case] = [
     Case("pr",        "Williams %R",                      _close_series,        14, _adapters_for("pr")),
     Case("stoch",     "Stochastic Oscillator (14,3,3)",   _ohlc_series,         14, _adapters_for("stoch")),
     Case("rsi",       "RSI (length=14)",                  _close_series,        14, _adapters_for("rsi")),
-    Case("mfi",       "Money Flow Index (ta_py shape)",   _flow_series,         14, _adapters_for("mfi")),
+    Case("mfi",       "Money Flow Index (HLCV)",          _hlcv_series,         14, _adapters_for("mfi")),
     Case("atr",       "Average True Range",               _ohlc_series,         14, _adapters_for("atr")),
     Case("macd",      "MACD (12,26)",                     _close_series,        12, _adapters_for("macd")),
 ]

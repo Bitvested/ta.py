@@ -39,7 +39,11 @@ if AVAILABLE:
         return lambda: pta.vwma(price, vol, length=length)
     def bandwidth(data, length): return None  # pandas-ta returns it inside bbands, no isolated call
     def keltner(data, length):   df = _ohlc_df(data); return lambda: pta.kc(df["high"], df["low"], df["close"], length=length)
-    def mfi(data, length):       return None  # input shape mismatch
+    def mfi(data, length):
+        a = np.asarray(data, dtype=np.float64)
+        h = pd.Series(a[:, 0]); lo = pd.Series(a[:, 1])
+        c = pd.Series(a[:, 2]); v = pd.Series(a[:, 3])
+        return lambda: pta.mfi(h, lo, c, v, length=length)
 else:
     def __getattr__(name):
         return lambda *_a, **_kw: None

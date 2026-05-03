@@ -1,0 +1,1546 @@
+# Technical Analysis (ta.py) — Examples
+
+Per-indicator usage examples for [`ta_py`](README.md). Every function below is also exported on the top-level `ta_py` module (`import ta_py as ta`).
+
+## Table of Contents
+
+#### Moving Averages
+- [Simple Moving Average](#sma)
+- [Smoothed Moving Average](#smma)
+- [Weighted Moving Average](#wma)
+- [Exponential Moving Average](#ema)
+- [Double Exponential Moving Average](#dema)
+- [Triple Exponential Moving Average](#tema)
+- [Triangular Moving Average](#trima)
+- [Tilson T3 Moving Average](#t3)
+- [Zero-Lag Exponential Moving Average](#zlema)
+- [Variable Index Dynamic Average](#vidya)
+- [Hull Moving Average](#hull)
+- [Least Squares Moving Average](#lsma)
+- [Volume Weighted Moving Average](#vwma)
+- [Volume Weighted Weighted Moving Average](#vwwma)
+- [Wilder's Smoothing Moving Average](#wsma)
+- [Parabolic Weighted Moving Average](#pwma)
+- [Hyperbolic Weighted Moving Average](#hwma)
+- [Kaufman Adaptive Moving Average](#kama)
+- [Custom Weighted Moving Average](#cwma)
+
+#### Indicators
+- [Moving Average Convergence / Divergence](#macd)
+- [MACD Signal Line](#macd_signal)
+- [MACD Histogram (Bars)](#macd_bars)
+- [Relative Strength Index](#rsi)
+- [Wilder's Relative Strength Index](#wrsi)
+- [True Strength Index](#tsi)
+- [Balance Of Power](#bop)
+- [Force Index](#fi)
+- [Accumulative Swing Index](#asi)
+- [Alligator Indicator](#alli)
+- [Williams %R](#pr)
+- [Stochastics](#stoch)
+- [Stochastic RSI](#stoch_rsi)
+- [Fibonacci Retracement](#fib)
+- [Bollinger Bandwidth](#bandwidth)
+- [Ichimoku Cloud](#ichi)
+- [Average True Range](#atr)
+- [Normalized Average True Range](#natr)
+- [Aroon Up](#aroon-up)
+- [Aroon Down](#aroon-down)
+- [Aroon namespace](#aroon-ns)
+- [Money Flow Index](#mfi)
+- [Chaikin Money Flow](#cmf)
+- [Rate Of Change](#roc)
+- [Coppock Curve](#cop)
+- [Know Sure Thing](#kst)
+- [On-Balance Volume](#obv)
+- [Negative Volume Index](#nvi)
+- [Positive Volume Index](#pvi)
+- [Accumulation / Distribution Line](#adl)
+- [Ease Of Movement](#emv)
+- [Volume-Weighted Average Price](#vwap)
+- [Fractals](#fractals)
+- [Crossover](#cross)
+- [Momentum](#mom)
+- [HalfTrend](#half)
+- [ZigZag](#zigzag)
+- [Parabolic SAR](#psar)
+- [SuperTrend](#supertrend)
+- [Elder Ray Index](#elderray)
+- [Historical Volatility](#hv)
+- [Relative Vigor Index](#rvi)
+- [Relative Vigor Index Signal](#rvi_signal)
+- [RSI Divergence](#rsi_divergence)
+- [Universal Divergence](#divergence)
+- [TRIX](#trix)
+- [Commodity Channel Index](#cci)
+- [Plus / Minus Directional Movement](#dm)
+- [Plus / Minus Directional Indicator](#di)
+- [Directional Movement Index](#dx)
+- [Average Directional Index](#adx)
+- [Average Directional Index Rating](#adxr)
+- [Percentage Price Oscillator](#ppo)
+- [Absolute Price Oscillator](#apo)
+- [Detrended Price Oscillator](#dpo)
+- [Mass Index](#mass)
+- [Ulcer Index](#ulcer)
+- [Vortex Indicator](#vortex)
+- [KDJ Indicator](#kdj)
+- [Klinger Volume Oscillator](#kvo)
+
+#### Oscillators
+- [Alligator Oscillator](#gator)
+- [Chande Momentum Oscillator](#mom_osc)
+- [Chaikin Oscillator](#chaikin_osc)
+- [Aroon Oscillator](#aroon-osc)
+- [Awesome Oscillator](#ao)
+- [Accelerator Oscillator](#ac)
+- [Fisher Transform](#fish)
+- [Ultimate Oscillator](#ult)
+
+#### Bands
+- [Bollinger Bands](#bands)
+- [Keltner Channels](#kelt)
+- [Donchian Channels](#don)
+- [Fibonacci Bollinger Bands](#fibbands)
+- [Envelope](#env)
+
+#### Statistics
+- [Standard Deviation](#std)
+- [Standard Deviation Series](#std_series)
+- [Linear Regression Slope](#lr_slope)
+- [Linear Regression Intercept](#lr_intercept)
+- [Linear Regression Angle](#lr_angle)
+- [Time Series Forecast](#tsf)
+- [Variance](#variance)
+- [Normal CDF](#ncdf)
+- [Inverse Normal Distribution](#normsinv)
+- [Monte Carlo Simulation](#sim)
+- [Multi-process Monte Carlo](#multi-sim)
+- [Percentile](#perc)
+- [Correlation](#cor)
+- [Covariance](#cov)
+- [Percentage Difference](#dif)
+- [Expected Return](#er)
+- [Abnormal Return](#ar)
+- [Kelly Criterion](#kelly)
+- [Permutations](#perm)
+- [Winratio](#winratio)
+- [Average Win](#avgwin)
+- [Average Loss](#avgloss)
+- [Drawdown](#drawdown)
+- [Median](#median)
+- [Recent High](#rh)
+- [Recent Low](#rl)
+- [Median Absolute Deviation](#mad)
+- [Average Absolute Deviation](#aad)
+- [Standard Error](#stderr)
+- [Sum Squared Differences](#ssd)
+- [Logarithm](#log)
+- [Exponent](#exp)
+- [Normalize](#norm)
+- [Denormalize](#dnorm)
+- [Normalize Pair](#normp)
+- [Normalize From](#normf)
+- [Standardize](#standard)
+- [Z-Score](#zscore)
+- [K-means Clustering](#kmeans)
+- [Mean Squared Error](#mse)
+- [Cumulative](#cum)
+- [Sum](#sum)
+- [Return Positive](#return_positive)
+- [Return Negative](#return_negative)
+- [P-Value](#pvalue)
+- [Martingale](#martingale)
+- [Anti-Martingale](#antimartingale)
+- [Expected Trails](#expected_trails)
+
+#### Chart Types
+- [Heikin Ashi](#ha)
+- [Renko](#ren)
+
+#### Miscellaneous
+- [Fibonacci Sequence](#fibnumbers)
+- [Times Up](#times_up)
+- [Times Down](#times_dn)
+
+#### Random
+- [Seeded PRNG](#prng)
+
+#### Experimental
+- [Support Line](#sup)
+- [Resistance Line](#res)
+- [Divergence State](#divergence_state)
+
+---
+
+## Moving Averages
+
+#### <a id="sma"></a>Simple Moving Average (SMA)
+```python
+data = [1, 2, 3, 4, 5, 6, 10]
+length = 6  # default = 14
+ta.sma(data, length)
+# output (array)
+# [3.5, 5]
+```
+
+#### <a id="smma"></a>Smoothed Moving Average (SMMA)
+```python
+data = [1, 2, 3, 4, 5, 6, 10]
+length = 5  # default = 14
+ta.smma(data, length)
+# output (array)
+# [3.4, 4.92]
+```
+
+#### <a id="wma"></a>Weighted Moving Average (WMA)
+```python
+data = [69, 68, 66, 70, 68]
+length = 4  # default = 14
+ta.wma(data, length)
+# output (array)
+# [68.3, 68.2]
+```
+
+#### <a id="ema"></a>Exponential Moving Average (EMA)
+```python
+data = [1, 2, 3, 4, 5, 6, 10]
+length = 6  # default = 12
+ta.ema(data, length)
+# output (array)
+# [3.5, 5.357]
+```
+
+#### <a id="dema"></a>Double Exponential Moving Average (DEMA)
+```python
+data = [1, 2, 3, 4, 5, 6, 10]
+length = 3
+ta.dema(data, length)
+```
+
+#### <a id="tema"></a>Triple Exponential Moving Average (TEMA)
+```python
+data = [1, 2, 3, 4, 5, 6, 10]
+length = 3
+ta.tema(data, length)
+```
+
+#### <a id="trima"></a>Triangular Moving Average (TRIMA)
+```python
+data = [1, 2, 3, 4, 5, 6, 10]
+length = 4
+ta.trima(data, length)
+```
+
+#### <a id="t3"></a>Tilson T3 Moving Average
+```python
+data = [1, 2, 3, 4, 5, 6, 10]
+length = 3
+volume_factor = 0.7  # default = 0.7
+ta.t3(data, length, volume_factor)
+```
+
+#### <a id="zlema"></a>Zero-Lag Exponential Moving Average (ZLEMA)
+```python
+data = [1, 2, 3, 4, 5, 6, 10]
+length = 4
+ta.zlema(data, length)
+```
+
+#### <a id="vidya"></a>Variable Index Dynamic Average (VIDYA)
+```python
+data = [1, 2, 3, 4, 5, 6, 10]
+short = 3
+long = 6
+alpha = 0.2  # default = 0.2
+ta.vidya(data, short, long, alpha)
+```
+
+#### <a id="hull"></a>Hull Moving Average
+```python
+data = [6, 7, 5, 6, 7, 4, 5, 7]
+length = 6  # default = 14
+ta.hull(data, length)
+# output (array)
+# [4.76, 5.48]
+```
+
+#### <a id="lsma"></a>Least Squares Moving Average (LSMA)
+```python
+data = [5, 6, 6, 3, 4, 6, 7]
+length = 6  # default = 25
+ta.lsma(data, length)
+# output (array)
+# [4.714, 5.761]
+```
+
+#### <a id="vwma"></a>Volume Weighted Moving Average (VWMA)
+```python
+data = [[1, 59], [1.1, 82], [1.21, 27], [1.42, 73], [1.32, 42]]  # [price, volume]
+length = 4  # default = 20
+ta.vwma(data, length)
+# output (array)
+# [1.185, 1.259]
+```
+
+#### <a id="vwwma"></a>Volume Weighted Weighted Moving Average (VWWMA)
+```python
+data = [[1, 59], [1.1, 82], [1.21, 27], [1.42, 73], [1.32, 42]]
+length = 4
+ta.vwwma(data, length)
+# output (array)
+# [1.262, 1.316]
+```
+
+#### <a id="wsma"></a>Wilder's Smoothing Moving Average
+```python
+data = [1, 2, 3, 4, 5, 6, 10]
+length = 6  # default = 14
+ta.wsma(data, length)
+# output (array)
+# [3.5, 4.58]
+```
+
+#### <a id="pwma"></a>Parabolic Weighted Moving Average
+```python
+data = [17, 26, 23, 29, 20]
+length = 4  # default = 14
+ta.pwma(data, length)
+# output (array)
+# [24.09, 25.18]
+```
+
+#### <a id="hwma"></a>Hyperbolic Weighted Moving Average
+```python
+data = [54, 51, 86, 42, 47]
+length = 4  # default = 14
+ta.hwma(data, length)
+# output (array)
+# [56.2, 55.0]
+```
+
+#### <a id="kama"></a>Kaufman Adaptive Moving Average (KAMA)
+```python
+data = [8, 7, 8, 9, 7, 9]
+length1 = 2   # default = 10
+length2 = 4   # default = 2
+length3 = 8   # default = 30
+ta.kama(data, length1, length2, length3)
+# output (array)
+# [8, 8.64, 8.57, 8.57]
+```
+
+#### <a id="cwma"></a>Custom Weighted Moving Average
+```python
+data = [69, 68, 66, 70, 68, 69]
+weights = [1, 2, 3, 5, 8]
+ta.cwma(data, weights)
+# output (array)
+# [68.26315789473684, 68.52631578947368]
+```
+
+## Indicators
+
+#### <a id="macd"></a>Moving Average Convergence / Divergence (MACD)
+```python
+data = [1, 2, 3, 4, 5, 6, 14]
+length1 = 3  # default = 12
+length2 = 6  # default = 26
+ta.macd(data, length1, length2)
+# output (array)
+# [1.5, 3]
+```
+
+#### <a id="macd_signal"></a>MACD Signal Line
+```python
+data = [1, 2, 3, 4, 5, 6, 14, 8, 10, 11]
+length1 = 3  # default = 12
+length2 = 6  # default = 26
+length3 = 3  # signal line length, default = 9
+ta.macd_signal(data, length1, length2, length3)
+# output (array)
+# [2.107, 1.838, 1.653]
+```
+
+#### <a id="macd_bars"></a>MACD Histogram (Bars)
+```python
+data = [1, 2, 3, 4, 5, 6, 14, 8, 10, 11]
+length1 = 3  # default = 12
+length2 = 6  # default = 26
+length3 = 3  # signal line length, default = 9
+ta.macd_bars(data, length1, length2, length3)
+# output (array)
+# [-0.286, -0.269, -0.185]
+```
+
+#### <a id="rsi"></a>Relative Strength Index (RSI)
+```python
+data = [1, 2, 3, 4, 5, 6, 7, 5]
+length = 6  # default = 14
+ta.rsi(data, length)
+# output (array)
+# [100, 100, 66.667]
+```
+
+#### <a id="wrsi"></a>Wilder's Relative Strength Index
+```python
+# Alias of ta.rsi() in 2.0 — both apply Wilder smoothing.
+data = [1, 2, 3, 4, 5, 6, 7, 5, 6]
+length = 6  # default = 14
+ta.wrsi(data, length)
+```
+
+#### <a id="tsi"></a>True Strength Index (TSI)
+```python
+data = [1.32, 1.27, 1.42, 1.47, 1.42, 1.45, 1.59]
+longlength = 3   # default = 25
+shortlength = 2  # default = 13
+signallength = 2 # default = 13
+ta.tsi(data, longlength, shortlength, signallength)
+# output (array)
+# [[0.327, 0.320], [0.579, 0.706]]
+# [strength line, signal line]
+```
+
+#### <a id="bop"></a>Balance Of Power
+```python
+data = [[4, 5, 4, 5], [5, 6, 5, 6], [6, 8, 5, 6]]  # [open, high, low, close]
+length = 2  # default = 14
+ta.bop(data, length)
+# output (array)
+# [1, 0.5]
+```
+
+#### <a id="fi"></a>Force Index
+```python
+data = [[1.4, 200], [1.5, 240], [1.1, 300], [1.2, 240], [1.5, 400]]  # [close, volume]
+length = 4  # default = 13
+ta.fi(data, length)
+# output (array)
+# [0.0075]
+```
+
+#### <a id="asi"></a>Accumulative Swing Index
+```python
+data = [[7, 6, 4], [9, 7, 5], [9, 8, 6]]  # [high, close, low]
+ta.asi(data)
+# output (array)
+# [0, -12.5]
+```
+
+#### <a id="alli"></a>Alligator Indicator
+```python
+data = [8,7,8,9,7,8,9,6,7,8,6,8,10,8,7,9,8,7,9,6,7,9]
+# defaults shown
+jawlength = 13
+teethlength = 8
+liplength = 5
+jawshift = 8
+teethshift = 5
+lipshift = 3
+ta.alligator(data, jawlength, teethlength, liplength, jawshift, teethshift, lipshift)
+# output (array)
+# [jaw, teeth, lips]
+```
+
+#### <a id="pr"></a>Williams %R
+```python
+data = [2, 1, 3, 1, 2]
+length = 3  # default = 14
+ta.pr(data, length)
+# output (array)
+# [-0, -100, -50]
+```
+
+#### <a id="stoch"></a>Stochastics
+```python
+data = [[3, 2, 1], [2, 2, 1], [4, 3, 1], [2, 2, 1]]  # [high, close, low]
+length = 2   # default = 14
+smoothd = 1  # default = 3
+smoothk = 1  # default = 3
+ta.stoch(data, length, smoothd, smoothk)
+# output (array)
+# [[66.667, 66.667], [33.336, 33.336]]
+# [k_line, d_line]
+```
+
+#### <a id="stoch_rsi"></a>Stochastic RSI
+```python
+data = [1, 2, 3, 4, 5, 6, 7, 5, 6, 7, 8, 9, 7]
+length = 6
+ta.stoch_rsi(data, length)
+```
+
+#### <a id="fib"></a>Fibonacci Retracement
+```python
+start = 1
+end = 2
+ta.fib(start, end)
+# output (array)
+# [1, 1.236, 1.382, 1.5, 1.618, 1.786, 2, 2.618, 3.618, 4.618, 5.236]
+```
+
+#### <a id="bandwidth"></a>Bollinger Bandwidth
+```python
+data = [1, 2, 3, 4, 5, 6]
+length = 5      # default = 14
+deviations = 2  # default = 1
+ta.bandwidth(data, length, deviations)
+# output (array)
+# [1.886, 1.344]
+```
+
+#### <a id="ichi"></a>Ichimoku Cloud
+```python
+data = [[6, 3, 2], [5, 4, 2], [5, 4, 3], [6, 4, 3], [7, 6, 4], [6, 5, 3]]  # [high, close, low]
+length1 = 9      # default = 9
+length2 = 26     # default = 26
+length3 = 52     # default = 52
+displacement = 26  # default = 26
+ta.ichimoku(data, length1, length2, length3, displacement)
+# output (array)
+# [conversion line, base line, leading span A, leading span B, lagging span]
+```
+
+#### <a id="atr"></a>Average True Range (ATR)
+```python
+data = [[3, 2, 1], [2, 2, 1], [4, 3, 1], [2, 2, 1]]  # [high, close, low]
+length = 3  # default = 14
+ta.atr(data, length)
+# output (array)
+# [2, 1.667, 2.111, 1.741]
+```
+
+#### <a id="natr"></a>Normalized Average True Range
+```python
+data = [[3, 2, 1], [2, 2, 1], [4, 3, 1], [2, 2, 1]]  # [high, close, low]
+length = 3
+ta.natr(data, length)
+```
+
+#### <a id="aroon-up"></a>Aroon Up
+```python
+data = [5, 4, 5, 2]
+length = 3  # default = 10
+ta.aroon_up(data, length)
+# output (array)
+# [100.0, 50.0]
+```
+
+#### <a id="aroon-down"></a>Aroon Down
+```python
+data = [2, 5, 4, 5]
+length = 3  # default = 10
+ta.aroon_down(data, length)
+# output (array)
+# [0.0, 50.0]
+```
+
+#### <a id="aroon-ns"></a>Aroon Namespace
+```python
+# 2.0 also exposes ta.aroon.up / .down / .osc to mirror ta.js's namespace.
+ta.aroon.up([5, 4, 5, 2], 3)
+ta.aroon.down([2, 5, 4, 5], 3)
+ta.aroon.osc([2, 5, 4, 5], 3)
+```
+
+#### <a id="mfi"></a>Money Flow Index
+```python
+data = [[3, 2, 1, 100], [4, 3, 2, 120], [5, 4, 3, 80], [4, 3, 2, 60]]  # [high, close, low, volume]
+length = 3  # default = 14
+ta.mfi(data, length)
+```
+
+#### <a id="cmf"></a>Chaikin Money Flow
+```python
+data = [[3, 2, 1, 100], [4, 3, 2, 120], [5, 4, 3, 80], [4, 3, 2, 60]]  # [high, close, low, volume]
+length = 3
+ta.cmf(data, length)
+```
+
+#### <a id="roc"></a>Rate Of Change
+```python
+data = [1, 2, 3, 4]
+length = 3  # default = 14
+ta.roc(data, length)
+# output (array)
+# [2, 1]
+```
+
+#### <a id="cop"></a>Coppock Curve
+```python
+data = [3, 4, 5, 3, 4, 5, 6, 4, 7, 5, 4, 7, 5]
+length1 = 4  # ROC period 1, default = 11
+length2 = 6  # ROC period 2, default = 14
+length3 = 5  # WMA smoothing period, default = 10
+ta.cop(data, length1, length2, length3)
+# output (array)
+# [0.376, 0.237]
+```
+
+#### <a id="kst"></a>Know Sure Thing
+```python
+data = [8,6,7,6,8,9,7,5,6,7,6,8,6,7,6,8,9,9,8,6,4,6,5,6,7,8,9]
+# roc sma #1
+r1 = 5; s1 = 5   # defaults = 10, 10
+# roc sma #2
+r2 = 7; s2 = 5   # defaults = 15, 10
+# roc sma #3
+r3 = 10; s3 = 5  # defaults = 20, 10
+# roc sma #4
+r4 = 15; s4 = 7  # defaults = 30, 15
+# signal line
+sig = 4          # default = 9
+ta.kst(data, r1, s1, r2, s2, r3, s3, r4, s4, sig)
+# output (array)
+# [[-0.68, -0.52], [-0.29, -0.58], [0.35, -0.36]]
+# [kst line, signal line]
+```
+
+#### <a id="obv"></a>On-Balance Volume
+```python
+data = [[25200, 10], [30000, 10.15], [25600, 10.17], [32000, 10.13]]  # [volume, close]
+ta.obv(data)
+# output (array)
+# [0, 30000, 55600, 23600]
+```
+
+#### <a id="nvi"></a>Negative Volume Index
+```python
+data = [[1000, 10], [1200, 11], [800, 10.5], [1500, 11.2]]  # [volume, close]
+ta.nvi(data)
+```
+
+#### <a id="pvi"></a>Positive Volume Index
+```python
+data = [[1000, 10], [1200, 11], [800, 10.5], [1500, 11.2]]  # [volume, close]
+ta.pvi(data)
+```
+
+#### <a id="adl"></a>Accumulation / Distribution Line
+```python
+data = [[3, 2, 1, 100], [4, 3, 2, 120], [5, 4, 3, 80]]  # [high, close, low, volume]
+ta.adl(data)
+```
+
+#### <a id="emv"></a>Ease Of Movement
+```python
+data = [[3, 1, 100], [4, 2, 120], [5, 3, 80]]  # [high, low, volume]
+length = 2
+ta.emv(data, length)
+```
+
+#### <a id="vwap"></a>Volume-Weighted Average Price
+```python
+data = [[127.21, 89329], [127.17, 16137], [127.16, 23945]]  # [average price, volume]
+length = 2  # default = len(data)
+ta.vwap(data, length)
+# output (array)
+# [127.204, 127.164]
+```
+
+#### <a id="fractals"></a>Fractals
+```python
+data = [[7,6],[8,6],[9,6],[8,5],[7,4],[6,3],[7,4],[8,5]]  # [high, low]
+ta.fractals(data)
+# output (array, same length as input)
+# [[false, false], [false, false], [true, false], [false, false], [false, false], [false, true], [false, false], [false, false]]
+# [upper fractal, lower fractal]
+```
+
+#### <a id="cross"></a>Crossover (golden cross)
+```python
+fastdata = [3, 4, 5, 4, 3]
+slowdata = [4, 3, 2, 3, 4]
+ta.cross(fastdata, slowdata)
+# output (array)
+# [{index: 1, cross: True}, {index: 4, cross: False}]
+# cross is True when fastdata is greater than slowdata
+```
+
+#### <a id="mom"></a>Momentum
+```python
+data = [1, 1.1, 1.2, 1.24, 1.34]
+length = 4         # default = 10
+percentage = False # default = False (True returns percentage)
+ta.mom(data, length, percentage)
+# output (array)
+# [0.24, 0.24]
+```
+
+#### <a id="half"></a>HalfTrend
+```python
+# Experimental (ported from https://www.tradingview.com/script/U1SJ8ubc-HalfTrend/)
+# data = [high, close, low]
+data = [[100,97,90],[101,98,94],[103,96,92],[106,100,95],[110,101,100],[112,110,105],[110,100,90],[103,100,97],[95,90,85],[94,80,80],[90,82,81],[85,80,70]]
+atrlen = 6
+amplitude = 3
+deviation = 2
+ta.halftrend(data, atrlen, amplitude, deviation)
+```
+
+#### <a id="zigzag"></a>ZigZag
+```python
+# Based on high / low
+data = [[10,9], [12,10], [14,12], [15,13], [16,15], [11,10], [18,15]]  # [high, low]
+percentage = 0.25  # default = 0.05
+ta.zigzag(data, percentage)
+# output (array)
+# [9, 10.75, 12.5, 14.25, 16, 10, 18]
+```
+
+```python
+# Based on close
+data = [6,7,8,9,10,12,9,8,5,3,3,3,5,7,8,9,11]
+percentage = 0.05
+ta.zigzag(data, percentage)
+# output (array)
+# [6, 7.2, 8.4, 9.6, 10.8, 12.0, 10.5, 9.0, 7.5, 6.0, 4.5, 3.0, 4.6, 6.2, 7.8, 9.4, 11.0]
+```
+
+#### <a id="psar"></a>Parabolic SAR
+```python
+data = [[82.15,81.29],[81.89,80.64],[83.03,81.31],[83.30,82.65],[83.85,83.07],[83.90,83.11],[83.33,82.49],[84.30,82.3],[84.84,84.15],[85,84.11],[75.9,74.03],[76.58,75.39],[76.98,75.76],[78,77.17],[70.87,70.01]]
+step = 0.02
+maximum = 0.2
+ta.psar(data, step, maximum)
+```
+
+#### <a id="supertrend"></a>SuperTrend
+```python
+data = [[3, 2, 1], [2, 2, 1], [4, 3, 1], [2, 2, 1]]  # [high, close, low]
+length = 3
+multiplier = 0.5
+ta.supertrend(data, length, multiplier)
+# output (array)
+# [[5.56, 1.44], [3.37, 0.63]]
+# [up, down]
+```
+
+#### <a id="elderray"></a>Elder Ray Index
+```python
+data = [6, 5, 4, 7, 8, 9, 6, 8]
+length = 7
+ta.elderray(data, length)
+# output (array)
+# [[2.57, -2.43], [2.29, -2.71]]
+# [bull, bear]
+```
+
+#### <a id="hv"></a>Historical Volatility
+```python
+data = [7, 6, 5, 7, 8, 9, 7, 6, 5]
+length = 8
+ta.hv(data, length)
+# output (array)
+# [0.642, 0.682]
+```
+
+#### <a id="rvi"></a>Relative Vigor Index
+```python
+# data = [[open, high, low, close]]  (requires at least 4 + length values)
+data = [[4,6,3,3],[3,5,2,2],[2,5,2,4],[4,6,4,5],[5,7,4,4],[4,6,3,4],[4,7,3,5],[5,7,5,6],[6,8,6,6],[6,9,5,6],[6,8,6,7],[7,9,5,6],[6,7,4,5],[5,6,5,6],[6,8,5,5],[5,7,2,6]]
+length = 8
+ta.rvi(data, length)
+# output (array)
+# [0.29, 0.21, 0.15, 0.16, 0.09, 0.05]
+```
+
+#### <a id="rvi_signal"></a>Relative Vigor Index Signal
+```python
+rvi = [0.29, 0.21, 0.15, 0.16, 0.09, 0.05]  # requires at least 4 values
+ta.rvi_signal(rvi)
+# output (array)
+# [0.20, 0.15, 0.12]
+```
+
+#### <a id="rsi_divergence"></a>RSI Divergence
+Experimental (https://github.com/Bitvested/ta.js/issues/18).
+```python
+data = [74, 83, 66, 78, 69, 70, 84, 73, 74, 73, 83]
+rsi_length = 5
+rsi_function = ta.wrsi  # default
+ta.rsi_divergence(data, rsi_length, rsi_function)
+# output (array of 0/1 flags)
+# [0, 0, 1, 0, 1, 0]
+```
+
+#### <a id="divergence"></a>Universal Divergence
+```python
+data1 = [48, 34, 43, 54, 56, 64, 43]
+data2 = [76, 74, 43, 55, 34, 32, 45, 47]
+ta.divergence(data1, data2)
+# output (array of 0/1 flags)
+```
+
+#### <a id="trix"></a>TRIX
+```python
+data = [1.5, 2, 2.5, 3, 3.5, 4, 4.5]
+length = 3
+ta.trix(data, length)
+```
+
+#### <a id="cci"></a>Commodity Channel Index
+```python
+data = [[3, 2, 1], [4, 3, 2], [5, 4, 3], [6, 5, 4]]  # [high, close, low]
+length = 3
+ta.cci(data, length)
+```
+
+#### <a id="dm"></a>Plus / Minus Directional Movement
+```python
+data = [[3, 2, 1], [4, 3, 2], [5, 4, 3], [6, 5, 4]]  # [high, close, low]
+length = 3
+ta.pdm(data, length)
+ta.mdm(data, length)
+```
+
+#### <a id="di"></a>Plus / Minus Directional Indicator
+```python
+data = [[3, 2, 1], [4, 3, 2], [5, 4, 3], [6, 5, 4]]
+length = 3
+ta.pdi(data, length)
+ta.mdi(data, length)
+```
+
+#### <a id="dx"></a>Directional Movement Index
+```python
+data = [[3, 2, 1], [4, 3, 2], [5, 4, 3], [6, 5, 4]]
+length = 3
+ta.dx(data, length)
+```
+
+#### <a id="adx"></a>Average Directional Index
+```python
+data = [[3, 2, 1], [4, 3, 2], [5, 4, 3], [6, 5, 4], [7, 6, 5]]
+length = 3
+ta.adx(data, length)
+```
+
+#### <a id="adxr"></a>Average Directional Index Rating
+```python
+data = [[3, 2, 1], [4, 3, 2], [5, 4, 3], [6, 5, 4], [7, 6, 5]]
+length = 3
+interval = 2
+ta.adxr(data, length, interval)
+```
+
+#### <a id="ppo"></a>Percentage Price Oscillator
+```python
+data = [1, 2, 3, 4, 5, 6, 14]
+fast = 3
+slow = 6
+ta.ppo(data, fast, slow)
+```
+
+#### <a id="apo"></a>Absolute Price Oscillator
+```python
+data = [1, 2, 3, 4, 5, 6, 14]
+fast = 3
+slow = 6
+ta.apo(data, fast, slow)
+```
+
+#### <a id="dpo"></a>Detrended Price Oscillator
+```python
+data = [1, 2, 3, 4, 5, 6, 7, 8]
+length = 4
+ta.dpo(data, length)
+```
+
+#### <a id="mass"></a>Mass Index
+```python
+data = [[3, 1], [4, 2], [5, 3], [6, 4], [7, 5]]  # [high, low]
+length = 3
+ta.mass(data, length)
+```
+
+#### <a id="ulcer"></a>Ulcer Index
+```python
+data = [10, 9, 11, 8, 12, 7, 13]
+length = 4
+ta.ulcer(data, length)
+```
+
+#### <a id="vortex"></a>Vortex Indicator
+```python
+data = [[3, 2, 1], [4, 3, 2], [5, 4, 3], [6, 5, 4]]  # [high, close, low]
+length = 3
+ta.vortex(data, length)
+```
+
+#### <a id="kdj"></a>KDJ Indicator
+```python
+data = [[3, 2, 1], [4, 3, 2], [5, 4, 3], [6, 5, 4]]  # [high, close, low]
+length = 3
+sk = 3
+sd = 3
+ta.kdj(data, length, sk, sd)
+```
+
+#### <a id="kvo"></a>Klinger Volume Oscillator
+```python
+data = [[3, 2, 1, 100], [4, 3, 2, 120], [5, 4, 3, 80], [6, 5, 4, 60]]  # [high, close, low, volume]
+fast = 3
+slow = 5
+ta.kvo(data, fast, slow)
+```
+
+## Oscillators
+
+#### <a id="gator"></a>Alligator Oscillator
+```python
+data = [8,7,8,9,7,8,9,6,7,8,6,8,10,8,7,9,8,7,9,6,7,9]
+jawlength = 13; teethlength = 8; liplength = 5
+jawshift = 8; teethshift = 5; lipshift = 3
+ta.gator(data, jawlength, teethlength, liplength, jawshift, teethshift, lipshift)
+# output (array)
+# [upper gator, lower gator]
+```
+
+#### <a id="mom_osc"></a>Chande Momentum Oscillator
+```python
+data = [1, 1.2, 1.3, 1.3, 1.2, 1.4]
+length = 4  # default = 9
+ta.mom_osc(data, length)
+# output (array)
+# [0.0, 3.85]
+```
+
+#### <a id="chaikin_osc"></a>Chaikin Oscillator
+```python
+data = [[2,3,4,6],[5,5,5,4],[5,4,3,7],[4,3,3,4],[6,5,4,6],[7,4,3,6]]  # [high, close, low, volume]
+length1 = 2  # default = 3
+length2 = 4  # default = 10
+ta.chaikin_osc(data, length1, length2)
+# output (array)
+# [-1.667, -0.289, -0.736]
+```
+
+#### <a id="aroon-osc"></a>Aroon Oscillator
+```python
+data = [2, 5, 4, 5]
+length = 3  # default = 25
+ta.aroon_osc(data, length)
+# output (array)
+# [50.0, 50.0]
+```
+
+#### <a id="ao"></a>Awesome Oscillator
+```python
+data = [[6, 5], [8, 6], [7, 4], [6, 5], [7, 6], [9, 8]]  # [high, low]
+shortlength = 2  # default = 5
+longlength = 5   # default = 35
+ta.ao(data, shortlength, longlength)
+# output (array)
+# [0, 0.9]
+```
+
+#### <a id="ac"></a>Accelerator Oscillator
+```python
+data = [[6, 5], [8, 6], [7, 4], [6, 5], [7, 6], [9, 8]]  # [high, low]
+shortlength = 2  # default = 5
+longlength = 4   # default = 35
+ta.ac(data, shortlength, longlength)
+# output (array)
+# [-5.875, -6.125, -6.5]
+```
+
+#### <a id="fish"></a>Fisher Transform
+```python
+data = [8, 6, 8, 9, 7, 8, 9, 8, 7, 8, 6, 7]  # high + low / 2
+length = 9
+ta.fisher(data, length)
+# output (array)
+# [[-0.318, -0.11], [-0.449, -0.318], [-0.616, -0.449]]  # [fisher, trigger]
+```
+
+#### <a id="ult"></a>Ultimate Oscillator
+```python
+data = [[3, 2, 1], [4, 3, 2], [5, 4, 3], [6, 5, 4], [7, 6, 5], [8, 7, 6], [9, 8, 7]]  # [high, close, low]
+short = 2
+medium = 3
+long = 4
+ta.ult(data, short, medium, long)
+```
+
+## Bands
+
+#### <a id="bands"></a>Bollinger Bands
+```python
+data = [1, 2, 3, 4, 5, 6]
+length = 5      # default = 14
+deviations = 2  # default = 1
+ta.bands(data, length, deviations)
+# output (array)
+# [[5.828, 3, 0.172], [6.828, 4, 1.172]]
+# [upper band, middle band, lower band]
+```
+
+#### <a id="kelt"></a>Keltner Channels
+```python
+data = [[3,2,1], [2,2,1], [4,3,1], [2,2,1], [3,3,1]]  # [high, close, low]
+length = 5      # default = 14
+deviations = 1  # default = 1
+ta.keltner(data, length, deviations)
+# output (array)
+# [[3.93, 2.06, 0.20]]
+# [upper band, middle band, lower band]
+```
+
+#### <a id="don"></a>Donchian Channels
+```python
+data = [[6, 2], [5, 2], [5, 3], [6, 3], [7, 4], [6, 3]]  # [high, low]
+length = 5  # default = 20
+ta.don(data, length)
+# output (array)
+# [[7, 4.5, 2], [7, 4.5, 2]]
+# [upper band, base line, lower band]
+```
+
+#### <a id="fibbands"></a>Fibonacci Bollinger Bands
+```python
+data = [[1,59],[1.1,82],[1.21,27],[1.42,73],[1.32,42]]
+length = 4
+deviations = 3
+ta.fibbands(data, length, deviations)
+# output (array)
+# [[highest band -> fibonacci levels -> lowest band]]
+```
+
+#### <a id="env"></a>Envelope
+```python
+data = [6, 7, 8, 7, 6, 7, 8, 7, 8, 7, 8, 7, 8]
+length = 11       # default = 10
+percentage = 0.05 # default = 0.005
+ta.envelope(data, length, percentage)
+# output (array)
+# [[7.541, 7.182, 6.823], [7.636, 7.273, 6.909]]
+# [upper band, base line, lower band]
+```
+
+## Statistics
+
+#### <a id="std"></a>Standard Deviation
+```python
+data = [1, 2, 3]
+length = 3  # default = len(data)
+ta.std(data, length)
+# output (float)
+# 0.81649658092773
+```
+
+#### <a id="std_series"></a>Standard Deviation Series
+```python
+data = [1, 2, 3, 4, 5, 6]
+length = 3
+ta.std_series(data, length)
+```
+
+#### <a id="lr_slope"></a>Linear Regression Slope
+```python
+data = [1, 2, 3, 4, 5, 6]
+length = 4
+ta.lr_slope(data, length)
+```
+
+#### <a id="lr_intercept"></a>Linear Regression Intercept
+```python
+data = [1, 2, 3, 4, 5, 6]
+length = 4
+ta.lr_intercept(data, length)
+```
+
+#### <a id="lr_angle"></a>Linear Regression Angle
+```python
+data = [1, 2, 3, 4, 5, 6]
+length = 4
+ta.lr_angle(data, length)
+```
+
+#### <a id="tsf"></a>Time Series Forecast
+```python
+data = [1, 2, 3, 4, 5, 6]
+length = 4
+ta.tsf(data, length)
+```
+
+#### <a id="variance"></a>Variance
+```python
+data = [6, 7, 2, 3, 5, 8, 6, 2]
+length = 7  # default = len(data)
+ta.variance(data, length)
+# output (array)
+# [3.918, 5.061]
+```
+
+#### <a id="ncdf"></a>Normal CDF
+```python
+sample = 13; mean = 10; stdv = 2
+ta.ncdf(sample, mean, stdv)
+# output (float)
+# 0.9331737996110652
+```
+```python
+zscore = 1.5
+ta.ncdf(zscore)
+# output (float)
+# 0.9331737996110652
+```
+
+#### <a id="normsinv"></a>Inverse Normal Distribution
+```python
+data = 0.4732
+ta.normsinv(data)
+# output (float)
+# -0.06722824471054376
+```
+
+#### <a id="sim"></a>Monte Carlo Simulation
+```python
+data = [6, 4, 7, 8, 5, 6]
+length = 2        # default = 50
+simulations = 100 # default = 1000
+percentile = 0.5  # default = -1 (returns all raw simulations)
+ta.sim(data, length, simulations, percentile)
+# output (array)
+# [6, 4, 7, 8, 5, 6, 5.96, 5.7]
+```
+
+#### <a id="multi-sim"></a>Multi-process Monte Carlo
+```python
+# Parallelised version of ta.sim using stdlib multiprocessing.
+# Typical 2-3x speed-up on 8-core hardware for sims >= ~1000.
+data = [6, 4, 7, 8, 5, 6]
+ta.multi.sim(data, l=2, sims=1000, perc=0.5)
+```
+
+#### <a id="perc"></a>Percentile
+```python
+data = [[6,4,7], [5,3,6], [7,5,8]]
+percentile = 0.5
+ta.percentile(data, percentile)
+# output (array)
+# [6, 4, 7]
+```
+
+#### <a id="cor"></a>Correlation
+```python
+data1 = [1, 2, 3, 4, 5, 2]
+data2 = [1, 3, 2, 4, 6, 3]
+ta.cor(data1, data2)
+# output (float)
+# 0.8808929232684737
+```
+
+#### <a id="cov"></a>Covariance
+```python
+data1 = [12, 13, 25, 39]
+data2 = [67, 45, 32, 21]
+length = 4
+ta.covariance(data1, data2, length)
+# output (array)
+# [-165.8125]
+```
+
+#### <a id="dif"></a>Percentage Difference
+```python
+newval = 0.75
+oldval = 0.5
+ta.dif(newval, oldval)
+# output (float)
+# 0.5
+```
+
+#### <a id="er"></a>Expected Return
+```python
+data = [0.02, -0.01, 0.03, 0.05, -0.03]
+ta.er(data)
+# output (float)
+# 0.0119
+```
+
+#### <a id="ar"></a>Abnormal Return
+```python
+data = [0.02, -0.01, 0.03, 0.05, -0.03]
+length = 3
+ta.ar(data, length)
+# output (array)
+# [0.037, -0.053]
+```
+
+#### <a id="kelly"></a>Kelly Criterion
+```python
+data = [0.01, 0.02, -0.01, -0.03, -0.015, 0.045, 0.005]
+ta.kelly(data)
+# output (float)
+# 0.1443
+```
+
+#### <a id="perm"></a>Permutations
+```python
+data = [10, 10, 10]
+ta.permutations(data)
+# output (int)
+# 1000
+```
+
+#### <a id="winratio"></a>Winratio
+```python
+data = [0.01, 0.02, -0.01, -0.03, -0.015, 0.005]
+ta.winratio(data)
+# output (float)
+# 0.5
+```
+
+#### <a id="avgwin"></a>Average Win
+```python
+data = [0.01, 0.02, -0.01, -0.03, -0.015, 0.005]
+ta.avgwin(data)
+# output (float)
+# 0.012
+```
+
+#### <a id="avgloss"></a>Average Loss
+```python
+data = [0.01, 0.02, -0.01, -0.03, -0.015, 0.005]
+ta.avgloss(data)
+# output (float)
+# -0.018
+```
+
+#### <a id="drawdown"></a>Drawdown
+```python
+data = [1, 2, 3, 4, 2, 3]
+ta.drawdown(data)
+# output (float)
+# -0.5
+```
+
+#### <a id="median"></a>Median
+```python
+data = [4, 6, 3, 1, 2, 5]
+length = 4  # default = len(data)
+ta.median(data, length)
+# output (array)
+# [3, 2, 2]
+```
+
+#### <a id="rh"></a>Recent High
+```python
+data = [4,5,6,7,8,9,8,7,8,9,10,3,2,1]
+lookback = 3  # No higher value after `lookback` periods? resets after each new high
+ta.recent_high(data, lookback)
+# output (dict)
+# {'index': 10, 'value': 10}
+```
+
+#### <a id="rl"></a>Recent Low
+```python
+data = [1,4,5,6,4,3,2,3,4,3,5,7,8,8,5]
+lookback = 4
+ta.recent_low(data, lookback)
+# output (dict)
+# {'index': 6, 'value': 2}
+```
+
+#### <a id="mad"></a>Median Absolute Deviation
+```python
+data = [3, 7, 5, 4, 3, 8, 9]
+length = 6  # default = len(data)
+ta.mad(data, length)
+# output (array)
+# [1, 2]
+```
+
+#### <a id="aad"></a>Average Absolute Deviation
+```python
+data = [4, 6, 8, 6, 8, 9, 10, 11]
+length = 7  # default = len(data)
+ta.aad(data, length)
+# output (array)
+# [1.673, 1.469]
+```
+
+#### <a id="stderr"></a>Standard Error
+```python
+data = [34, 54, 45, 43, 57, 38, 49]
+size = 10  # default = len(data)
+ta.se(data, size)
+# output (float)
+# 2.424
+```
+
+#### <a id="ssd"></a>Sum Squared Differences
+```python
+data = [7, 6, 5, 7, 9, 8, 3, 5, 4]
+length = 7  # default = len(data)
+ta.ssd(data, length)
+# output (array)
+# [4.87, 4.986, 5.372]
+```
+
+#### <a id="log"></a>Logarithm
+```python
+data = [5, 14, 18, 28, 68, 103]
+ta.log(data)
+# output (array)
+# [1.61, 2.64, 2.89, 3.33, 4.22, 4.63]
+```
+
+#### <a id="exp"></a>Exponent
+```python
+data = [1.6, 2.63, 2.89, 3.33, 4.22, 4.63]
+ta.exp(data)
+# output (array)
+# [4.95, 13.87, 17.99, 27.94, 68.03, 102.51]
+```
+
+#### <a id="norm"></a>Normalize
+```python
+data = [5, 4, 9, 4]
+margin = 0.1  # default = 0
+ta.normalize(data, margin)
+# output (array)
+# [0.22, 0.06, 0.86, 0.06]
+```
+
+#### <a id="dnorm"></a>Denormalize
+```python
+data = [5, 4, 9, 4]                       # original data || [highest, lowest]
+norm = [0.22, 0.06, 0.86, 0.06, 0.44]     # normalized data
+margin = 0.1
+ta.denormalize(data, norm, margin)
+# output (array)
+# [5, 4, 9, 4, 6.4]
+```
+
+#### <a id="normp"></a>Normalize Pair
+```python
+pair1 = [10, 12, 11, 13]
+pair2 = [100, 130, 100, 140]
+ta.normalize_pair(pair1, pair2)
+# output (array)
+# [[55, 55], [66, 71.5], [60.5, 54.99], [71.5, 76.99]]
+```
+
+#### <a id="normf"></a>Normalize From
+```python
+data = [8, 12, 10, 11]
+baseline = 100
+ta.normalize_from(data, baseline)
+# output (array)
+# [100, 150, 125, 137.5]
+```
+
+#### <a id="standard"></a>Standardize
+```python
+data = [6, 4, 6, 8, 6]
+ta.standardize(data)
+# output (array)
+# [0, -1.581, 0, 1.581, 0]
+```
+
+#### <a id="zscore"></a>Z-Score
+```python
+data = [34, 54, 45, 43, 57, 38, 49]
+length = 5
+ta.zscore(data, length)
+# output (array)
+# [1.266, -1.331, 0.408]
+```
+
+#### <a id="kmeans"></a>K-means Clustering
+```python
+data = [2, 3, 4, 5, 3, 5, 7, 8, 6, 8, 6, 4, 2, 6]
+length = 4
+ta.kmeans(data, length)
+# output (array)
+# [[4, 5, 5, 4], [7, 6, 6, 6], [8, 8], [2, 3, 3, 2]]
+```
+
+#### <a id="mse"></a>Mean Squared Error
+```python
+data1 = [7, 8, 7, 8, 6, 9]
+data2 = [6, 8, 8, 9, 6, 8]
+ta.mse(data1, data2)
+# output (float)
+# 0.6666666666666666
+```
+
+#### <a id="cum"></a>Cumulative
+```python
+data = [3, 5, 7, 5, 10]
+length = 4
+ta.cum(data, length)
+# output (array)
+# [20, 27]
+```
+
+#### <a id="sum"></a>Sum
+```python
+data = [1, 2, 3, 4, 5]
+ta.sum(data)
+# output (number)
+# 15
+```
+
+#### <a id="return_positive"></a>Return Positive
+```python
+data = [0.02, 0.01, -0.03, -0.01, 0.005]
+ta.return_positive(data)
+# output (array)
+# [0.02, 0.01, 0.005]
+```
+
+#### <a id="return_negative"></a>Return Negative
+```python
+data = [0.02, 0.01, -0.03, -0.01, 0.005]
+ta.return_negative(data)
+# output (array)
+# [-0.03, -0.01]
+```
+
+#### <a id="pvalue"></a>P-Value
+```python
+# Linear interpolation of a t-statistic across a built-in t-table (df 1..25).
+t = 2
+df = 4
+ta.pvalue(t, df)
+# output (float)
+# 0.061018363939899845
+```
+
+#### <a id="martingale"></a>Martingale
+```python
+data = [-1, -1, 1, 1, -1, -1]  # sequence of trade outcomes (sign matters)
+bet = 5
+maximum = None  # optional cap; default = None (no cap)
+multiplier = 2  # default = 2
+ta.martingale(data, bet, maximum, multiplier)
+# output (number)
+# 20
+```
+
+#### <a id="antimartingale"></a>Anti-Martingale
+```python
+data = [1, 1, -1, -1, 1, 1]
+bet = 5
+maximum = None
+multiplier = 2
+ta.antimartingale(data, bet, maximum, multiplier)
+# output (number)
+# 20
+```
+
+#### <a id="expected_trails"></a>Expected Trails
+```python
+n = 100
+ta.expected_trails(n)
+# output (int)
+# 519  (= ceil(n * H_n) where H_n is the n-th harmonic number)
+```
+
+## Chart Types
+
+#### <a id="ha"></a>Heikin Ashi
+```python
+data = [[3, 4, 2, 3], [3, 6, 3, 5], [5, 5, 2, 3]]  # [open, high, low, close]
+ta.ha(data)
+# output (array)
+# [open, high, low, close]
+# first 7-10 candles are unreliable
+```
+
+#### <a id="ren"></a>Renko
+```python
+data = [[8, 6], [9, 7], [9, 8]]  # [high, low]
+bricksize = 3
+ta.ren(data, bricksize)
+# output (array)
+# [open, high, low, close]
+```
+
+## Miscellaneous
+
+#### <a id="fibnumbers"></a>Fibonacci Sequence
+```python
+ta.fibnumbers[:7]
+# output (list)
+# [0, 1, 1, 2, 3, 5, 8]
+```
+
+#### <a id="times_up"></a>Times Up
+```python
+data = [5, 6, 7, 8, 7, 6, 5]
+length = 3
+ta.times_up(data, length)
+# output (array)
+# [1, 0, 0, 0]
+```
+
+#### <a id="times_dn"></a>Times Down
+```python
+data = [5, 6, 7, 8, 7, 6, 5]
+length = 3
+ta.times_down(data, length)
+# output (array)
+# [0, 0, 0, 1]
+```
+
+## Random
+
+#### <a id="prng"></a>Seeded Pseudo-Random Number Generator
+```python
+# Deterministic, reproducible across languages (matches ta.js).
+# Returns a callable that yields floats in [0, 1).
+rand = ta.prng('seed')
+rand()  # -> 0.4674...
+rand()  # -> 0.0934...
+# Same seed always produces the same sequence.
+
+# Also exposed under ta.random.* for ta.js parity:
+ta.random.prng('seed')
+ta.random.pick([1, 2, 3, 4, 5], rand)
+```
+
+> Python's stdlib already provides `random.random`, `random.choice`, `random.sample`, and `random.randint` — the JS-side helpers (`float`, `range`, `order`) are intentionally not ported.
+
+## Experimental Functions
+
+#### <a id="sup"></a>Support Line
+```python
+data = [4, 3, 2, 5, 7, 6, 5, 4, 7, 8, 5, 4, 6, 7, 5]
+start = {"index": 2, "value": 2}  # default = recent_low(data, 25)
+support = ta.support(data, start)
+# output (dict)
+# ['calculate'] = function(x)  -- line at position x from start['index']
+# ['slope']     = delta y per x
+# ['lowest']    = lowest (start) value at x = 0
+# ['index']     = (start) index of lowest value
+current = support['calculate'](len(data) - support['index'])
+```
+
+#### <a id="res"></a>Resistance Line
+```python
+data = [5, 7, 5, 5, 4, 6, 5, 4, 6, 5, 4, 3, 2, 4, 3, 2, 1]
+start = {"index": 1, "value": 7}  # default = recent_high(data, 25)
+resistance = ta.resistance(data, start)
+# output (dict, same shape as ta.support)
+current = resistance['calculate'](len(data) - resistance['index'])
+```
+
+#### <a id="divergence_state"></a>Divergence State
+```python
+data1 = [48,34,43,54,56,64,43,51,52,53,55,51,48,45,40,42,44,45]
+data2 = [76,74,43,55,34,32,45,47,48,53,54,54,50,52,49,47,48,46]
+length = 12
+lookback = 3
+# optional: smoother=1, threshold_ex=0.03, threshold_nm=0.01
+ta.divergence_state(data1, data2, length, lookback)
+# output (array of arrays of strings) — possible labels per bar:
+#   'convergence', 'divergence',
+#   'exaggerated_bullish' / 'exaggerated_bearish',
+#   'hidden_bullish'      / 'hidden_bearish',
+#   'regular_bullish'     / 'regular_bearish'
+```

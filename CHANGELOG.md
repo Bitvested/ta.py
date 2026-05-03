@@ -26,13 +26,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added (Phase 4 pulled forward)
 
-- `bench/` cross-library benchmark sub-project with own `pyproject.toml`.
-  - `bench/harness.py`: stdlib `time.perf_counter_ns` harness with adaptive batch sizing.
+- `bench/` internal regression-tracking harness (separate sub-project with its own `pyproject.toml`).
+  - `bench/harness.py`: stdlib `time.perf_counter_ns` timer with adaptive batch sizing.
   - `bench/run.py`: CLI with `--sizes`, `--only`, `--reference`, `--md`, `--json`, `--quick` flags.
   - `bench/cases.py`: 17 case definitions covering Phase 2 perf-rewrite targets plus EMA + MACD.
-  - `bench/adapters/`: ta_py + stdlib baseline + optional TA-Lib, pandas-ta, finta wrappers.
+  - `bench/adapters/`: ta_py adapter + naïve stdlib baseline + optional TA-Lib / pandas-ta / finta wrappers (used as cross-checks during development; not a marketing comparison — C-backed and numpy-backed libraries are expected to outpace any pure-Python implementation).
   - Optional installs: `pip install -e .[talib]`, `[pandas-ta]`, `[finta]`, or `[all]`.
-  - `bench/SAMPLE_BENCHMARKS.md`: committed sample output (ta_py + stdlib only; competitors optional).
 
 ### Changed
 - `ta_py/ta.py` (1,309-line monolith) split into category modules: `moving_averages.py`, `statistics.py`, `indicators.py`, `oscillators.py`, `bands.py`, `chart_types.py`, `misc.py`, `experimental.py`, `random_.py`. All public symbols remain importable as `from ta_py import <name>`.

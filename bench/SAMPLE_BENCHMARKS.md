@@ -1,41 +1,25 @@
-# Benchmarks
+# Sample benchmark output
 
-Reference library: `ta_py`. Δ column shows max absolute delta vs reference.
-Lower median is faster. `(skip)` = adapter not available or unsupported.
+This file used to commit a snapshot of one specific benchmark run. It was
+removed because:
 
-| Case | Size | ta_py | stdlib | talib | pandas_ta | finta |
-|------|------|------|------|------|------|------|
-| sma | 1000 | 58.01µs | 130.33µs Δ=3.7e-13 | (skip) | (skip) | (skip) |
-| sma | 10000 | 580.56µs | 1.33ms Δ=6.4e-13 | (skip) | (skip) | (skip) |
-| smma | 1000 | 71.36µs | (skip) | (skip) | (skip) | (skip) |
-| smma | 10000 | 723.19µs | (skip) | (skip) | (skip) | (skip) |
-| wma | 1000 | 79.05µs | (skip) | (skip) | (skip) | (skip) |
-| wma | 10000 | 799.48µs | (skip) | (skip) | (skip) | (skip) |
-| vwma | 1000 | 117.72µs | (skip) | (skip) | (skip) | (skip) |
-| vwma | 10000 | 1.20ms | (skip) | (skip) | (skip) | (skip) |
-| ema | 1000 | 142.92µs | (skip) | (skip) | (skip) | (skip) |
-| ema | 10000 | 1.48ms | (skip) | (skip) | (skip) | (skip) |
-| variance | 1000 | 118.22µs | (skip) | (skip) | (skip) | (skip) |
-| variance | 10000 | 1.20ms | (skip) | (skip) | (skip) | (skip) |
-| std | 1000 | 118.90µs | 1.08µs | (skip) | (skip) | (skip) |
-| std | 10000 | 1.21ms | 1.10µs | (skip) | (skip) | (skip) |
-| bands | 1000 | 236.95µs | 1.14ms Δ=1.4e-10 | (skip) | (skip) | (skip) |
-| bands | 10000 | 2.54ms | 12.56ms Δ=7.1e-10 | (skip) | (skip) | (skip) |
-| bandwidth | 1000 | 278.67µs | (skip) | (skip) | (skip) | (skip) |
-| bandwidth | 10000 | 3.11ms | (skip) | (skip) | (skip) | (skip) |
-| keltner | 1000 | 438.35µs | (skip) | (skip) | (skip) | (skip) |
-| keltner | 10000 | 4.74ms | (skip) | (skip) | (skip) | (skip) |
-| don | 1000 | 352.14µs | (skip) | (skip) | (skip) | (skip) |
-| don | 10000 | 3.51ms | (skip) | (skip) | (skip) | (skip) |
-| pr | 1000 | 308.50µs | (skip) | (skip) | (skip) | (skip) |
-| pr | 10000 | 3.08ms | (skip) | (skip) | (skip) | (skip) |
-| stoch | 1000 | 504.39µs | (skip) | (skip) | (skip) | (skip) |
-| stoch | 10000 | 5.17ms | (skip) | (skip) | (skip) | (skip) |
-| rsi | 1000 | 190.72µs | (skip) | (skip) | (skip) | (skip) |
-| rsi | 10000 | 2.00ms | (skip) | (skip) | (skip) | (skip) |
-| mfi | 1000 | 136.72µs | (skip) | (skip) | (skip) | (skip) |
-| mfi | 10000 | 1.36ms | (skip) | (skip) | (skip) | (skip) |
-| atr | 1000 | 200.30µs | (skip) | (skip) | (skip) | (skip) |
-| atr | 10000 | 2.03ms | (skip) | (skip) | (skip) | (skip) |
-| macd | 1000 | 334.79µs | (skip) | (skip) | (skip) | (skip) |
-| macd | 10000 | 3.39ms | (skip) | (skip) | (skip) | (skip) |
+1. **Hardware-specific.** Absolute numbers don't generalise across machines;
+   only ratios within a single run on a single CPU mean anything.
+2. **Configuration-specific.** Without all four optional adapters installed
+   (`pip install -e .[all]`), most cells became `(skip)` and the file looked
+   like a comparison table when it wasn't.
+3. **Wrong framing.** ta.py is pure-Python by design; comparing absolute
+   throughput against C-backed (TA-Lib) or NumPy-backed (pandas-ta, finta)
+   libraries always loses, and that loss is exactly the trade-off the library
+   asks you to make in exchange for zero install pain, zero native deps, and
+   full Python-version portability. See the project README for the full pitch.
+
+To produce numbers for **your** machine and **your** Python version:
+
+```bash
+cd bench
+pip install -e .[all]
+python run.py --sizes 1000,10000,100000 --md --out results/
+```
+
+Output goes to `results/BENCHMARKS.md`, which is git-ignored.

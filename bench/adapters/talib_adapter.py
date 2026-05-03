@@ -34,8 +34,9 @@ if AVAILABLE:
     def don(data, length):       return None
     def pr(data, length):        return None
     def mfi(data, length):
-        # TA-Lib MFI takes h, l, c, v; our data shape is [pos, neg] — incompatible. Skip.
-        return None
+        a = np.asarray(data, dtype=np.float64)
+        h, lo, c, v = a[:, 0], a[:, 1], a[:, 2], a[:, 3]
+        return lambda: talib.MFI(h, lo, c, v, timeperiod=length)
 else:
     def __getattr__(name):
         return lambda *_a, **_kw: None
