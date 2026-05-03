@@ -1,20 +1,35 @@
 # Migration Guide: ta.py 1.17.0 → 2.0.0
 
-> This document is a working draft maintained across the v2.0 development cycle.
-> The final canonical migration list ships with the 2.0.0 release.
-
 ## TL;DR
 
-- **No public API breakage in Phase 1 of v2.0 development.** Every `from ta_py import <name>` from 1.17.0 still works, returns the same values, and accepts the same arguments.
-- The internal file structure changed: `ta_py/ta.py` is now split into category modules. If you imported privately via `from ta_py.ta import <name>`, that still works in 1.x for one cycle but will emit a `DeprecationWarning` in a future release and be removed for 2.0.0 final.
+- **39 new public names** added to `ta_py.__all__` (was 112, now 151) — full functional parity with ta.js 2.0.
+- **0 public APIs removed.**
+- **6 behavioural breaks** — `atr`, `smma`, `mfi`, `rsi`, `wrsi` (now an alias of `rsi`), `stoch`. Each is documented below with a before/after example.
+- **2 new namespaces** — `ta_py.random` and `ta_py.aroon` — alongside the existing flat exports.
+- **Internal restructure** — the monolithic `ta_py/ta.py` was split into category modules in Phase 1. The shim that allowed `from ta_py.ta import <name>` is **removed in 2.0.0**.
 
-## Breaking changes scheduled for 2.0.0 (from later phases)
+If you only used `from ta_py import <name>` and didn't depend on the exact output values of `atr` / `smma` / `mfi` / `rsi` / `stoch`, your code keeps working.
 
-The following will be implemented and documented in subsequent phases of the v2.0 overhaul. **None of these have landed yet.**
+## Public surface diff (auto-generated)
 
-### Signature & output-shape normalizations (Phase 3 — match ta.js 2.0)
+Captured by `scripts/snapshot_signatures.py`; baseline `tests/signatures_v1.json` (112 entries), post-Phase-3 `tests/signatures_v2.json` (151 entries). No signatures changed; all changes are additive at the signature level.
 
-The following landed in Phase 3 pre-flight to match ta.js 2.0 algorithms exactly:
+**Added (39 names):**
+
+- *Moving averages (Batch A, 6):* `dema`, `tema`, `trima`, `t3`, `zlema`, `vidya`
+- *Indicators (Batches B + C + D + E + F, 25):* `adl`, `nvi`, `pvi`, `emv`, `dpo`, `ulcer`, `pdm`, `mdm`, `pdi`, `mdi`, `dx`, `adx`, `adxr`, `natr`, `trix`, `ppo`, `apo`, `mass`, `cci`, `stoch_rsi`, `kdj`, `cmf`, `vortex`
+- *Oscillators (Batches F + G, 2):* `kvo`, `ult`
+- *Statistics (Batch H, 5):* `lr_slope`, `lr_intercept`, `lr_angle`, `tsf`, `std_series`
+- *Constants (Batch B, 1):* `fibnumbers`
+- *Namespaces (Batches I + J, 2):* `random` (`prng` / `pick` / `range` / `float` / `order`), `aroon` (`up` / `down` / `osc`)
+
+**Removed:** none.
+
+**Signatures changed:** none.
+
+## Behavioural breaks (algorithm or output-shape changes)
+
+All six landed in Phase 3 to match ta.js 2.0 algorithms exactly. Each has a regenerated test fixture against ta.js 2.0 reference values.
 
 #### `atr(data, length=14)` — output shape and true-range fix
 
@@ -96,22 +111,34 @@ ta_py.stoch([[3,2,1],[2,2,1],[4,3,1],[2,2,1]], 2, 1, 1)
 # → [[50, 50], [66.667, 66.667], [33.333, 33.333]]   # 3 rows
 ```
 
-### Aroon namespace (Phase 3)
+## New namespaces (additive — no break)
 
-`aroon_up` / `aroon_down` / `aroon_osc` (still importable for one cycle) become the canonical `aroon.up` / `aroon.down` / `aroon.osc` namespace, mirroring ta.js. Both forms work during the deprecation window.
+### `ta_py.random`
 
-### Removed (Phase 5)
-
-- `from ta_py.ta import <name>` shim — to be removed at 2.0.0 release. Use `from ta_py import <name>` instead.
-
-## What you can do today
-
-If you want to future-proof your imports against 2.0.0:
+Five seeded random helpers grouped under one namespace, mirroring ta.js 2.0's `random` module:
 
 ```python
-# Preferred (works in 1.17.0 and 2.0.0)
-from ta_py import sma, ema, rsi, macd
-
-# Avoid (works in 1.17.0; removed in 2.0.0)
-from ta_py.ta import sma, ema, rsi, macd
+from ta_py import random
+r = random.prng("seed")           # deterministic [0, 1) generator
+random.pick([1, 2, 3], r)         # random element
+random.range(0, 10, r)            # random int in [ceil(min), floor(max))
+random.float(1.5, 2.5, r)         # random float in [min, max)
+random.order([1, 2, 3, 4, 5], r)  # shuffled list via repeated picks
 ```
+
+`prng` remains flat-exported as `ta_py.prng` (unchanged from 1.x). The other four are *not* flat-exported because `range` / `float` / `pick` / `order` would shadow Python builtins under `from ta_py import *`.
+
+### `ta_py.aroon`
+
+```python
+from ta_py import aroon
+aroon.up(data, length)
+aroon.down(data, length)
+aroon.osc(data, length)
+```
+
+Flat `aroon_up` / `aroon_down` / `aroon_osc` continue to work in 2.x as silent aliases (no `DeprecationWarning`).
+
+## Removed in 2.0.0
+
+- `ta_py/ta.py` shim. `from ta_py.ta import <name>` no longer works. Use `from ta_py import <name>` instead — the canonical import has been the same since 1.x.
