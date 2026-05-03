@@ -7,6 +7,7 @@ from tests.helpers import assert_close
 CASES = [
     "sma", "smma", "wma", "wsma", "pwma", "hwma", "ema",
     "vwma", "vwwma", "hull", "kama", "cwma", "lsma",
+    "dema", "tema", "trima", "t3", "zlema", "vidya",
 ]
 
 

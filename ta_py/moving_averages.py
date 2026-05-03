@@ -1,4 +1,5 @@
 """Moving averages and smoothers."""
+from ._registry import registry
 
 
 def sma(data: list[float], l: int = 14) -> list[float]:
@@ -208,6 +209,124 @@ def cwma(data: list[float], weights: list[float]) -> list[float]:
             s += float(data[base + q]) * float(weights[q])
         out.append(s / weight_sum)
     return out
+
+def dema(data: list[float], length: int = 30) -> list[float]:
+    """Double Exponential Moving Average.
+
+    Streaming dual-EMA: ``2*EMA1 − EMA2`` where ``EMA2`` is seeded from the
+    average of the first ``length`` ``EMA1`` values. Output length is
+    ``n − 2*length + 2``.
+    """
+    n = len(data)
+    if n < 2 * length - 1:
+        return []
+    alpha = 2.0 / (length + 1.0)
+    s = 0.0
+    for i in range(length):
+        s += float(data[i])
+    e1 = s / length
+    sum_e1 = e1
+    for i in range(length, 2 * length - 1):
+        e1 = (float(data[i]) - e1) * alpha + e1
+        sum_e1 += e1
+    e2 = sum_e1 / length
+    out = [2.0 * e1 - e2]
+    for i in range(2 * length - 1, n):
+        e1 = (float(data[i]) - e1) * alpha + e1
+        e2 = (e1 - e2) * alpha + e2
+        out.append(2.0 * e1 - e2)
+    return out
+
+
+def tema(data: list[float], length: int = 30) -> list[float]:
+    """Triple Exponential Moving Average (``3*EMA1 − 3*EMA2 + EMA3``)."""
+    e1 = ema(data, length)
+    if len(e1) < length:
+        return []
+    e2 = ema(e1, length)
+    if len(e2) < length:
+        return []
+    e3 = ema(e2, length)
+    off1 = len(e1) - len(e3)
+    off2 = len(e2) - len(e3)
+    return [3.0 * e1[i + off1] - 3.0 * e2[i + off2] + e3[i] for i in range(len(e3))]
+
+
+def trima(data: list[float], length: int = 30) -> list[float]:
+    """Triangular Moving Average (SMA of SMA)."""
+    if length % 2 == 0:
+        n_inner = length // 2 + 1
+        n_outer = length // 2
+    else:
+        n_inner = n_outer = (length + 1) // 2
+    return sma(sma(data, n_inner), n_outer)
+
+
+def t3(data: list[float], length: int = 5, vfactor: float = 0.7) -> list[float]:
+    """T3 Moving Average (Tillson). Six chained EMAs with polynomial blend."""
+    e1 = ema(data, length)
+    if len(e1) < length:
+        return []
+    e2 = ema(e1, length)
+    if len(e2) < length:
+        return []
+    e3 = ema(e2, length)
+    if len(e3) < length:
+        return []
+    e4 = ema(e3, length)
+    if len(e4) < length:
+        return []
+    e5 = ema(e4, length)
+    if len(e5) < length:
+        return []
+    e6 = ema(e5, length)
+    v2 = vfactor * vfactor
+    v3 = v2 * vfactor
+    c1 = -v3
+    c2 = 3.0 * v2 + 3.0 * v3
+    c3 = -6.0 * v2 - 3.0 * vfactor - 3.0 * v3
+    c4 = 1.0 + 3.0 * vfactor + v3 + 3.0 * v2
+    o3 = len(e3) - len(e6)
+    o4 = len(e4) - len(e6)
+    o5 = len(e5) - len(e6)
+    return [
+        c1 * e6[i] + c2 * e5[i + o5] + c3 * e4[i + o4] + c4 * e3[i + o3]
+        for i in range(len(e6))
+    ]
+
+
+def zlema(data: list[float], length: int = 14) -> list[float]:
+    """Zero-Lag Exponential Moving Average. Output length matches input."""
+    n = len(data)
+    if n == 0:
+        return []
+    lag = (length - 1) // 2
+    alpha = 2.0 / (length + 1.0)
+    prev = float(data[0])
+    out = [prev]
+    for i in range(1, n):
+        adj = 2.0 * float(data[i]) - float(data[i - lag]) if i >= lag else float(data[i])
+        prev = alpha * adj + (1.0 - alpha) * prev
+        out.append(prev)
+    return out
+
+
+def vidya(data: list[float], short_length: int = 2, long_length: int = 5, alpha: float = 0.2) -> list[float]:
+    """Variable Index Dynamic Average (volatility-adaptive EMA)."""
+    n = len(data)
+    if n < long_length:
+        return []
+    _std = registry["std"]
+    prev = float(data[long_length - 2])
+    out = [prev]
+    for i in range(long_length - 1, n):
+        s_short = _std(data[i - short_length + 1:i + 1], short_length)
+        s_long = _std(data[i - long_length + 1:i + 1], long_length)
+        k = 0.0 if s_long == 0 else s_short / s_long
+        prev = alpha * k * float(data[i]) + (1.0 - alpha * k) * prev
+        out.append(prev)
+    return out
+
 
 def lsma(data: list[float], l1: int = 25) -> list[float]:
     """Least Squares (linear regression) Moving Average."""

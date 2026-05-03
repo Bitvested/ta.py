@@ -3,6 +3,7 @@
 from .moving_averages import (
     sma, smma, wma, wsma, pwma, hwma, ema,
     vwma, vwwma, hull, kama, cwma, lsma,
+    dema, tema, trima, t3, zlema, vidya,
 )
 from .statistics import (
     median, kmeans, normalize, denormalize, standardize, mad, aad, ssd,
@@ -30,6 +31,7 @@ __all__ = [
     # moving_averages
     "sma", "smma", "wma", "wsma", "pwma", "hwma", "ema",
     "vwma", "vwwma", "hull", "kama", "cwma", "lsma",
+    "dema", "tema", "trima", "t3", "zlema", "vidya",
     # statistics
     "median", "kmeans", "normalize", "denormalize", "standardize", "mad", "aad", "ssd",
     "er", "variance", "std", "normsinv", "sim", "percentile", "cor", "dif", "drawdown",
