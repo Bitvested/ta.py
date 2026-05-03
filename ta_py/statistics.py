@@ -447,6 +447,44 @@ def recent_low(data: list[float], lb: int = 25) -> dict:
         if xback <= 0: break;
     return {"index": lindex, "value": lowest};
 
+def _lr_windows(data: list[float], length: int) -> list[list[float]]:
+    """Internal helper: rolling least-squares ``[[slope, intercept], ...]`` over
+    windows of size ``length``. ``x`` is ``0..length-1`` per window (TA-Lib /
+    tulind convention). Output length is ``n - length + 1`` (matches sma).
+    """
+    n = len(data)
+    if n < length:
+        return []
+    sum_x = (length - 1) * length / 2.0
+    sum_x2 = (length - 1) * length * (2 * length - 1) / 6.0
+    denom = length * sum_x2 - sum_x * sum_x
+    sum_y = 0.0
+    sum_xy = 0.0
+    for q in range(length):
+        y = float(data[q])
+        sum_y += y
+        sum_xy += y * q
+    out: list[list[float]] = [[0.0, 0.0]] * (n - length + 1)
+    def _pair(sy: float, sxy: float) -> list[float]:
+        m = float("nan") if denom == 0 else (length * sxy - sum_x * sy) / denom
+        b = (sy - m * sum_x) / length
+        return [m, b]
+    out[0] = _pair(sum_y, sum_xy)
+    for i in range(length, n):
+        incoming = float(data[i])
+        outgoing = float(data[i - length])
+        sum_y += incoming - outgoing
+        sum_xy += length * incoming - sum_y
+        out[i - length + 1] = _pair(sum_y, sum_xy)
+    return out
+
+
+def lr_slope(data: list[float], length: int = 14) -> list[float]:
+    """Linear regression slope over rolling windows of ``length`` bars."""
+    w = _lr_windows(data, length)
+    return [pair[0] for pair in w]
+
+
 # --- sum MUST be last: it shadows the builtin sum() for all code defined above ---
 def sum(data: list[float]) -> float:
     """Compute the running total of all elements in data."""
