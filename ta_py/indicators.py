@@ -24,6 +24,7 @@ def rsi(data: list[float], l: int = 14) -> list[float]:
             pl = pl[1:];
     return rs;
 def wrsi(data: list[float], l: int = 14) -> list[float]:
+    """Wilder's RSI (smoothed via WSMA)."""
     arrsi = []; u = []; d = [];
     for i in range(1,len(data)):
         if(data[i]-data[i-1]<0):
@@ -41,6 +42,7 @@ def wrsi(data: list[float], l: int = 14) -> list[float]:
         arrsi.append(f);
     return arrsi;
 def tsi(data: list[float], long: int = 25, short: int = 13, sig: int = 13) -> list[list[float]]:
+    """True Strength Index."""
     mo = []; ab = []; ts = []; tsi = [];
     for i in range(1, len(data)):
         mo.append(data[i] - data[i - 1]);
@@ -55,6 +57,7 @@ def tsi(data: list[float], long: int = 25, short: int = 13, sig: int = 13) -> li
         tsi.append([tma[i], ts[i]]);
     return tsi;
 def macd(data: list[float], l1: int = 12, l2: int = 26) -> list[float]:
+    """Moving Average Convergence Divergence (MACD line)."""
     if l1 > l2: [l1, l2] = [l2, l1];
     em1 = registry["ema"](data[:], l1); em2 = registry["ema"](data[:], l2);
     em1 = em1[-(len(em2) - len(em1)):]; emf = [];
@@ -62,19 +65,23 @@ def macd(data: list[float], l1: int = 12, l2: int = 26) -> list[float]:
         emf.append(em1[i] - em2[i]);
     return emf;
 def macd_signal(data: list[float], l1: int = 12, l2: int = 26, l3: int = 9) -> list[float]:
+    """MACD signal line (EMA of MACD)."""
     return registry["ema"](macd(data, l1, l2), l3);
 def macd_bars(data: list[float], l1: int = 12, l2: int = 26, l3: int = 9) -> list[float]:
+    """MACD histogram bars (MACD minus signal)."""
     ma = macd(data, l1, l2); mas = registry["ema"](ma, l3); ret = [];
     ma = ma[len(ma)-len(mas):];
     for i in range(len(ma)): ret.append(ma[i] - mas[i]);
     return ret;
 def atr(data: list[list[float]], l1: int = 14) -> list[float]:
+    """Average True Range."""
     atr = [float(data[0][0]) - float(data[0][2])];
     for i in range(1, len(data)):
         t0 = max((float(data[i][0]) - float(data[i - 1][1])), (float(data[i][2]) - float(data[i - 1][1])), (float(data[i][0]) - float(data[i][2])));
         atr.append((atr[len(atr)-1] * (l1 - 1) + t0) / l1)
     return atr;
 def mfi(data: list[list[float]], l1: int = 14) -> list[float]:
+    """Money Flow Index."""
     mfi = []; n = []; p = [];
     for i in range(len(data)):
         p.append(float(data[i][0])); n.append(float(data[i][1]));
@@ -83,6 +90,7 @@ def mfi(data: list[list[float]], l1: int = 14) -> list[float]:
             p = p[1:]; n = n[1:];
     return mfi;
 def roc(data: list[float], l1: int = 14) -> list[float]:
+    """Rate of Change."""
     pl = []; roc = [];
     for i in range(len(data)):
         pl.append(float(data[i]));
@@ -91,11 +99,13 @@ def roc(data: list[float], l1: int = 14) -> list[float]:
             pl = pl[1:];
     return roc;
 def mom(data: list[float], l1: int = 10, p: bool = False) -> list[float]:
+    """Momentum (absolute or percentage)."""
     mom = [];
     for i in range(l1-1, len(data)):
         mom.append(data[i] / data[i - (l1-1)] * 100) if p == True else mom.append(data[i] - data[i - (l1 - 1)]);
     return mom
 def kst(data: list[float], r1: int = 10, s1: int = 10, r2: int = 15, s2: int = 10, r3: int = 20, s3: int = 10, r4: int = 30, s4: int = 15, sig: int = 9) -> list[list[float]]:
+    """Know Sure Thing oscillator."""
     ks = []; fs = []; ms = (max(r1, r2, r3, r4) + max(s1, s2, s3, s4));
     for i in range(ms, len(data)+1):
         rcma1 = roc(data[i-ms:i], r1); rcma2 = roc(data[i-ms:i], r2); rcma3 = roc(data[i-ms:i], r3); rcma4 = roc(data[i-ms:i], r4);
@@ -106,6 +116,7 @@ def kst(data: list[float], r1: int = 10, s1: int = 10, r2: int = 15, s2: int = 1
     for i in range(len(ks)): fs.append([ks[i], sl[i]]);
     return fs;
 def cop(data: list[float], l1: int = 11, l2: int = 14, l3: int = 10) -> list[float]:
+    """Coppock Curve."""
     m = max(l1, l2); co = [];
     if l1 > l2: [l1, l2] = [l2, l1];
     for i in range(m + l3, len(data)):
@@ -117,6 +128,7 @@ def cop(data: list[float], l1: int = 11, l2: int = 14, l3: int = 10) -> list[flo
         co.append(tmp[len(tmp)-1]);
     return co;
 def obv(data: list[list[float]]) -> list[float]:
+    """On-Balance Volume."""
     obv = [0];
     for i in range(1, len(data)):
         if(data[i][1] > data[i-1][1]): obv.append(obv[len(obv)-1] + data[i][0]);
@@ -124,6 +136,7 @@ def obv(data: list[list[float]]) -> list[float]:
         if(data[i][1] == data[i-1][1]): obv.append(obv[len(obv)-1]);
     return obv;
 def vwap(data: list[list[float]], l1: int = 0) -> list[float]:
+    """Volume-Weighted Average Price."""
     l1 = l1 if l1 > 0 else len(data); pl = []; vwap = [];
     for i in range(len(data)):
         pl.append([(data[i][0] * data[i][1]), data[i][1]]);
@@ -136,6 +149,7 @@ def vwap(data: list[list[float]], l1: int = 0) -> list[float]:
             pl = pl[1:];
     return vwap;
 def ichimoku(data: list[list[float]], l1: int = 9, l2: int = 26, l3: int = 52, l4: int = 26) -> list[list[float]]:
+    """Ichimoku Cloud."""
     cloud = []; place = []; pl = [];
     for i in range(len(data)):
         pl.append(data[i]);
@@ -155,6 +169,7 @@ def ichimoku(data: list[list[float]], l1: int = 9, l2: int = 26, l3: int = 52, l
         cloud.append([place[i][0], place[i][1], place[i+l4][2], place[i+l4][3], place[i-l4][4]]);
     return cloud;
 def fractals(data: list[list[float]]) -> list[list[bool]]:
+    """Bill Williams Fractals."""
     fractals = [[False, False], [False, False]];
     for i in range(2, len(data)-2):
         up = True if (data[i-2][0] < data[i][0] and data[i-1][0] < data[i][0] and data[i][0] > data[i+1][0] and data[i][0] > data[i+2][0]) else False
@@ -164,6 +179,7 @@ def fractals(data: list[list[float]]) -> list[list[bool]]:
     fractals.append([False, False]);
     return fractals;
 def cross(d1: list[float], d2: list[float]) -> list[dict]:
+    """Crossover indices between two series."""
     d1 = d1[len(d1)-len(d2):];
     cross = (d1[0] > d2[0]);
     indexes = [];
@@ -176,6 +192,7 @@ def cross(d1: list[float], d2: list[float]) -> list[dict]:
             cross = True;
     return indexes;
 def halftrend(data: list[list[float]], atrlen: int, amplitude: int, deviation: int) -> list[list[float | str]]:
+    """HalfTrend trend indicator."""
     out = []; nexttrend = [0]; trend = [0]; up = [0]; down = [0]; direction = None;
     for i in range(atrlen, len(data)+1):
         pl = data[i-atrlen:i];
@@ -236,6 +253,7 @@ def halftrend(data: list[list[float]], atrlen: int, amplitude: int, deviation: i
             out.append([atrHigh, down[len(down)-1], atrLow, direction]);
     return out
 def zigzag(data: list[float] | list[list[float]], perc: float = 0.05) -> list[float]:
+    """ZigZag pivot detector."""
     indexes = []; min = float('inf'); max = float('-inf');
     lmin = False; lmax = False;
     if isinstance(data[0], list):
@@ -359,6 +377,7 @@ def zigzag(data: list[float] | list[list[float]], perc: float = 0.05) -> list[fl
             final.append(x*delta+indexes[i-1]['value']);
     return final;
 def psar(data: list[list[float]], step: float = 0.02, maxi: float = 0.2) -> list[float]:
+    """Parabolic SAR."""
     furthest = data[0]; up = True; accel = step; prev = data[0];
     sar = data[0][1]; extreme = data[0][0]; final = [sar];
     for i in range(1, len(data)):
@@ -386,11 +405,13 @@ def psar(data: list[list[float]], step: float = 0.02, maxi: float = 0.2) -> list
         final.append(sar);
     return final;
 def supertrend(data: list[list[float]], length: int = 20, multiplier: float = 3) -> list[list[float]]:
+    """SuperTrend bands."""
     at = atr(data, length); trend = [];
     for i in range(length-1, len(data)):
         trend.append([(data[i][0] + data[i][2]) / 2 + multiplier * at[i], (data[i][0] + data[i][2]) / 2 - multiplier * at[i]]);
     return trend
 def elderray(data: list[float], length: int = 13) -> list[list[float]]:
+    """Elder-Ray Bull/Bear Power."""
     eld = [];
     for i in range(length, len(data)+1):
         pl = data[i-length:i];
@@ -400,6 +421,7 @@ def elderray(data: list[float], length: int = 13) -> list[list[float]]:
         eld.append([high-em[0],low-em[0]]);
     return eld;
 def hv(data: list[float], length: int = 20) -> list[float]:
+    """Historical Volatility."""
     hv = [];
     for i in range(length, len(data)+1):
         ss = registry["ssd"](data[i-length:i]);
@@ -407,6 +429,7 @@ def hv(data: list[float], length: int = 20) -> list[float]:
         hv.append(math.sqrt(vari));
     return hv;
 def rvi(data: list[list[float]], l: int = 20) -> list[float]:
+    """Relative Vigor Index."""
     num = []; dnom = []; rv = [];
     for i in range(3, len(data)):
         num.append((data[i][3]-data[i][0]+2*(data[i][3]-data[i-1][0])+2*(data[i][3]-data[i-2][0])+(data[i][3]-data[i-3][0]))/6);
@@ -419,11 +442,13 @@ def rvi(data: list[list[float]], l: int = 20) -> list[float]:
             dnom = dnom[1:len(dnom)];
     return rv;
 def rvi_signal(rv: list[float]) -> list[float]:
+    """Relative Vigor Index signal line."""
     sig = [];
     for i in range(3,len(rv)):
         sig.append((rv[i]+2*rv[i-1]+2*rv[i-2]+rv[i-3])/6);
     return sig;
 def rsi_divergence(data: list[float], length: int, rs: Callable[[list[float], int], list[float]] | None = None) -> list[int]:
+    """RSI divergence flags."""
     if rs is None:
         rs = registry["wrsi"]
     rd = rs(data, length); out = [];
@@ -435,6 +460,7 @@ def rsi_divergence(data: list[float], length: int, rs: Callable[[list[float], in
             out.append(0);
     return out;
 def divergence(data1: list[float], data2: list[float]) -> list[int]:
+    """Divergence flags between two series."""
     if len(data1) > len(data2):
         data1 = data1[len(data1)-len(data2):];
     if len(data2) > len(data1):
@@ -447,12 +473,14 @@ def divergence(data1: list[float], data2: list[float]) -> list[int]:
             out.append(0);
     return out;
 def bop(data: list[list[float]], l1: int = 14) -> list[float]:
+    """Balance of Power."""
     bo = [];
     for i in range(len(data)):
         bo.append((data[i][3] - data[i][0]) / (data[i][1] - data[i][2]) if (data[i][1] - data[i][2]) != 0 else 0);
     bo = registry["sma"](bo, l1);
     return bo;
 def fi(data: list[list[float]], l1: int = 13) -> list[float]:
+    """Force Index."""
     pl = []; ff = [];
     for i in range(1, len(data)):
         pl.append((data[i][0] - data[i-1][0]) * data[i][1]);
@@ -462,6 +490,7 @@ def fi(data: list[list[float]], l1: int = 13) -> list[float]:
             pl = pl[1:];
     return ff;
 def asi(data: list[list[float]]) -> list[float]:
+    """Accumulation Swing Index."""
     pl = []; a = [];
     for i in range(1, len(data)):
         c = float(data[i][1]); y = float(data[i-1][1]); h = float(data[i][0]); hy = float(data[i-1][0]); cy = float(data[i-1][1]);
@@ -474,6 +503,7 @@ def asi(data: list[list[float]]) -> list[float]:
         a.append(50.0 * ((cy - c + (cy - oy) / 2.0 + (c - o) / 2.0) / r) * k / t if r and t != 0 else 0);
     return a;
 def alligator(data: list[float], jl: int = 13, tl: int = 8, ll: int = 5, js: int = 8, ts: int = 5, ls: int = 3) -> list[list[float]]:
+    """Bill Williams Alligator (jaw, teeth, lips)."""
     ret = []; jaw = registry["smma"](data, jl); teeth = registry["smma"](data, tl); lips = registry["smma"](data, ll);
     teeth = teeth[len(teeth)-len(jaw):];
     lips = lips[len(lips)-len(jaw):];
@@ -481,6 +511,7 @@ def alligator(data: list[float], jl: int = 13, tl: int = 8, ll: int = 5, js: int
         ret.append([jaw[i-(js-1)], teeth[i-(ts-1)], lips[i-(ls-1)]]);
     return ret;
 def pr(data: list[float], l1: int = 14) -> list[float]:
+    """Williams %R."""
     n = []; pl = [];
     for i in range(len(data)):
         pl.append(float(data[i]));
@@ -490,6 +521,7 @@ def pr(data: list[float], l1: int = 14) -> list[float]:
             pl = pl[1:];
     return n;
 def stoch(data: list[list[float]], l1: int = 14, sd: int = 3, sk: int = 3) -> list[list[float]]:
+    """Stochastic Oscillator (%K, %D)."""
     stoch = []; high = []; low = []; ka = [];
     for i in range(len(data)):
         high.append(float(data[i][0]));
@@ -509,8 +541,10 @@ def stoch(data: list[list[float]], l1: int = 14, sd: int = 3, sk: int = 3) -> li
             ka = ka[1:];
     return stoch;
 def fib(start: float, end: float) -> list[float]:
+    """Fibonacci retracement levels."""
     return [start, (end-start)*.236+start, (end-start)*.382+start, (end-start)*.5+start, (end-start)*.618+start, (end-start)*.786+start, end, (end-start)*1.618+start, (end-start)*2.618+start, (end-start)*3.618+start, (end-start)*4.236+start]
 def aroon_up(data: list[float], l1: int = 10) -> list[float]:
+    """Aroon Up."""
     pl = []; aroon = [];
     for i in range(len(data)):
         pl.append(float(data[i]));
@@ -520,6 +554,7 @@ def aroon_up(data: list[float], l1: int = 10) -> list[float]:
             pl = pl[1:];
     return aroon;
 def aroon_down(data: list[float], l1: int = 10) -> list[float]:
+    """Aroon Down."""
     pl = []; aroon = [];
     for i in range(len(data)):
         pl.append(float(data[i]));
@@ -530,6 +565,7 @@ def aroon_down(data: list[float], l1: int = 10) -> list[float]:
             pl = pl[1:];
     return aroon;
 def aroon_osc(data: list[float], l1: int = 10) -> list[float]:
+    """Aroon Oscillator."""
     pl = []; aroon = [];
     u = aroon_up(data[:], l1); d = aroon_down(data[:], l1);
     for i in range(len(u)): aroon.append(u[i] - d[i]);
