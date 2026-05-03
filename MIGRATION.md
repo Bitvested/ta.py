@@ -12,12 +12,25 @@
 
 The following will be implemented and documented in subsequent phases of the v2.0 overhaul. **None of these have landed yet.**
 
-### Signature normalizations (Phase 3 — match ta.js 2.0)
+### Signature & output-shape normalizations (Phase 3 — match ta.js 2.0)
 
-To be filled in by Phase 3 by diffing ta.js v1.17.0 against ta.js v2.0.0 signatures and porting each change. Known candidates:
-- `mfi` input tuple shape may change.
-- `atr`, `smma` parameter naming may normalize.
-- A few default values may be adjusted to match ta.js.
+The following landed in Phase 3 pre-flight to match ta.js 2.0 algorithms exactly:
+
+#### `atr(data, length=14)` — output shape and true-range fix
+
+The true-range terms `H − Cprev` and `L − Cprev` now use absolute values (matching Wilder's original definition), and the output drops the first `length − 1` transient values so the result aligns with `sma(data, length)` (length `n − length + 1`).
+
+```python
+# 1.17.0
+ta_py.atr([[3, 2, 1], [2, 2, 1], [4, 3, 1], [2, 2, 1]], 3)
+# → [2.0, 1.6666666666666667, 2.111111111111111, 1.7407407407407407]   # 4 rows, no abs
+
+# 2.0.0
+ta_py.atr([[3, 2, 1], [2, 2, 1], [4, 3, 1], [2, 2, 1]], 3)
+# → [2.111111111111111, 2.074074074074074]                              # 2 rows, abs applied
+```
+
+Cascading effects: `keltner` (now uses correct ATR), `supertrend` (output values shift on the second row onward), `halftrend` (loop range tightened to match ta.js, atr-derived deviation values shift). All callers updated.
 
 ### Aroon namespace (Phase 3)
 

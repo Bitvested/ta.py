@@ -88,12 +88,26 @@ def macd_bars(data: list[float], l1: int = 12, l2: int = 26, l3: int = 9) -> lis
     for i in range(len(ma)): ret.append(ma[i] - mas[i]);
     return ret;
 def atr(data: list[list[float]], l1: int = 14) -> list[float]:
-    """Average True Range."""
-    atr = [float(data[0][0]) - float(data[0][2])];
-    for i in range(1, len(data)):
-        t0 = max((float(data[i][0]) - float(data[i - 1][1])), (float(data[i][2]) - float(data[i - 1][1])), (float(data[i][0]) - float(data[i][2])));
-        atr.append((atr[len(atr)-1] * (l1 - 1) + t0) / l1)
-    return atr;
+    """Average True Range. Each row of data is [high, close, low].
+
+    Output length is ``n - l1 + 1`` (matching SMA shape).
+    """
+    n = len(data)
+    if n < l1:
+        return []
+    prev = float(data[0][0]) - float(data[0][2])
+    out: list[float] = []
+    if l1 == 1:
+        out.append(prev)
+    for i in range(1, n):
+        cprev = float(data[i - 1][1])
+        h = float(data[i][0]); lo = float(data[i][2])
+        tr = max(h - lo, abs(h - cprev), abs(lo - cprev))
+        prev = (prev * (l1 - 1) + tr) / l1
+        if i >= l1 - 1:
+            out.append(prev)
+    return out
+
 def mfi(data: list[list[float]], l1: int = 14) -> list[float]:
     """Money Flow Index."""
     n = len(data)
@@ -216,7 +230,7 @@ def cross(d1: list[float], d2: list[float]) -> list[dict]:
 def halftrend(data: list[list[float]], atrlen: int, amplitude: int, deviation: int) -> list[list[float | str]]:
     """HalfTrend trend indicator."""
     out = []; nexttrend = [0]; trend = [0]; up = [0]; down = [0]; direction = None;
-    for i in range(atrlen, len(data)+1):
+    for i in range(atrlen, len(data)):
         pl = data[i-atrlen:i];
         maxlow = pl[len(pl)-2][2];
         minhigh = pl[len(pl)-2][0];
@@ -429,8 +443,10 @@ def psar(data: list[list[float]], step: float = 0.02, maxi: float = 0.2) -> list
 def supertrend(data: list[list[float]], length: int = 20, multiplier: float = 3) -> list[list[float]]:
     """SuperTrend bands."""
     at = atr(data, length); trend = [];
-    for i in range(length-1, len(data)):
-        trend.append([(data[i][0] + data[i][2]) / 2 + multiplier * at[i], (data[i][0] + data[i][2]) / 2 - multiplier * at[i]]);
+    for i in range(len(at)):
+        bar = i + length - 1
+        mid = (data[bar][0] + data[bar][2]) / 2
+        trend.append([mid + multiplier * at[i], mid - multiplier * at[i]]);
     return trend
 def elderray(data: list[float], length: int = 13) -> list[list[float]]:
     """Elder-Ray Bull/Bear Power."""
