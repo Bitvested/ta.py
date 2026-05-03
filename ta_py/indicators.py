@@ -737,3 +737,12 @@ def emv(data: list[list[float]]) -> list[float]:
         rng = h - lo
         out[i - 1] = float("nan") if (rng == 0 or v == 0) else move * rng * 10000 / v
     return out
+
+def dpo(data: list[float], length: int = 21) -> list[float]:
+    """Detrended Price Oscillator. ``DPO[k] = data[k + length-2 - length//2] - sma(data, length)[k]``."""
+    _sma = registry["sma"]
+    sm = _sma(data, length)
+    if len(sm) == 0:
+        return []
+    off = length - 2 - length // 2
+    return [float(data[i + off]) - sm[i] for i in range(len(sm))]
