@@ -51,18 +51,30 @@ def keltner(data: list[list[float]], l1: int = 14, l2: float = 1) -> list[list[f
 
 def don(data: list[list[float]], l1: int = 20) -> list[list[float]]:
     """Donchian Channels. Each row of data is [high, low]."""
-    pl = []; channel = [];
-    for i in range(len(data)):
-        pl.append(data[i]);
-        if(len(pl) >= l1):
-            highs = []; lows = [];
-            for h in range(len(pl)):
-                highs.append(float(pl[h][0]));
-                lows.append(float(pl[h][1]));
-            m = max(highs); l = min(lows);
-            channel.append([m, (m+l) / 2.0, l]);
-            pl = pl[1:];
-    return channel;
+    from collections import deque
+    n = len(data)
+    if n < l1:
+        return []
+    out: list[list[float]] = []
+    hi_dq: deque[int] = deque()  # indices, decreasing on data[i][0]
+    lo_dq: deque[int] = deque()  # indices, increasing on data[i][1]
+    for i in range(n):
+        h = float(data[i][0]); lo = float(data[i][1])
+        while hi_dq and float(data[hi_dq[-1]][0]) <= h:
+            hi_dq.pop()
+        hi_dq.append(i)
+        while lo_dq and float(data[lo_dq[-1]][1]) >= lo:
+            lo_dq.pop()
+        lo_dq.append(i)
+        if hi_dq[0] <= i - l1:
+            hi_dq.popleft()
+        if lo_dq[0] <= i - l1:
+            lo_dq.popleft()
+        if i >= l1 - 1:
+            m = float(data[hi_dq[0]][0])
+            l = float(data[lo_dq[0]][1])
+            out.append([m, (m + l) / 2.0, l])
+    return out
 
 
 def envelope(data: list[float], l1: int = 10, p: float = 0.005) -> list[list[float]]:
