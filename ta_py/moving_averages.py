@@ -35,19 +35,25 @@ def smma(data: list[float], l: int = 14) -> list[float]:
     return out
 
 def wma(data: list[float], l: int = 14) -> list[float]:
-    """Weighted Moving Average (linear weights)."""
-    pl = []; wm = []; weight = [];
-    for i in range(1, l+1):
-        weight.append(i);
-    for i in range(len(data)):
-        pl.append(float(data[i]));
-        if (len(pl)) >= l:
-            average = 0;
-            for q in range(1, len(pl)+1):
-                average += pl[q-1] * q / sum(weight);
-            wm.append(average);
-            pl = pl[1:];
-    return wm;
+    """Weighted Moving Average (linear weights 1..l)."""
+    n = len(data)
+    if n < l:
+        return []
+    total_weight = l * (l + 1) // 2
+    wsum = 0.0
+    pwsum = 0.0
+    for i in range(l):
+        v = float(data[i])
+        wsum += v
+        pwsum += v * (i + 1)
+    out = [pwsum / total_weight]
+    for i in range(l, n):
+        v = float(data[i])
+        outgoing = float(data[i - l])
+        pwsum += l * v - wsum
+        wsum += v - outgoing
+        out.append(pwsum / total_weight)
+    return out
 
 def wsma(data: list[float], l: int = 14) -> list[float]:
     """Wilder's Smoothing Moving Average."""
