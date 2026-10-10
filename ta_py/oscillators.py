@@ -8,13 +8,17 @@ def gator(
     jl: int = 13, tl: int = 8, ll: int = 5,
     js: int = 8, ts: int = 5, ls: int = 3,
 ) -> list[list[float]]:
-    """Gator Oscillator (alligator-derived)."""
-    ret = []; jaw = registry["smma"](data, jl); teeth = registry["smma"](data, tl); lips = registry["smma"](data, ll);
-    teeth = teeth[len(teeth)-len(jaw):];
-    lips = lips[len(lips)-len(jaw):];
-    for i in range(len(jaw)-1, (js-2), -1):
-        ret.append([jaw[i-(js-1)]-teeth[i-(ts-1)], -(abs(teeth[i-(ts-1)]-lips[i-(ls-1)]))]);
-    return ret;
+    """Gator Oscillator (alligator-derived).
+
+    ``[|jaw - teeth|, -|teeth - lips|]`` per bar, taken from the displaced
+    Alligator lines, so ``len(out) == len(data)`` and row ``i`` covers bar ``i``.
+    TradingView's Gator Oscillator does not displace its lines: pass
+    ``js=ts=ls=0`` to match it.
+    """
+    return [
+        [abs(jaw - teeth), -abs(teeth - lips)]
+        for jaw, teeth, lips in registry["alligator"](data, jl, tl, ll, js, ts, ls)
+    ]
 
 
 def mom_osc(data: list[float], l1: int = 9) -> list[float]:

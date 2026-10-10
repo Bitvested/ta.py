@@ -5,7 +5,32 @@ All notable changes to ta.py are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] — 2.0.0
+## [Unreleased]
+
+### Fixed
+
+- **`alligator` / `gator` no longer match TradingView by accident.** Both were returning their rows newest-first and truncated to `n - jl - js + 2` rows, so they could not be lined up with the input series at all, and each line was displaced by `shift - 1` bars instead of `shift`. `gator`'s upper histogram also had the wrong sign — it plotted `jaw - teeth` instead of `|jaw - teeth|`. Reported in [#10](https://github.com/Bitvested/ta.py/issues/10).
+
+### Changed
+
+- **`alligator(data, ...)` / `gator(data, ...)` output is now aligned to the input bars.** `len(out) == len(data)` and row `i` covers bar `i`. Each line is displaced right by its own shift, matching TradingView's `plot(..., offset=shift)`, so row `i` holds the SMMA value computed at bar `i - shift`. A line is NaN until bar `length - 1 + shift` (defaults: jaw at 20, teeth at 12, lips at 7). `gator` is now derived from `alligator`'s displaced lines, which also makes it the four-argument-free way to reach TradingView's Gator Oscillator: pass `js=ts=ls=0`.
+
+```python
+data = [8, 7, 8, 9, 7, 8, 9, 6, 7, 8, 6, 8, 10, 8, 7, 9, 8, 7, 9, 6, 7, 9]
+
+# 2.0.0 — 3 rows, newest first, not aligned to `data`
+ta_py.alligator(data)
+# → [[7.726445152480656, 7.813665029359981, 7.6378735707815935],
+#    [7.78698224852071, 7.929902890697122, 8.047341963476992],
+#    [7.769230769230769, 7.919889017939568, 7.809177454346241]]
+
+# unreleased — 22 rows, one per bar of `data`
+ta_py.alligator(data)
+# → [[nan, nan, nan], ... 19 more ..., [7.769230769230769, 7.919889017939568, 7.809177454346241],
+#    [7.78698224852071, 7.929902890697122, 8.047341963476992]]
+```
+
+## [2.0.0] — 2026-05
 
 ### Added
 - `pyproject.toml` (PEP 621) replaces `setup.py` as primary packaging metadata.

@@ -549,13 +549,29 @@ def asi(data: list[list[float]]) -> list[float]:
         a.append(50.0 * ((cy - c + (cy - oy) / 2.0 + (c - o) / 2.0) / r) * k / t if r and t != 0 else 0);
     return a;
 def alligator(data: list[float], jl: int = 13, tl: int = 8, ll: int = 5, js: int = 8, ts: int = 5, ls: int = 3) -> list[list[float]]:
-    """Bill Williams Alligator (jaw, teeth, lips)."""
-    ret = []; jaw = registry["smma"](data, jl); teeth = registry["smma"](data, tl); lips = registry["smma"](data, ll);
-    teeth = teeth[len(teeth)-len(jaw):];
-    lips = lips[len(lips)-len(jaw):];
-    for i in range(len(jaw)-1, (js-2), -1):
-        ret.append([jaw[i-(js-1)], teeth[i-(ts-1)], lips[i-(ls-1)]]);
-    return ret;
+    """Bill Williams Alligator (jaw, teeth, lips).
+
+    Rows align to the input bars: ``len(out) == len(data)`` and row ``i`` covers
+    bar ``i``. Each line is displaced right by its own shift, matching
+    TradingView's ``plot(..., offset=shift)``, so row ``i`` carries the SMMA
+    value computed at bar ``i - shift``. A line first becomes defined at bar
+    ``length - 1 + shift``; rows before that are NaN.
+    """
+    n = len(data)
+    nan = float("nan")
+    lines: list[list[float]] = []
+    for series, length, shift in (
+        (registry["smma"](data, jl), jl, js),
+        (registry["smma"](data, tl), tl, ts),
+        (registry["smma"](data, ll), ll, ls),
+    ):
+        line = [nan] * n
+        start = length - 1 + shift
+        for i in range(start, min(n, start + len(series))):
+            line[i] = float(series[i - start])
+        lines.append(line)
+    jaw, teeth, lips = lines
+    return [[jaw[i], teeth[i], lips[i]] for i in range(n)]
 def pr(data: list[float], l1: int = 14) -> list[float]:
     """Williams %R."""
     from collections import deque

@@ -439,9 +439,14 @@ jawshift = 8
 teethshift = 5
 lipshift = 3
 ta.alligator(data, jawlength, teethlength, liplength, jawshift, teethshift, lipshift)
-# output (array)
+# output (array), aligned to the input bars
 # [jaw, teeth, lips]
 ```
+One row per input bar, and each line displaced right by its own shift, matching
+TradingView's `plot(..., offset = shift)`: row `i` holds the SMMA value computed at
+bar `i - shift`. A line is NaN until bar `length - 1 + shift`, so with the defaults
+the jaw starts at bar 20, the teeth at bar 12 and the lips at bar 7. Feed it `hl2`
+to reproduce the standard indicator.
 
 #### <a id="pr"></a>Williams %R
 ```python
@@ -894,9 +899,13 @@ data = [8,7,8,9,7,8,9,6,7,8,6,8,10,8,7,9,8,7,9,6,7,9]
 jawlength = 13; teethlength = 8; liplength = 5
 jawshift = 8; teethshift = 5; lipshift = 3
 ta.gator(data, jawlength, teethlength, liplength, jawshift, teethshift, lipshift)
-# output (array)
+# output (array), aligned to the input bars
 # [upper gator, lower gator]
 ```
+Built from the displaced lines [`alligator`](#alli) returns, so the output has one row
+per input bar (NaN until both lines of a pair are defined). TradingView's Gator
+Oscillator does not displace its lines: pass `jawshift = teethshift = lipshift = 0`
+to match it.
 
 #### <a id="mom_osc"></a>Chande Momentum Oscillator
 ```python
