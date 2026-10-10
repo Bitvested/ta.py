@@ -96,7 +96,13 @@ def ssd(data: list[float], l: int = 0) -> list[float] | float:
     return sd;
 
 def er(data: list[float]) -> float:
-    """Compute the expected return of a series of returns."""
+    """Compute the expected return of a series of returns.
+
+    Each side contributes its geometric mean, weighted by how often it occurs. A
+    side with no observations has weight zero, so its mean is never taken and its
+    term is zero — a series with no losses returns the wins' geometric mean rather
+    than raising or returning NaN.
+    """
     wins = []; losses = []; wp = 1; lp = 1;
     for i in range(len(data)):
         if data[i] >= 0:
@@ -108,7 +114,9 @@ def er(data: list[float]) -> float:
         lp *= losses[i];
     for i in range(len(wins)):
         wp *= wins[i];
-    return (((wp**(1/len(wins))-1)*100) * win + ((lp**(1/len(losses))-1)*100)*loss) / 100
+    win_term = (((wp**(1/len(wins))-1)*100) * win) if wins else 0.0;
+    loss_term = (((lp**(1/len(losses))-1)*100) * loss) if losses else 0.0;
+    return (win_term + loss_term) / 100
 
 def variance(data: list[float], l1: int = 0) -> list[float] | float:
     """Compute the rolling variance of data."""
