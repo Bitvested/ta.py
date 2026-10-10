@@ -184,15 +184,35 @@ def hull(data: list[float], l: int = 14) -> list[float]:
     return hma;
 
 def kama(data: list[float], l1: int = 10, l2: int = 2, l3: int = 30) -> list[float]:
-    """Kaufman Adaptive Moving Average."""
-    ka = sma(data[:], l1); ka = [ka[len(ka)-1]];
-    for i in range(l1 + 1, len(data)):
-        vola = 0; change = abs(data[i] - data[i - l1]);
-        for a in range(1, l1):
-            vola += abs(float(data[i-a]) - float(data[(i-a)-1]));
-        sc = (change/vola * (2.0/(l2+1.0) - 2.0/(l3+1.0) + 2.0/(l3+1.0))) ** 2.0;
-        ka.append(ka[len(ka)-1] + sc * (float(data[i]) - ka[len(ka)-1]));
-    return ka;
+    """Kaufman Adaptive Moving Average.
+
+    ER   = |data[i] - data[i-l1]| / sum(|data[k] - data[k-1]|, k = i-l1+1 .. i)
+    SC   = (ER * (fast - slow) + slow) ** 2,  fast = 2/(l2+1), slow = 2/(l3+1)
+    KAMA = KAMA[i-1] + SC * (data[i] - KAMA[i-1])
+
+    Seeded with data[l1-1] and emitted from that bar on, so the output is
+    n-l1+1 long. Matches the tulind reference. The volatility sum is carried
+    across bars instead of re-summed per bar, which keeps the run linear.
+    """
+    n = len(data)
+    if n < l1:
+        return [];
+    vola = 0.0;
+    for i in range(1, l1):
+        vola += abs(float(data[i]) - float(data[i-1]));
+    fast = 2.0 / (l2 + 1.0); slow = 2.0 / (l3 + 1.0);
+    ka = float(data[l1-1]); out = [ka];
+    for i in range(l1, n):
+        vola += abs(float(data[i]) - float(data[i-1]));
+        if i > l1:
+            vola -= abs(float(data[i-l1]) - float(data[i-l1-1]));
+        # A window with no movement leaves the ratio undefined; treat it as a
+        # one-sided move, which pins the smoothing constant to `fast`.
+        er = 1.0 if vola == 0 else abs(float(data[i]) - float(data[i-l1])) / vola;
+        sc = er * (fast - slow) + slow;
+        ka += sc * sc * (float(data[i]) - ka);
+        out.append(ka);
+    return out;
 
 def cwma(data: list[float], weights: list[float]) -> list[float]:
     """Custom Weighted Moving Average. Window length = len(weights)."""
