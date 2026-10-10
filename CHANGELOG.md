@@ -31,6 +31,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
   The rewrite follows the Pine line by line: one row per input bar, extremes over `amplitude`, the state machine evaluated at the current bar, and an ATR that uses Pine's own seeding (Wilder's RMA seeded with the mean of the first `atrlen` true ranges, which is not what `ta_py.atr` does). On the reporter's data it now flips 160 times. Pinned by `tests/test_halftrend.py`, which fails against the previous implementation.
 
+### Changed — BREAKING for `zigzag` consumers
+
+- **`zigzag` now follows the ta.js algorithm**, which the audit showed it did not. Five deviations, all silent: extending a running pivot `continue`d past the bar's move test, delaying every pivot by a bar; the leg reset seeded `min`/`max` with ±infinity where the original seeds them with the new extreme; the flat-branch bounds compared `data[i][0]` but stored `data[i][1]`; and `ZeroDivisionError` fallbacks replaced the original's IEEE arithmetic. On a 300-bar series it disagreed with ta.js and ta.go in 186 of 298 values; it now matches both exactly (max Δ `0.0`), on high/low pairs and flat input alike. `zigzag__pairs` pinned the old interpolation and is re-pinned.
+
 ### Changed — BREAKING for `psar` consumers
 
 - **`psar` tracked the wrong extreme in a downtrend.** Where it should have taken the lowest low as the extreme point, it took the high, so the stop-and-reverse sat above the market through a decline and every subsequent value was wrong. On a 300-bar series it disagreed with ta.js and ta.go in 63 values; it now matches both exactly (max Δ `0.0`). `tests/test_indicators.py` pins an 18-bar decline in which the fix moves 12 values.
