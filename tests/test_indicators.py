@@ -9,7 +9,7 @@ CASES = [
     "mfi", "roc", "mom", "kst", "cop", "obv", "vwap", "ichimoku",
     "fractals", "cross", "halftrend", "psar", "supertrend", "elderray",
     "hv", "rvi", "rvi_signal", "rsi_divergence", "divergence", "bop",
-    "fi", "asi", "alligator", "pr", "stoch", "fib", "aroon_up",
+    "fi", "asi", "alligator", "occ", "pr", "stoch", "fib", "aroon_up",
     "aroon_down", "aroon_osc", "adl", "nvi", "pvi", "emv", "dpo", "ulcer",
     "pdm", "mdm", "pdi", "mdi", "dx", "adx", "adxr", "natr",
     "trix", "ppo", "apo", "mass",

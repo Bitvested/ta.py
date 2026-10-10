@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **`occ(data, basis_len=8, basis_type="SMMA", delay=0)`** — Open Close Cross, from JustUncleL's Pine ([source](https://www.tradingview.com/script/IVjPPt6c-Open-Close-Cross-Alert-R6-by-JustUncleL/)), requested in [#4](https://github.com/Bitvested/ta.py/issues/4). Moving averages of `open` and of `close`; the trend is whichever is on top and a flip is the signal. Rows are `[open, close]` and the output aligns to the input bars as `[close basis, open basis, direction]`, NaN until both bases exist. `delay` is the Pine's `delayOffset`, which shifts both bases right.
+
+  Eight of the Pine's twelve `basisType` options are supported: `SMA`, `EMA`, `DEMA`, `TEMA`, `WMA`, `SMMA`, `HullMA`, `TMA`. The other four are omitted rather than approximated — `LSMA` takes an offset parameter `lsma` does not have, `VWMA` needs volume in the data row, and `ALMA` and `SSMA` (Ehlers SuperSmoother) are not implemented in this library. TradingView's alert conditions, alternate-resolution mode and divergence plot are platform features, not computations, and have no counterpart in a library that returns series.
+
+  Two caveats worth knowing. The Pine's variant definitions were checked against the existing primitives for DEMA, TEMA and Hull across even and odd lengths (`~1e-11`, float noise), so those are the same averages. And with an **odd** `basis_len`, Hull's half-length is rounded to even in Python where Pine rounds half away from zero, so that one combination may differ; every other type is unaffected.
+
 ### Fixed
 
 - **`alligator` / `gator` no longer match TradingView by accident.** Both were returning their rows newest-first and truncated to `n - jl - js + 2` rows, so they could not be lined up with the input series at all, and each line was displaced by `shift - 1` bars instead of `shift`. `gator`'s upper histogram also had the wrong sign — it plotted `jaw - teeth` instead of `|jaw - teeth|`. Reported in [#10](https://github.com/Bitvested/ta.py/issues/10).

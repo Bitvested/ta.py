@@ -577,6 +577,70 @@ def alligator(data: list[float], jl: int = 13, tl: int = 8, ll: int = 5, js: int
         lines.append(line)
     jaw, teeth, lips = lines
     return [[jaw[i], teeth[i], lips[i]] for i in range(n)]
+_OCC_BASIS = ("SMA", "EMA", "DEMA", "TEMA", "WMA", "SMMA", "HullMA", "TMA");
+def _occ_basis(kind: str, src: list[float], length: int) -> list[float]:
+    """The moving average OCC's basisType selects."""
+    if kind == "SMA": return registry["sma"](src, length)
+    if kind == "EMA": return registry["ema"](src, length)
+    if kind == "DEMA": return registry["dema"](src, length)
+    if kind == "TEMA": return registry["tema"](src, length)
+    if kind == "WMA": return registry["wma"](src, length)
+    if kind == "SMMA": return registry["smma"](src, length)
+    if kind == "HullMA": return registry["hull"](src, length)
+    if kind == "TMA": return registry["sma"](registry["sma"](src, length), length)
+    raise ValueError(
+        f"unknown basis_type {kind!r}. OCC's own list has four more: LSMA takes an "
+        "offset ta.py's lsma has no parameter for, VWMA needs volume, and ALMA and "
+        "SSMA (Ehlers SuperSmoother) are not implemented here."
+    )
+def _occ_line(series: list[float], n: int, delay: int) -> list[float]:
+    """Displace a right-aligned primitive series right by ``delay`` bars.
+
+    A basis at bar ``i`` is the average of the ``length`` bars ending at ``i - delay``,
+    which is the same as computing the average and then shifting the result, so the
+    delay is applied here rather than by truncating the input the primitive sees.
+    """
+    line = [float("nan")] * n
+    start = n - len(series) + delay    # n - len(series) is the primitive's first bar
+    for i in range(max(start, 0), min(n, start + len(series))):
+        line[i] = float(series[i - start])
+    return line
+def occ(data: list[list[float]], basis_len: int = 8, basis_type: str = "SMMA", delay: int = 0) -> list[list[float]]:
+    """Open Close Cross (OCC), following JustUncleL's Pine
+    (tradingview.com/script/IVjPPt6c-Open-Close-Cross-Alert-R6-by-JustUncleL/).
+
+    A moving average of ``open`` and of ``close``; the trend is whichever is on top,
+    and a signal is the two crossing. Each row of data is ``[open, close]``.
+
+    Rows align to the input bars: ``len(out) == len(data)`` and row ``i`` covers bar
+    ``i``, as ``[close basis, open basis, direction]`` with direction ``"long"`` or
+    ``"short"``. Both bases come from the same primitive over the same-length series,
+    so they are defined on the same bars; earlier rows are NaN. ``delay`` shifts both
+    bases right, which is how the Pine script's ``delayOffset`` forces non-repainting.
+
+    ``basis_type`` is one of ``SMA``, ``EMA``, ``DEMA``, ``TEMA``, ``WMA``, ``SMMA``,
+    ``HullMA`` or ``TMA``. The Pine also offers LSMA, VWMA, ALMA and SSMA; see
+    :func:`_occ_basis` for why each is out of reach here. TradingView's
+    alert conditions, alternate-resolution and divergence plots are platform features
+    and have no counterpart in a library that returns series.
+    """
+    if basis_len < 1:
+        raise ValueError("basis_len must be >= 1")
+    if delay < 0:
+        raise ValueError("delay must be >= 0; Pine's delayOffset input has minval 0")
+    n = len(data)
+    nan = float("nan")
+    closes = [float(row[1]) for row in data]
+    opens = [float(row[0]) for row in data]
+    cb = _occ_line(_occ_basis(basis_type, closes, basis_len), n, delay)
+    ob = _occ_line(_occ_basis(basis_type, opens, basis_len), n, delay)
+    ret: list[list[float]] = []
+    for i in range(n):
+        if math.isnan(cb[i]) or math.isnan(ob[i]):
+            ret.append([nan, nan, nan])
+        else:
+            ret.append([cb[i], ob[i], "long" if cb[i] > ob[i] else "short"])
+    return ret
 def pr(data: list[float], l1: int = 14) -> list[float]:
     """Williams %R."""
     from collections import deque

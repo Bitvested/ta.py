@@ -36,6 +36,7 @@ Per-indicator usage examples for [`ta_py`](README.md). Every function below is a
 - [Force Index](#fi)
 - [Accumulative Swing Index](#asi)
 - [Alligator Indicator](#alli)
+- [Open Close Cross](#occ)
 - [Williams %R](#pr)
 - [Stochastics](#stoch)
 - [Stochastic RSI](#stoch_rsi)
@@ -447,6 +448,28 @@ TradingView's `plot(..., offset = shift)`: row `i` holds the SMMA value computed
 bar `i - shift`. A line is NaN until bar `length - 1 + shift`, so with the defaults
 the jaw starts at bar 20, the teeth at bar 12 and the lips at bar 7. Feed it `hl2`
 to reproduce the standard indicator.
+
+#### <a id="occ"></a>Open Close Cross
+```python
+data = [[10,12], [11,13], [12,14], [13,15], [14,16], [15,17]]  # [open, close]
+basislen = 8       # default
+basistype = "SMMA" # default
+delay = 0          # default
+ta.occ(data, basislen, basistype, delay)
+# output (array), aligned to the input bars
+# [close basis, open basis, direction]
+```
+`direction` is `"long"` where the close basis is above the open basis and `"short"`
+where it is below — a flip is the cross the indicator signals on. Both bases come
+from the same moving average over the same-length inputs, so they are defined on the
+same bars and earlier rows are NaN. `delay` shifts both right, which is how the Pine
+script's `delayOffset` avoids repainting.
+
+`basistype` is one of `SMA`, `EMA`, `DEMA`, `TEMA`, `WMA`, `SMMA`, `HullMA`, `TMA`.
+The Pine's LSMA, VWMA, ALMA and SSMA are not available: LSMA needs an offset the
+library's `lsma` has no parameter for, VWMA needs volume in the row, and ALMA and
+SSMA are not implemented. TradingView's alert conditions, alternate-resolution mode
+and divergence plot are platform features with no counterpart here.
 
 #### <a id="pr"></a>Williams %R
 ```python
