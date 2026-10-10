@@ -31,6 +31,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
   The rewrite follows the Pine line by line: one row per input bar, extremes over `amplitude`, the state machine evaluated at the current bar, and an ATR that uses Pine's own seeding (Wilder's RMA seeded with the mean of the first `atrlen` true ranges, which is not what `ta_py.atr` does). On the reporter's data it now flips 160 times. Pinned by `tests/test_halftrend.py`, which fails against the previous implementation.
 
+### Changed — BREAKING for `roc`, `kst`, `ha` and `aroon` consumers
+
+Found by a cross-language audit (identical series through 60 indicators in ta.js, ta.go and ta.py): ta.py disagreed with both siblings on these. Nothing raises — every call returns different numbers.
+
+- **`roc` now returns percent, not a fraction.** `100 * (last - reference) / reference`, matching ta.js, ta.go and the usual convention; `ta.roc([1, 2, 3, 4], 3)` was `[2, 1]` and is now `[200.0, 100.0]`. A zero reference yields `NaN` instead of raising `ZeroDivisionError`. `kst` and `cop` are built on `roc` and move with it.
+- **`kst`'s positional parameters are reordered** to `(data, r1, r2, r3, r4, s1, s2, s3, s4, sig)` — rates first, then smoothing — which is what ta.js accepts. The old signature interleaved them (`r1, s1, r2, s2, …`), so a positional call that used to mean `r1=5, s1=5, r2=7…` now means `r1=5, r2=5, r3=7…`. The defaults are unchanged in effect, and callers passing keywords are unaffected.
+- **`ha` returns `n` rows for `n` inputs**, not `n + 1`. Its loop re-processed bar 0, so the second row was a duplicate computation over the seed. `len(out) == len(data)` now holds, as it does in ta.js and ta.go.
+- **`aroon_up` was inverted.** It returned `100 - aroon_up`, i.e. 0 when the window's highest high was its newest bar and 100 when it was the oldest — the opposite of the standard, of ta.js and of ta.go. `aroon_down` was already correct; `aroon_osc` follows `aroon_up`. The pinned `aroon` fixtures never caught it because they placed the extreme at a tie and at the window's middle, the two positions where an inverted Aroon returns the same number; `tests/test_indicators.py` now pins the discriminating cases. A window of one bar has no width, so `aroon_up`/`aroon_down` return `NaN` there instead of 0, matching the siblings.
+
 ### Changed — BREAKING for `halftrend` consumers
 
 - **`halftrend` returns one row per input bar** instead of `n - atrlen`, so `len(out) == len(data)` and row `i` covers bar `i`. The ATR channel is `NaN` until the ATR window is full (bar `atrlen - 1`); the trend line itself is defined from bar 0. Callers that index-shifted the old output to line it up with their data — as in the issue report — no longer need to.

@@ -133,12 +133,16 @@ def mfi(data: list[list[float]], l1: int = 14) -> list[float]:
         out.append(_mfi_val(sum_p, sum_n))
     return out
 def roc(data: list[float], l1: int = 14) -> list[float]:
-    """Rate of Change."""
+    """Rate Of Change, in percent: 100 * (last - reference) / reference.
+
+    A zero reference has no rate of change, so the value is NaN rather than an error.
+    """
     pl = []; roc = [];
     for i in range(len(data)):
         pl.append(float(data[i]));
         if(len(pl) >= l1):
-            roc.append((pl[len(pl)-1] - pl[0]) / pl[0]);
+            ref = pl[0];
+            roc.append(float('nan') if ref == 0 else ((pl[len(pl)-1] - ref) / ref) * 100.0);
             pl = pl[1:];
     return roc;
 def mom(data: list[float], l1: int = 10, p: bool = False) -> list[float]:
@@ -147,8 +151,13 @@ def mom(data: list[float], l1: int = 10, p: bool = False) -> list[float]:
     for i in range(l1-1, len(data)):
         mom.append(data[i] / data[i - (l1-1)] * 100) if p == True else mom.append(data[i] - data[i - (l1 - 1)]);
     return mom
-def kst(data: list[float], r1: int = 10, s1: int = 10, r2: int = 15, s2: int = 10, r3: int = 20, s3: int = 10, r4: int = 30, s4: int = 15, sig: int = 9) -> list[list[float]]:
-    """Know Sure Thing oscillator."""
+def kst(data: list[float], r1: int = 10, r2: int = 15, r3: int = 20, r4: int = 30, s1: int = 10, s2: int = 10, s3: int = 10, s4: int = 15, sig: int = 9) -> list[list[float]]:
+    """Know Sure Thing oscillator.
+
+    The rates come first, then the smoothing lengths, then the signal length —
+    the order ta.js uses and the one EXAMPLES.md documents. The defaults are
+    unchanged; positional callers are not.
+    """
     _sma = registry["sma"]  # alias once per call (registry contract: keys never deleted)
     ks = []; fs = []; ms = (max(r1, r2, r3, r4) + max(s1, s2, s3, s4));
     for i in range(ms, len(data)+1):
@@ -736,24 +745,29 @@ def fib(start: float, end: float) -> list[float]:
     """Fibonacci retracement levels."""
     return [start, (end-start)*.236+start, (end-start)*.382+start, (end-start)*.5+start, (end-start)*.618+start, (end-start)*.786+start, end, (end-start)*1.618+start, (end-start)*2.618+start, (end-start)*3.618+start, (end-start)*4.236+start]
 def aroon_up(data: list[float], l1: int = 10) -> list[float]:
-    """Aroon Up."""
-    pl = []; aroon = [];
-    for i in range(len(data)):
-        pl.append(float(data[i]));
-        if(len(pl) >= l1):
-            hl = pl[:];
-            aroon.append((100.0 * (l1-1-pl.index(max(hl))) / (l1-1)) if l1-1 != 0 else 0);
-            pl = pl[1:];
-    return aroon;
-def aroon_down(data: list[float], l1: int = 10) -> list[float]:
-    """Aroon Down."""
+    """Aroon Up: 100 when the window's highest high is its newest bar, 0 when it is the oldest.
+
+    Reversing the window means .index() resolves ties to the newest bar, the same
+    rule ta.js and ta.go use. A window of one bar has no width, so the result is NaN.
+    """
     pl = []; aroon = [];
     for i in range(len(data)):
         pl.append(float(data[i]));
         if(len(pl) >= l1):
             hl = pl[:];
             hl.reverse();
-            aroon.append(100.0 * (l1-1-hl.index(min(hl))) / (l1-1) if l1-1 != 0 else 0);
+            aroon.append(100.0 * (l1-1-hl.index(max(hl))) / (l1-1) if l1-1 != 0 else float('nan'));
+            pl = pl[1:];
+    return aroon;
+def aroon_down(data: list[float], l1: int = 10) -> list[float]:
+    """Aroon Down: 100 when the window's lowest low is its newest bar, 0 when it is the oldest."""
+    pl = []; aroon = [];
+    for i in range(len(data)):
+        pl.append(float(data[i]));
+        if(len(pl) >= l1):
+            hl = pl[:];
+            hl.reverse();
+            aroon.append(100.0 * (l1-1-hl.index(min(hl))) / (l1-1) if l1-1 != 0 else float('nan'));
             pl = pl[1:];
     return aroon;
 def aroon_osc(data: list[float], l1: int = 10) -> list[float]:
