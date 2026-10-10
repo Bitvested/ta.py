@@ -15,6 +15,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
   The recursion now matches tulind, the reference the benchmarks compare against: bit-identical on short, flat, trending and gapping series, max Δ 1.4e-14 on a 100k random walk. Carrying the volatility sum across bars instead of re-summing it per bar also makes it ~2.5× faster. Fixes the same defect as [Bitvested/ta.js#22](https://github.com/Bitvested/ta.js/issues/22), mirrored in ta.go.
 
+- **`halftrend` never flipped, and read its inputs from the wrong bars.** Reported in [#7](https://github.com/Bitvested/ta.py/issues/7). Three defects against the Pine it was ported from ([everget's HalfTrend](https://www.tradingview.com/script/U1SJ8ubc-HalfTrend/)):
+
+  - the flip tests read `sma(...)[0]` — the SMA at the *start* of the window, roughly `atrlen` bars old — instead of the SMA at the current bar. Both flip conditions therefore compared stale values and never fired: on 4901 bars of the reporter's 5-minute data the indicator produced **zero** trend changes and stayed on one line.
+  - the price extremes behind `maxlow` / `minhigh` were taken over the ATR window (`atrlen` bars) instead of `amplitude` bars, and the down-flip compared `close` with `<` where the Pine uses `>`.
+  - the window was `data[i-atrlen:i]`, excluding the current bar, so every value was one bar stale.
+
+  The rewrite follows the Pine line by line: one row per input bar, extremes over `amplitude`, the state machine evaluated at the current bar, and an ATR that uses Pine's own seeding (Wilder's RMA seeded with the mean of the first `atrlen` true ranges, which is not what `ta_py.atr` does). On the reporter's data it now flips 160 times. Pinned by `tests/test_halftrend.py`, which fails against the previous implementation.
+
+### Changed — BREAKING for `halftrend` consumers
+
+- **`halftrend` returns one row per input bar** instead of `n - atrlen`, so `len(out) == len(data)` and row `i` covers bar `i`. The ATR channel is `NaN` until the ATR window is full (bar `atrlen - 1`); the trend line itself is defined from bar 0. Callers that index-shifted the old output to line it up with their data — as in the issue report — no longer need to.
+
 ### Changed — BREAKING for `alligator` / `gator` consumers
 
 - **`alligator(data, ...)` / `gator(data, ...)` output is now aligned to the input bars.** `len(out) == len(data)` and row `i` covers bar `i`. Each line is displaced right by its own shift, matching TradingView's `plot(..., offset=shift)`, so row `i` holds the SMMA value computed at bar `i - shift`. A line is NaN until bar `length - 1 + shift` (defaults: jaw at 20, teeth at 12, lips at 7). `gator` is now derived from `alligator`'s displaced lines, which also makes it the four-argument-free way to reach TradingView's Gator Oscillator: pass `js=ts=ls=0`.

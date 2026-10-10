@@ -236,65 +236,70 @@ def cross(d1: list[float], d2: list[float]) -> list[dict]:
             cross = True;
     return indexes;
 def halftrend(data: list[list[float]], atrlen: int, amplitude: int, deviation: int) -> list[list[float | str]]:
-    """HalfTrend trend indicator."""
-    out = []; nexttrend = [0]; trend = [0]; up = [0]; down = [0]; direction = None;
-    for i in range(atrlen, len(data)):
-        pl = data[i-atrlen:i];
-        maxlow = pl[len(pl)-2][2];
-        minhigh = pl[len(pl)-2][0];
-        atr2 = atr(pl, atrlen);
-        atr2 = atr2[len(atr2)-1] / 2;
-        dev = deviation * atr2;
-        highprice = max(pl[len(pl)-2][0], pl[len(pl)-1][0]);
-        lowprice = min(pl[len(pl)-2][2], pl[len(pl)-1][2]);
-        highs = list(map(lambda x: x[0], pl[len(pl)-amplitude:len(pl)]));
-        lows = list(map(lambda x: x[2], pl[len(pl)-amplitude:len(pl)]));
-        highma = registry["sma"](highs, amplitude);
-        lowma = registry["sma"](lows, amplitude);
-        if nexttrend[len(nexttrend)-1] == 1:
+    """HalfTrend, following everget's Pine script (tradingview.com/script/U1SJ8ubc-HalfTrend/).
+
+    One row per input bar: [atrHigh, HalfTrend, atrLow, direction]. The channel
+    is NaN until the ATR window is full (bar atrlen - 1); the trend line itself
+    is defined from bar 0.
+    """
+    n = len(data);
+    if n == 0:
+        return [];
+    nan = float("nan");
+    high = [float(r[0]) for r in data];
+    close = [float(r[1]) for r in data];
+    low = [float(r[2]) for r in data];
+
+    # ta.atr(atrlen): Wilder's RMA over true range, seeded with the mean of the
+    # first atrlen true ranges. That is Pine's seeding, and not ta_py.atr's.
+    tr = [high[0] - low[0]];
+    for i in range(1, n):
+        tr.append(max(high[i] - low[i], abs(high[i] - close[i-1]), abs(low[i] - close[i-1])));
+    atr2 = [nan] * n;
+    if n >= atrlen:
+        prev = sum(tr[:atrlen]) / atrlen;
+        atr2[atrlen-1] = prev / 2;
+        for i in range(atrlen, n):
+            prev = (prev * (atrlen - 1) + tr[i]) / atrlen;
+            atr2[i] = prev / 2;
+
+    trend = 0; nexttrend = 0;
+    maxlow = low[0]; minhigh = high[0];   # nz(low[1], low) / nz(high[1], high) at bar 0
+    up = nan; down = nan; prevtrend = None;
+    out = [];
+    for i in range(n):
+        dev = deviation * atr2[i];
+        start = max(0, i - amplitude + 1);
+        highprice = max(high[start:i+1]);
+        lowprice = min(low[start:i+1]);
+        # Pine's sma is na until its window is full, and a na comparison is false.
+        highma = (sum(high[start:i+1]) / amplitude) if i >= amplitude - 1 else nan;
+        lowma = (sum(low[start:i+1]) / amplitude) if i >= amplitude - 1 else nan;
+
+        if nexttrend == 1:
             maxlow = max(lowprice, maxlow);
-            if highma[0] < maxlow and pl[len(pl)-1][1] < pl[len(pl)-2][2]:
-                trend.append(1);
-                nexttrend.append(0);
-                minhigh = pl[len(pl)-2][0]
+            if highma < maxlow and close[i] < (low[i-1] if i > 0 else low[i]):
+                trend = 1; nexttrend = 0; minhigh = highprice;
         else:
             minhigh = min(highprice, minhigh);
-            if lowma[0] > minhigh and pl[len(pl)-1][1] < pl[len(pl)-2][0]:
-                trend.append(0);
-                nexttrend.append(1);
-                maxlow = lowprice
-        if trend[len(trend)-1] == 0:
-            if not math.isnan(trend[len(trend)-2]) and trend[len(trend)-2] != 0:
-                if math.isnan(down[len(down)-2]):
-                    up.append(down[len(down-1)]);
-                else:
-                    up.append(down[len(down)-2]);
+            if lowma > minhigh and close[i] > (high[i-1] if i > 0 else high[i]):
+                trend = 0; nexttrend = 1; maxlow = lowprice;
+
+        if trend == 0:
+            if prevtrend is not None and prevtrend != 0:
+                up = down;                      # Pine: na(down[1]) ? down : down[1]
             else:
-                if math.isnan(up[len(up)-2]):
-                    up.append(maxlow);
-                else:
-                    up.append(max(up[len(up)-2], maxlow));
-            direction = 'long';
-            atrHigh = up[len(up)-1] + dev;
-            atrLow = up[len(up)-1] - dev;
+                up = maxlow if math.isnan(up) else max(maxlow, up);
+            atrhigh = up + dev; atrlow = up - dev;
         else:
-            if not math.isnan(trend[len(trend)-2] and trend[len(trend)-2] != 1):
-                if math.isnan(up[len(up)-2]):
-                    down.append(up[len(up)-1]);
-                else:
-                    down.append(up[len(up)-2]);
+            if prevtrend is not None and prevtrend != 1:
+                down = up;
             else:
-                if math.isnan(down[len(down)-2]):
-                    down.append(minhigh);
-                else:
-                    down.append(min(minhigh, down[len(down)-2]));
-            direction = 'short';
-            atrHigh = down[len(down)-1] + dev;
-            atrLow = down[len(down)-1] - dev;
-        if trend[len(trend)-1] == 0:
-            out.append([atrHigh, up[len(up)-1], atrLow, direction]);
-        else:
-            out.append([atrHigh, down[len(down)-1], atrLow, direction]);
+                down = minhigh if math.isnan(down) else min(minhigh, down);
+            atrhigh = down + dev; atrlow = down - dev;
+
+        out.append([atrhigh, up if trend == 0 else down, atrlow, 'long' if trend == 0 else 'short']);
+        prevtrend = trend;
     return out
 def zigzag(data: list[float] | list[list[float]], perc: float = 0.05) -> list[float]:
     """ZigZag pivot detector."""

@@ -676,6 +676,8 @@ ta.mom(data, length, percentage)
 #### <a id="half"></a>HalfTrend
 ```python
 # Experimental (ported from https://www.tradingview.com/script/U1SJ8ubc-HalfTrend/)
+# One row per bar: [atrHigh, HalfTrend, atrLow, direction]. The channel is NaN
+# until the ATR window is full (bar atrlen - 1).
 # data = [high, close, low]
 data = [[100,97,90],[101,98,94],[103,96,92],[106,100,95],[110,101,100],[112,110,105],[110,100,90],[103,100,97],[95,90,85],[94,80,80],[90,82,81],[85,80,70]]
 atrlen = 6
