@@ -31,6 +31,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
   The rewrite follows the Pine line by line: one row per input bar, extremes over `amplitude`, the state machine evaluated at the current bar, and an ATR that uses Pine's own seeding (Wilder's RMA seeded with the mean of the first `atrlen` true ranges, which is not what `ta_py.atr` does). On the reporter's data it now flips 160 times. Pinned by `tests/test_halftrend.py`, which fails against the previous implementation.
 
+### Changed — BREAKING for `psar` consumers
+
+- **`psar` tracked the wrong extreme in a downtrend.** Where it should have taken the lowest low as the extreme point, it took the high, so the stop-and-reverse sat above the market through a decline and every subsequent value was wrong. On a 300-bar series it disagreed with ta.js and ta.go in 63 values; it now matches both exactly (max Δ `0.0`). `tests/test_indicators.py` pins an 18-bar decline in which the fix moves 12 values.
+
 ### Changed — BREAKING for `er`, `ar` and `kelly` consumers
 
 - **A one-sided series is no longer an error.** `er` divided by the count of the side that may be empty, so a series with no losses raised `ZeroDivisionError`, and `ar` and `kelly` raised with it. An empty side carries weight zero, so its geometric mean is never taken and contributes nothing: `er([0.02, 0.01, 0.05, 0.03])` is now `0.0274` (the geometric mean of the wins), `ar` returns finite residuals, and `kelly` returns `1.0` for an all-winning series and `-1.0276` for an all-losing one. Mixed series are unchanged to the last bit.

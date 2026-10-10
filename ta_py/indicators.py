@@ -448,7 +448,7 @@ def psar(data: list[list[float]], step: float = 0.02, maxi: float = 0.2) -> list
         else:
             sar = max(sar, furthest[0], prev[0]);
             if data[i][1] < extreme:
-                extreme = data[i][0];
+                extreme = data[i][1];
                 accel = min(accel + step, maxi);
         if (up and data[i][1] < sar) or (not up and data[i][0] > sar):
             accel = step;

@@ -26,6 +26,15 @@ def test_indicator(name: str) -> None:
     assert_close(actual, fixture["out"], name=name)
 
 
+def test_psar_downtrend_tracks_the_low() -> None:
+    """In a downtrend the extreme point is the lowest low, never the high.
+
+    It was the high, which left the SAR above the market through a decline.
+    """
+    fixture = p.psar__downtrend
+    assert_close(ta_py.psar(*fixture["in"]), fixture["out"], name="psar (downtrend)")
+
+
 def test_aroon_namespace() -> None:
     """ta_py.aroon.{up,down,osc} are silent aliases of the flat names."""
     data = [5, 4, 5, 2]
