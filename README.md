@@ -1,8 +1,8 @@
-# Technical Analysis (ta.py)
+# Technical Analysis for Python — ta.py
 
-[![PyPI version](https://badge.fury.io/py/ta_py.svg)](https://pypi.org/project/ta_py/) [![Downloads](https://img.shields.io/pypi/dm/ta_py.svg)](https://pypi.org/project/ta_py/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PyPI version](https://badge.fury.io/py/ta_py.svg)](https://pypi.org/project/ta_py/) [![Downloads](https://img.shields.io/pypi/dm/ta_py.svg)](https://pypi.org/project/ta_py/) [![Python versions](https://img.shields.io/pypi/pyversions/ta_py.svg)](https://pypi.org/project/ta_py/) [![GitHub stars](https://img.shields.io/github/stars/Bitvested/ta.py.svg)](https://github.com/Bitvested/ta.py/stargazers) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A zero-dependency, pure-Python technical analysis library. **151 indicators**, full type hints, and full functional parity with [ta.js 2.0](https://github.com/Bitvested/ta.js) — its sibling JavaScript library. No NumPy, no pandas, no C extensions, no compilers required.
+**A zero-dependency technical analysis library for Python** — 151 indicators (RSI, MACD, ATR, Bollinger Bands, ADX, Stochastics, VWAP, Ichimoku, CCI, Keltner, SuperTrend and more) implemented in pure Python, with full type hints and full functional parity with [ta.js 2.0](https://github.com/Bitvested/ta.js) — its sibling JavaScript library. No NumPy, no pandas, no TA-Lib, no C extensions, no compilers required.
 
 ---
 
@@ -55,6 +55,17 @@ Every function is also re-exported on the top-level `ta_py` module. The `ta_py.a
 
 If you need raw throughput across millions of bars in tight loops and you're comfortable installing a C extension, use TA-Lib. `ta_py` exists for the much larger case where indicator math is one step in a bigger pipeline and "fast enough on a 10k-bar series, with no install pain" is the right trade.
 
+## How ta.py compares
+
+| Library | Runtime dependencies | Native code | Install |
+|---|---|---|---|
+| **ta.py** | none | none | `pip install ta_py` |
+| TA-Lib | libta-lib (C) + Python wrapper | yes | Python package *plus* the native library, or a prebuilt wheel |
+| pandas-ta | numpy, pandas | none | `pip install pandas-ta` (pulls ~50–100 MB) |
+| finta | numpy, pandas | none | `pip install finta` (pulls ~50–100 MB) |
+
+Pick TA-Lib if you need maximum throughput over millions of bars in tight loops and can install a C extension. Pick `ta.py` if you want indicator math to be one step in a larger pipeline, on any interpreter, with nothing to compile or audit.
+
 ## Performance notes
 
 Internal sliding-window O(N) rewrites in 2.0 measurably beat naïve list-comprehension implementations of the same indicators (e.g. Bollinger Bands ~5× faster than a textbook Python implementation, standard deviation ~13× faster). The `bench/` sub-project contains a regression-tracking harness used during development; it is **not** a marketing benchmark and does not claim parity with C-backed libraries.
@@ -99,6 +110,32 @@ Per-indicator usage with input/output samples lives in [**EXAMPLES.md**](EXAMPLE
 
 #### Experimental
 - [Support Line](EXAMPLES.md#sup) · [Resistance Line](EXAMPLES.md#res) · [Divergence State](EXAMPLES.md#divergence_state)
+
+## FAQ
+
+**Is there a technical analysis library for Python that doesn't need pandas or NumPy?**
+
+Yes — that is exactly what `ta.py` is. It has zero runtime dependencies and is implemented entirely in pure Python, so `pip install ta_py` pulls nothing else down with it.
+
+**How is ta.py different from TA-Lib?**
+
+TA-Lib is a C library with a thin Python wrapper, so it needs the native `libta-lib` present (or a matching prebuilt wheel) and its wheels lag new CPython releases. `ta.py` is pure Python: one wheel, no native artifacts, and it runs on CPython 3.10+ as well as PyPy, GraalPy and Pyodide. TA-Lib is still the faster option for millions of bars in a tight loop — see [How ta.py compares](#how-tapy-compares).
+
+**Can I use ta.py with pandas DataFrames?**
+
+Convert the column to a plain sequence first: `ta.rsi(df["close"].tolist(), 14)`. Every function takes an ordinary Python sequence and returns a list, and `ta.py` deliberately never imports pandas — that independence is the point of the library.
+
+**Does ta.py work on AWS Lambda, Alpine containers and other minimal images?**
+
+Yes. There is nothing to compile and no system library to install, so it works anywhere `pip` does, including musl-based images and serverless cold-start budgets. The one multi-process feature, `ta_py.multi.sim`, falls back to the sequential `ta_py.sim` automatically when workers can't be spawned.
+
+**Is ta.py fast enough for backtesting?**
+
+For typical backtests over thousands of bars, yes — 2.0 rewrote the hot paths (`sma`, `ema`, `wma`, `rsi`, `stoch`, `bands`, `variance`, and others) as O(N) sliding-window passes. If you are optimizing millions of bars in tight loops, use a C-backed library instead.
+
+**How many indicators does ta.py have, and are they tested?**
+
+151, matching [ta.js 2.0](https://github.com/Bitvested/ta.js) function-for-function across moving averages, indicators, oscillators, bands, statistics, chart types and Monte Carlo simulation. The test suite covers them at `1e-12` tolerance.
 
 ## Contributing
 

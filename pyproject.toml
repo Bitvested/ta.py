@@ -13,19 +13,38 @@ authors = [
     { name = "Nino Kroesen", email = "ninokroesen@gmail.com" }
 ]
 keywords = [
-    "financial", "technical", "analysis", "ta", "simple", "weighted",
-    "exponential", "sma", "wma", "ema", "aroon", "rsi", "stochastics",
-    "macd", "atr", "vwap", "lsma", "least", "squares", "average", "kama",
-    "variance", "correlation", "aad", "mad", "ssd", "kmeans", "monte", "carlo"
+    # category terms — what people actually search for
+    "technical-analysis", "technical-analysis-library", "technical-indicators",
+    "trading", "algorithmic-trading", "quantitative-finance", "quant",
+    "finance", "financial-analysis", "stock-market", "cryptocurrency",
+    "trading-strategies", "backtesting", "fintech",
+    # differentiators
+    "zero-dependency", "no-dependencies", "pure-python", "numpy-free",
+    "pandas-free", "ta-lib-alternative", "pandas-ta-alternative",
+    # indicators
+    "ta", "sma", "wma", "ema", "rsi", "macd", "atr", "vwap", "adx", "cci",
+    "aroon", "stochastics", "bollinger-bands", "kama", "lsma",
+    "least-squares", "variance", "correlation", "kmeans", "monte-carlo",
 ]
 classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
     "Typing :: Typed",
 ]
 dependencies = []
