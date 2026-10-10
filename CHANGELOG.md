@@ -31,6 +31,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
   The rewrite follows the Pine line by line: one row per input bar, extremes over `amplitude`, the state machine evaluated at the current bar, and an ATR that uses Pine's own seeding (Wilder's RMA seeded with the mean of the first `atrlen` true ranges, which is not what `ta_py.atr` does). On the reporter's data it now flips 160 times. Pinned by `tests/test_halftrend.py`, which fails against the previous implementation.
 
+### Changed — BREAKING for `er`, `ar` and `kelly` consumers
+
+- **A one-sided series is no longer an error.** `er` divided by the count of the side that may be empty, so a series with no losses raised `ZeroDivisionError`, and `ar` and `kelly` raised with it. An empty side carries weight zero, so its geometric mean is never taken and contributes nothing: `er([0.02, 0.01, 0.05, 0.03])` is now `0.0274` (the geometric mean of the wins), `ar` returns finite residuals, and `kelly` returns `1.0` for an all-winning series and `-1.0276` for an all-losing one. Mixed series are unchanged to the last bit.
+
+  The same input produced three different answers across the ports — NaN in ta.js (JS evaluates `1 ** Infinity` as NaN), a finite value in ta.go (where `math.Pow(1, +Inf)` is 1), an exception here — and all three now return these numbers, with the empty side handled explicitly rather than left to each language's exponentiation edge case.
+
 ### Changed — BREAKING for `roc`, `kst`, `ha` and `aroon` consumers
 
 Found by a cross-language audit (identical series through 60 indicators in ta.js, ta.go and ta.py): ta.py disagreed with both siblings on these. Nothing raises — every call returns different numbers.
