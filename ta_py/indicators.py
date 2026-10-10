@@ -310,129 +310,72 @@ def halftrend(data: list[list[float]], atrlen: int, amplitude: int, deviation: i
         out.append([atrhigh, up if trend == 0 else down, atrlow, 'long' if trend == 0 else 'short']);
         prevtrend = trend;
     return out
+def _div(a: float, b: float) -> float:
+    """a / b with JavaScript's semantics: no exception, IEEE Inf/NaN instead."""
+    if b == 0:
+        if a == 0: return float('nan');
+        return float('inf') if a > 0 else float('-inf');
+    return a / b;
+
 def zigzag(data: list[float] | list[list[float]], perc: float = 0.05) -> list[float]:
-    """ZigZag pivot detector."""
-    indexes = []; min = float('inf'); max = float('-inf');
+    """ZigZag pivot detector.
+
+    A faithful port of the ta.js original: in a leg, the running pivot is
+    extended while the move continues, and a new pivot is recorded once price
+    has retraced more than ``perc`` from the extreme. The output is the pivot
+    line interpolated to one value per input bar, so ``len(out) <= len(data)``
+    — bars before the first pivot are not represented.
+    """
+    indexes = []; mn = float('inf'); mx = float('-inf');
     lmin = False; lmax = False;
-    if isinstance(data[0], list):
-        for i in range(len(data)):
-            if lmin:
-                if min >= data[i][1]: min = data[i][1];
-                if indexes[len(indexes)-1]['value'] >= data[i][1]:
-                    indexes[len(indexes)-1]['value'] = data[i][1];
-                    indexes[len(indexes)-1]['index'] = i;
-                    continue
-                try:
-                    hdif = (data[i][0]-min)/min;
-                except ZeroDivisionError:
-                    hdif = 100
-                if hdif > perc:
-                    indexes.append({'index': i, 'value': data[i][0]});
-                    lmax = True;
-                    lmin = False;
-                    min = float('inf');
-            elif lmax:
-                if max <= data[i][1]: max = data[i][1];
-                if indexes[len(indexes)-1]['value'] <= data[i][0]:
-                    indexes[len(indexes)-1]['value'] = data[i][0];
-                    indexes[len(indexes)-1]['index'] = i;
-                    continue
-                try:
-                    ldif = (max-data[i][1])/data[i][1];
-                except ZeroDivisionError:
-                    ldif = 100
-                if ldif > perc:
-                    indexes.append({'index': i, 'value': data[i][1]});
-                    lmin = True;
-                    lmax = False;
-                    max = float('-inf');
+    rows = isinstance(data[0], list);
+    for i in range(len(data)):
+        hi = float(data[i][0]) if rows else float(data[i]);
+        lo = float(data[i][1]) if rows else float(data[i]);
+        if lmin:
+            if indexes[len(indexes)-1]['value'] >= lo:
+                indexes[len(indexes)-1]['value'] = lo;
+                indexes[len(indexes)-1]['index'] = i;
+            if mn >= lo: mn = lo;
+            if _div(hi-mn, mn) > perc:
+                indexes.append({'index': i, 'value': hi});
+                lmax = True; lmin = False; mx = hi;
+        elif lmax:
+            if indexes[len(indexes)-1]['value'] <= hi:
+                indexes[len(indexes)-1]['value'] = hi;
+                indexes[len(indexes)-1]['index'] = i;
+            if mx <= hi: mx = hi;
+            if _div(mx-lo, lo) > perc:
+                indexes.append({'index': i, 'value': lo});
+                lmin = True; lmax = False; mn = lo;
+        else:
+            if mn >= lo: mn = lo;
+            if mx <= hi: mx = hi;
+            hdif = _div(hi-mn, mn);
+            ldif = _div(mx-lo, mx);
+            if ldif > perc and hdif < perc:
+                lmin = True;
+                indexes.append({'index': 0, 'value': float(data[0][0]) if rows else float(data[0])});
+                indexes.append({'index': i, 'value': lo});
+            elif hdif > perc and ldif < perc:
+                lmax = True;
+                indexes.append({'index': 0, 'value': float(data[0][1]) if rows else float(data[0])});
+                indexes.append({'index': i, 'value': hi});
+            elif ldif > hdif:
+                lmin = True;
+                indexes.append({'index': 0, 'value': float(data[0][0]) if rows else float(data[0])});
+                indexes.append({'index': i, 'value': lo});
             else:
-                if min >= data[i][0]: min = data[i][1];
-                if max <= data[i][0]: max = data[i][0];
-                if i == 0: continue
-                try:
-                    hdif = (data[i][0]-min)/min;
-                except ZeroDivisionError:
-                    hdif = 100
-                try:
-                    ldif = (max-data[i][1])/max;
-                except ZeroDivisionError:
-                    ldif = 100
-                if ldif > perc and hdif < perc:
-                    lmin = True;
-                    indexes.append({'index': 0, 'value': data[0][0]});
-                    indexes.append({'index': i, 'value': data[i][1]});
-                elif hdif > perc and ldif < perc:
-                    lmax = True;
-                    indexes.append({'index': 0, 'value': data[0][1]});
-                    indexes.append({'index': i, 'value': data[i][0]});
-                else:
-                    if ldif > hdif:
-                        lmin = True;
-                        indexes.append({'index': 0, 'value': data[0][0]});
-                        indexes.append({'index': i, 'value': data[i][1]});
-                    else:
-                        lmax = True;
-                        indexes.append({'index': 0, 'value': data[0][1]});
-                        indexes.append({'index': i, 'value': data[i][0]});
-    else:
-        for i in range(len(data)):
-            if lmin:
-                if min >= data[i]: min = data[i];
-                if indexes[len(indexes)-1]['value'] >= data[i]:
-                    indexes[len(indexes)-1]['value'] = data[i];
-                    indexes[len(indexes)-1]['index'] = i;
-                    continue
-                try:
-                    hdif = (data[i]-min)/min;
-                except ZeroDivisionError:
-                    hdif = 100
-                if hdif > perc:
-                    indexes.append({'index': i, 'value': data[i]});
-                    lmax = True;
-                    lmin = False;
-                    min = float('inf');
-            elif lmax:
-                if max <= data[i]: max = data[i];
-                if indexes[len(indexes)-1]['value'] <= data[i]:
-                    indexes[len(indexes)-1]['value'] = data[i];
-                    indexes[len(indexes)-1]['index'] = i;
-                    continue
-                ldif = (max-data[i])/data[i];
-                if ldif > perc:
-                    indexes.append({'index': i, 'value': data[i]});
-                    lmin = True;
-                    lmax = False;
-                    max = float('-inf');
-            else:
-                if min >= data[i]: min = data[i];
-                if max <= data[i]: max = data[i];
-                if i == 0: continue
-                try:
-                    hdif = (data[i]-min)/min;
-                except ZeroDivisionError:
-                    hdif = 100
-                try:
-                    ldif = (max-data[i])/max;
-                except ZeroDivisionError:
-                    ldif = 100
-                indexes.append({'index': 0, 'value': data[0]});
-                indexes.append({'index': i, 'value': data[i]});
-                if ldif > perc and hdif < perc:
-                    lmin = True;
-                elif hdif > perc and ldif < perc:
-                    lmax = True;
-                else:
-                    if ldif > hdif:
-                        lmin = True;
-                    else:
-                        lmax = True;
+                lmax = True;
+                indexes.append({'index': 0, 'value': float(data[0][1]) if rows else float(data[0])});
+                indexes.append({'index': i, 'value': hi});
+    if len(indexes) == 0: return [];
     final = [indexes[0]['value']];
-    for i in range(1,len(indexes)):
+    for i in range(1, len(indexes)):
         length = indexes[i]['index'] - indexes[i-1]['index'];
-        delta = (indexes[i]['value'] - indexes[i-1]['value']) / length;
+        delta = _div(indexes[i]['value'] - indexes[i-1]['value'], length);
         for x in range(1, length+1):
-            final.append(x*delta+indexes[i-1]['value']);
+            final.append(x*delta + indexes[i-1]['value']);
     return final;
 def psar(data: list[list[float]], step: float = 0.02, maxi: float = 0.2) -> list[float]:
     """Parabolic SAR."""
