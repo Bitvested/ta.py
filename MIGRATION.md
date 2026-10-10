@@ -111,6 +111,65 @@ ta_py.stoch([[3,2,1],[2,2,1],[4,3,1],[2,2,1]], 2, 1, 1)
 # → [[50, 50], [66.667, 66.667], [33.333, 33.333]]   # 3 rows
 ```
 
+## Breaks landing after 2.0.0
+
+### `alligator(data, ...)` / `gator(data, ...)` — rows now align to the input bars
+
+Both returned their rows newest-first and truncated to `n - jl - js + 2` rows, so the
+array could not be indexed by bar and could not be lined up with the series it was
+computed from. Each line was also displaced by `shift - 1` bars instead of `shift`,
+`gator`'s upper histogram had the wrong sign (it plotted `jaw - teeth`, not
+`|jaw - teeth|`), and a `shift` of `0` raised `IndexError` because `jaw[i - (js - 1)]`
+with `js = 0` indexes past the end of the SMMA output.
+
+This shape is old — the 1.17.0 body is character-for-character the same — so the
+break is against `1.x` and `2.0.0` alike. Both now return one row per input bar, with
+each line displaced right by its own shift, matching TradingView's
+`plot(..., offset = shift)`; a line is NaN until bar `length - 1 + shift`.
+
+```python
+data = [8, 7, 8, 9, 7, 8, 9, 6, 7, 8, 6, 8, 10, 8, 7, 9, 8, 7, 9, 6, 7, 9]
+
+# 1.x / 2.0.0 — 3 rows, newest first, not aligned to `data`
+ta_py.alligator(data)
+# → [[7.726445152480656, 7.813665029359981, 7.6378735707815935],
+#    [7.78698224852071, 7.929902890697122, 8.047341963476992],
+#    [7.769230769230769, 7.919889017939568, 7.809177454346241]]
+
+# now — 22 rows, one per bar of `data`
+ta_py.alligator(data)
+# → [[nan, nan, nan], ... 19 more ...,
+#    [7.769230769230769, 7.919889017939568, 7.809177454346241],
+#    [7.78698224852071, 7.929902890697122, 8.047341963476992]]
+```
+
+Every row the old array held except its first is still present, reversed:
+`old[r] == new[len(data) - r]` for `r >= 1`. The first row is the one value the
+aligned output cannot represent — it held the jaw computed at bar `n - js`, one bar
+newer than the newest jaw an offset-aligned series can show. If you need the old
+shape back:
+
+```python
+def alligator_20(data, jl=13, tl=8, ll=5, js=8, ts=5, ls=3):
+    """The 1.x / 2.0.0 return shape, recovered from the aligned output.
+
+    Drops the old array's first row, which has no counterpart here.
+    """
+    out = ta_py.alligator(data, jl, tl, ll, js, ts, ls)
+    n = len(out)
+    return [out[n - r] for r in range(1, n - jl - js + 2)]
+```
+
+Most callers do not need that. `out[0]` used to be the newest row and is now bar 0;
+the jaw/teeth/lips of bar `i` finally sit together in `out[i]`, so the array indexes
+by bar directly instead of needing manual realignment. Note also that the jaw is
+deliberately 8 bars stale by the time it is drawn — that is what the offset means,
+and `out[-1][0]` is the jaw from bar `n - 9`, not the latest SMMA value.
+
+`gator` is now derived from `alligator`'s displaced lines, so it takes the same
+alignment, and `js=ts=ls=0` — previously a crash — reproduces TradingView's Gator
+Oscillator, which does not displace its lines.
+
 ## New namespaces (additive — no break)
 
 ### `ta_py.random`

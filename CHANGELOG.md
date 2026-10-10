@@ -11,9 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **`alligator` / `gator` no longer match TradingView by accident.** Both were returning their rows newest-first and truncated to `n - jl - js + 2` rows, so they could not be lined up with the input series at all, and each line was displaced by `shift - 1` bars instead of `shift`. `gator`'s upper histogram also had the wrong sign — it plotted `jaw - teeth` instead of `|jaw - teeth|`. Reported in [#10](https://github.com/Bitvested/ta.py/issues/10).
 
-### Changed
+### Changed — BREAKING for `alligator` / `gator` consumers
 
 - **`alligator(data, ...)` / `gator(data, ...)` output is now aligned to the input bars.** `len(out) == len(data)` and row `i` covers bar `i`. Each line is displaced right by its own shift, matching TradingView's `plot(..., offset=shift)`, so row `i` holds the SMMA value computed at bar `i - shift`. A line is NaN until bar `length - 1 + shift` (defaults: jaw at 20, teeth at 12, lips at 7). `gator` is now derived from `alligator`'s displaced lines, which also makes it the four-argument-free way to reach TradingView's Gator Oscillator: pass `js=ts=ls=0`.
+
+  Nothing raises — every caller below gets different numbers, not an error:
+
+  - **Length changed** from `n - jl - js + 2` (with defaults, `n - 19`) to `n`. Anything keyed off `len(out)`, sliced by it, or zipped against a same-length series behaves differently.
+  - **Row order reversed.** `out[0]` used to be the newest value and `out[-1]` the oldest; now `out[0]` is bar 0 and `out[-1]` is the newest row, which itself holds the value computed 8 bars earlier.
+  - **Leading rows are NaN** where they used to be numbers. `sum`, `mean`, `min` or any comparison over the whole array now propagates NaN, and `out[0][0]` is `nan` rather than the latest jaw.
+  - **`gator`'s upper histogram changed sign** from `jaw - teeth` (negative) to `|jaw - teeth|` (non-negative). The lower histogram is unchanged.
+
+  The old output was unusable for its stated purpose — that is issue [#10](https://github.com/Bitvested/ta.py/issues/10) — but it was published in 2.0.0, so code written against it will change behaviour silently. See `MIGRATION.md` for the before/after and for how to recover the old array shape if you depended on it.
 
 ```python
 data = [8, 7, 8, 9, 7, 8, 9, 6, 7, 8, 6, 8, 10, 8, 7, 9, 8, 7, 9, 6, 7, 9]
