@@ -12,3 +12,5 @@ bench/.venv/
 bench/build/
 bench/*.egg-info/
 notes
+todo.md
+.DS_Store
