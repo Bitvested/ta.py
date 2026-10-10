@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 > | `aroon_up`, `aroon_osc` | **values**: inverted — 0 when the window's high was its newest bar, 100 when it was the oldest. `aroon_down` was already correct. |
 > | `psar` | **values**: the downtrend extreme tracked the high instead of the low, so the SAR sat above the market through every decline. |
 > | `zigzag` | **values**: five bookkeeping deviations from ta.js — pivots were delayed a bar, legs were reset from ±infinity, and the flat-input branch mixed its indices. |
+> | `hull` | **values**: the half-length and the final smoothing window were truncated instead of rounded, so the output differed from ta.js at every length that is 1 mod 4 (5, 9, 13, 17, …). |
 > | `er`, `ar`, `kelly` | **one-sided input**: raised `ZeroDivisionError`; now returns the geometric mean of the side that exists, and a Kelly fraction of 1 / negative. |
 >
 > If you index results by bar, or compare them against stored values, re-run before trusting them.
@@ -32,6 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Two caveats worth knowing. The Pine's variant definitions were checked against the existing primitives for DEMA, TEMA and Hull across even and odd lengths (`~1e-11`, float noise), so those are the same averages. And with an **odd** `basis_len`, Hull's half-length is rounded to even in Python where Pine rounds half away from zero, so that one combination may differ; every other type is unaffected.
 
 ### Fixed
+
+- **`hull` rounded where the reference rounds half up.** Its half-length came from `round(l / 2)`, and Python's `round()` is half-to-even: for lengths where `l / 2` is a half-integer with an even integer part — 5, 9, 13, 17, … — it gave 2 where ta.js's `Math.round` gives 3, so the whole line differed. Measured against ta.js on one shared series, lengths 2-20: differing at 5, 9, 13 and 17 before, none after. Found while checking `occ`'s `HullMA` basis, which inherits it.
 
 - **`alligator` / `gator` no longer match TradingView by accident.** Both were returning their rows newest-first and truncated to `n - jl - js + 2` rows, so they could not be lined up with the input series at all, and each line was displaced by `shift - 1` bars instead of `shift`. `gator`'s upper histogram also had the wrong sign — it plotted `jaw - teeth` instead of `|jaw - teeth|`. Reported in [#10](https://github.com/Bitvested/ta.py/issues/10).
 

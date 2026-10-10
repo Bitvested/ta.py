@@ -173,7 +173,10 @@ def vwwma(d: list[list[float]], length: int = 20) -> list[float]:
 def hull(data: list[float], l: int = 14) -> list[float]:
     """Hull Moving Average. Calls wma() internally (same module)."""
     pl = []; hma = []; ewma = wma(data[:], l); sqn = round(l**(1.0/2.0));
-    first = wma(data[:], int(round(l / 2)));
+    # Round half up, as ta.js's Math.round does: Python's round() is half-to-even,
+    # so round(5 / 2) is 2 where the reference uses 3, and the two disagree for
+    # every length that is 1 mod 4.
+    first = wma(data[:], int(l / 2 + 0.5));
     first = first[-(len(ewma)-len(first)):];
     for i in range(len(ewma)):
         pl.append((first[i] * 2) - ewma[i]);
