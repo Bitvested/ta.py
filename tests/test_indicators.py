@@ -35,6 +35,31 @@ def test_aroon_namespace() -> None:
     assert ta_py.aroon.osc(data2, 3) == ta_py.aroon_osc(data2, 3)
 
 
+AROON_EXTREME_CASES = [
+    "aroon_up__newest_high", "aroon_up__oldest_high",
+    "aroon_down__newest_low", "aroon_down__oldest_low",
+]
+
+
+@pytest.mark.parametrize("name", AROON_EXTREME_CASES)
+def test_aroon_extreme_position(name: str) -> None:
+    """Aroon is 100 when the window's extreme is its newest bar, 0 when it is the oldest.
+
+    The plain aroon fixtures place the extreme at a tie and at the window's middle,
+    the two positions where an inverted Aroon returns the same number — these are the
+    cases that tell the conventions apart.
+    """
+    fixture = getattr(p, name)
+    fn = getattr(ta_py, name.split("__")[0])
+    assert_close(fn(*fixture["in"]), fixture["out"], name=name)
+
+
+def test_roc_zero_reference() -> None:
+    """A zero reference yields NaN rather than dividing by zero."""
+    fixture = p.roc__zero_reference
+    assert_close(ta_py.roc(*fixture["in"]), fixture["out"], name="roc (zero reference)")
+
+
 def test_zigzag_pairs() -> None:
     fixture = p.zigzag__pairs
     actual = ta_py.zigzag(*fixture["in"])

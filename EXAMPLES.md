@@ -591,8 +591,8 @@ ta.cmf(data, length)
 data = [1, 2, 3, 4]
 length = 3  # default = 14
 ta.roc(data, length)
-# output (array)
-# [2, 1]
+# output (array, percent)
+# [200.0, 100.0]
 ```
 
 #### <a id="cop"></a>Coppock Curve
@@ -603,7 +603,7 @@ length2 = 6  # ROC period 2, default = 14
 length3 = 5  # WMA smoothing period, default = 10
 ta.cop(data, length1, length2, length3)
 # output (array)
-# [0.376, 0.237]
+# [37.556, 23.667]
 ```
 
 #### <a id="kst"></a>Know Sure Thing
@@ -619,9 +619,9 @@ r3 = 10; s3 = 5  # defaults = 20, 10
 r4 = 15; s4 = 7  # defaults = 30, 15
 # signal line
 sig = 4          # default = 9
-ta.kst(data, r1, s1, r2, s2, r3, s3, r4, s4, sig)
+ta.kst(data, r1, r2, r3, r4, s1, s2, s3, s4, sig)
 # output (array)
-# [[-0.68, -0.52], [-0.29, -0.58], [0.35, -0.36]]
+# [[-68.28, -51.75], [-29.39, -57.86], [35.18, -35.97]]
 # [kst line, signal line]
 ```
 
