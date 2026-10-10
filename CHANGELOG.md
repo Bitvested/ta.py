@@ -5,7 +5,23 @@ All notable changes to ta.py are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.1.0] — 2026-10-10
+
+> ### ⚠️ Read this before upgrading
+>
+> **Seven functions return different numbers, and three of them return a different number of rows.** Each was verified against the implementation it was ported from (ta.js, or the Pine original) and each fix has a test that fails against the old code — but nothing raises, so an existing pipeline will consume the new values silently. They were found by running identical data through all three ports and comparing: ta.py disagreed with ta.js and ta.go, and in every case ta.py was the one that was wrong.
+>
+> | function | what changed |
+> |---|---|
+> | `roc` | **values**: returned a fraction, now percent (`100 * (last - reference) / reference`). `kst` and `cop` are built on it and move with it. |
+> | `kst` | **signature**: positional parameters were interleaved (`r1, s1, r2, s2, …`), now grouped (`r1..r4, s1..s4, sig`) as in ta.js. Defaults unchanged; positional callers are not. |
+> | `ha` | **row count**: `n + 1` → `n`. The loop re-processed bar 0, so the second row was a duplicate over the seed. |
+> | `aroon_up`, `aroon_osc` | **values**: inverted — 0 when the window's high was its newest bar, 100 when it was the oldest. `aroon_down` was already correct. |
+> | `psar` | **values**: the downtrend extreme tracked the high instead of the low, so the SAR sat above the market through every decline. |
+> | `zigzag` | **values**: five bookkeeping deviations from ta.js — pivots were delayed a bar, legs were reset from ±infinity, and the flat-input branch mixed its indices. |
+> | `er`, `ar`, `kelly` | **one-sided input**: raised `ZeroDivisionError`; now returns the geometric mean of the side that exists, and a Kelly fraction of 1 / negative. |
+>
+> If you index results by bar, or compare them against stored values, re-run before trusting them.
 
 ### Added
 
